@@ -31,13 +31,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignInEvent>(_onSignIn);
   }
 
-  Future<void> _onCheckAuthentication(
-      CheckAuthenticationEvent event, Emitter<AuthState> emit) async {
+  Future<void> _onCheckAuthentication(CheckAuthenticationEvent event, Emitter<AuthState> emit) async 
+  {
     try {
       emit(AuthLoading());
-      
+
       final tokenResult = await checkTokenValidityUseCase(NoParams());
-      
+
       await tokenResult.fold(
         (failure) async {
           emit(Unauthenticated());

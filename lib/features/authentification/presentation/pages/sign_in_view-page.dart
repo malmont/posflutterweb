@@ -1,4 +1,4 @@
-// features/authentication/presentation/pages/signin_view.dart
+
 import 'package:flutter/material.dart';
 import 'package:pos_flutter/features/authentification/application/viewmodels/signin_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -9,11 +9,6 @@ class SignInViewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Lors du chargement initial, vérifiez la validité du token
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<SignInViewModel>(context, listen: false).checkTokenValidity();
-    });
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Sign In'),
