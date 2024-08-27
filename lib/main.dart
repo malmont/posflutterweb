@@ -8,12 +8,11 @@ import 'package:pos_flutter/di/injection_container.dart';
 import 'package:pos_flutter/features/authentification/application/blocs/auth_bloc.dart';
 import 'package:pos_flutter/features/authentification/application/viewmodels/signin_viewmodel.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await configureDependencies();  
+  await configureDependencies();  // Initialise les dépendances via injectable
 
-  runApp(const MyApp());
+  runApp( const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -23,17 +22,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        BlocProvider(
-          create: (context) => sl<AuthBloc>()..add(CheckAuthenticationEvent()),  
+        BlocProvider<AuthBloc>(
+          create: (context) => getIt<AuthBloc>()..add(CheckAuthenticationEvent()),
         ),
-        ChangeNotifierProvider(
-          create: (context) => sl<SignInViewModel>(),  
+        ChangeNotifierProvider<SignInViewModel>(
+             create: (context) => SignInViewModel(
+          getIt<AuthBloc>(),   )
         ),
+        // Ajoute d'autres providers si nécessaire
       ],
       child: const MaterialApp(
         title: 'POS Flutter',
-        onGenerateRoute: AppRouter.onGenerateRoute, 
-        home: AuthWrapper(),  
+        onGenerateRoute: AppRouter.onGenerateRoute,
+        home: AuthWrapper(),  // Widget qui décide de la page d'accueil selon l'authentification
       ),
     );
   }

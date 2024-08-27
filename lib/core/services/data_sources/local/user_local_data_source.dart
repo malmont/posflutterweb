@@ -1,6 +1,7 @@
 
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:injectable/injectable.dart';
 import 'package:pos_flutter/core/error/exeptions.dart';
 import 'package:pos_flutter/features/authentification/infrastucture/models/user/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,7 +22,7 @@ abstract class UserLocalDataSource {
 
 const cachedToken = 'TOKEN';
 const cachedUser = 'USER';
-
+@LazySingleton(as: UserLocalDataSource)
 class UserLocalDataSourceImpl implements UserLocalDataSource {
   final FlutterSecureStorage secureStorage;
   final SharedPreferences sharedPreferences;
