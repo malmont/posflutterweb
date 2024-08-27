@@ -25,11 +25,15 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<Failure, User>> signIn(params) async {
-    return await _authenticate(() {
-      return remoteDataSource.signIn(params);
-    });
+    try {
+      return await _authenticate(() {
+        return remoteDataSource.signIn(params);
+      });
+    } catch (e) {
+      // Capture l'exception et retourne une Failure générique
+      return Left(ExceptionFailure()); // Tu peux personnaliser le type de Failure ici si nécessaire
+    }
   }
-
   @override
   Future<Either<Failure, NoParams>> signOut() async {
     try {
@@ -54,20 +58,19 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
-  Future<Either<Failure, User>> _authenticate(
-      _DataSourceChooser getDataSource,
-      ) async {
+Future<Either<Failure, User>> _authenticate(Future<AuthenticationResponseModel> Function() getDataSource) async {
     if (await networkInfo.isConnected) {
       try {
         final remoteResponse = await getDataSource();
         localDataSource.saveToken(remoteResponse.token);
         localDataSource.saveUser(remoteResponse.user);
         return Right(remoteResponse.user);
-      } on Failure catch (failure) {
-        return Left(failure);
+      } catch (e) {
+        return Left(ServerFailure()); // Échec au niveau du serveur
       }
     } else {
-      return Left(NetworkFailure());
+      return Left(NetworkFailure()); // Pas de connexion réseau
     }
   }
 }
+
