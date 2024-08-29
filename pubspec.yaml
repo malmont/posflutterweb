@@ -50,6 +50,12 @@ dependencies:
   internet_connection_checker: ^0.0.1+4
   dartz: ^0.10.1
   http: ^0.13.3
+  #sidebar
+  flutter_svg:
+  hooks_riverpod:
+  flutter_hooks:
+  flutter_animate:
+  animate_gradient:
 
 dev_dependencies:
   flutter_test:
@@ -81,8 +87,8 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   assets:
-    - assets/
-
+    - assets/images/
+    - assets/svg/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
