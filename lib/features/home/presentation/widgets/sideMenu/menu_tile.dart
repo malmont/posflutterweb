@@ -1,9 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pos_flutter/features/home/infrastucture/models/menu_item.dart';
 import 'package:pos_flutter/features/home/providers.dart';
+
+import '../../../../../design/design.dart';
 
 class MenuTile extends ConsumerWidget {
   final MenuItemModel menu;
@@ -16,41 +17,40 @@ class MenuTile extends ConsumerWidget {
     final selectedMenu = ref.watch(selectedMenuProvider);
     bool isCollapsed = ref.watch(isSideMenuCollapsed);
 
-    return Material(color: Colors.transparent,
+    return Material(
+      color: Colors.transparent,
       child: ListTile(
-        contentPadding: const EdgeInsets.only(top: 8, bottom: 8),
+        contentPadding: const EdgeInsets.only(top:  Units.edgeInsetsLarge, bottom:  Units.edgeInsetsLarge),
         selected: menu.index == selectedMenu,
         onTap: () {
           ref.read(selectedMenuProvider.notifier).state = menu.index;
         },
-        selectedTileColor: const Color(0xffEA7C69),
+        selectedTileColor: Colours.colorsButtonMenu,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-          
+          borderRadius: BorderRadius.circular(Units.radiusXXXXXLarge),
         ),
         leading: Padding(
-          padding: EdgeInsets.only(left: isCollapsed ? 24 : 8.0),
-          child: SvgPicture.asset(menu.icon,
-              color:
-                  menu.index == selectedMenu ? const Color(0xffF8F4F5) : const Color(0xffEA7C69)),
+          padding: EdgeInsets.only(left: isCollapsed ? Units.edgeInsetsXXXLarge : Units.edgeInsetsLarge),
+          child: SvgPicture.asset(
+            menu.icon,
+            color: menu.index == selectedMenu
+                ? Colours.white
+                : Colours.colorsButtonMenu,
+          ),
         ),
         title: isCollapsed
             ? null
             : Text(
                 menu.title,
-          overflow: TextOverflow.fade,
-          maxLines: 1,
-          softWrap: false,
-                style: TextStyle(
-                    fontSize: 14,
-                    color: menu.index == selectedMenu
-                        ? const Color(0xffF8F4F5)
-                        : null),
+                overflow: TextOverflow.fade,
+                maxLines: 1,
+                softWrap: false,
+                style: TextStyles.interRegularTiny
               ),
         trailing: isCollapsed
             ? null
             : Padding(
-                padding: const EdgeInsets.only(right: 8.0),
+                padding: const EdgeInsets.only(right: Units.edgeInsetsMedium),
                 child: trailing,
               ),
       ),

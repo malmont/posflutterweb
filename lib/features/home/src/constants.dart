@@ -2,7 +2,7 @@
 
 import 'package:pos_flutter/features/home/infrastucture/models/menu_item.dart';
 import 'package:pos_flutter/features/home/infrastucture/models/service.dart';
-import 'package:pos_flutter/features/home/src/assets.dart';
+import 'package:pos_flutter/design/assets_images_and_icones.dart';
 
 List<MenuItemModel> menuItems = [
   
