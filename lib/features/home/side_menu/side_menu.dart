@@ -1,16 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pos_flutter/features/home/presentation/widgets/sideMenu/create_new_task.dart';
-
 import 'package:pos_flutter/features/home/presentation/widgets/sideMenu/hide_menu.dart';
-import 'package:pos_flutter/features/home/presentation/widgets/sideMenu/margin.dart';
-import 'package:pos_flutter/features/home/presentation/widgets/sideMenu/menu_header.dart';
 import 'package:pos_flutter/features/home/presentation/widgets/sideMenu/menu_tile.dart';
-import 'package:pos_flutter/features/home/presentation/widgets/sideMenu/menu_tile_trailing.dart';
 import 'package:pos_flutter/features/home/presentation/widgets/sideMenu/profile_header.dart';
-import 'package:pos_flutter/features/home/presentation/widgets/sideMenu/services_menu.dart';
-import 'package:pos_flutter/features/home/presentation/widgets/sideMenu/settings_menu.dart';
+import 'package:pos_flutter/design/design.dart';
 import 'package:pos_flutter/features/home/providers.dart';
 import 'package:pos_flutter/features/home/src/constants.dart';
 class SideMenu extends ConsumerWidget {
@@ -25,8 +19,8 @@ class SideMenu extends ConsumerWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: const Color(0xFF1F1D2B),
-          borderRadius: BorderRadius.circular(24),
+          color:  Colours.primaryPalette,
+          borderRadius: BorderRadius.circular(Units.radiusXXXXXXLarge),
         ),
         child: Stack(
           children: [
@@ -34,11 +28,11 @@ class SideMenu extends ConsumerWidget {
               children: [
                 // Partie supérieure (en-tête, etc.)
                 const Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(Units.edgeInsetsLarge),
                   child: ProfileHeader(),
                 ),
                 const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                  padding: EdgeInsets.symmetric(vertical: Units.edgeInsetsXXLarge),
                   child: Divider(
                     height: 0,
                   ),
@@ -49,7 +43,7 @@ class SideMenu extends ConsumerWidget {
                 Expanded(
                   child: ListView(
                     shrinkWrap: true,
-                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                    padding: const EdgeInsets.symmetric(vertical: Units.edgeInsetsXXLarge, horizontal: Units.edgeInsetsXXXLarge),
                     children: [
                       ...menuItems.map(
                         (e) => MenuTile(
@@ -65,8 +59,8 @@ class SideMenu extends ConsumerWidget {
 
             // Bouton pour cacher le menu
             const Positioned(
-              right: 0,
-              top: 40,
+              right: Units.position,
+              top: Units.positionXXXLarge,
               child: HideMenu(),
             ),
           ],

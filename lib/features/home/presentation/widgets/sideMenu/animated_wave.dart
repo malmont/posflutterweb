@@ -1,20 +1,22 @@
 import 'package:animate_gradient/animate_gradient.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../design/design.dart';
+
 class AnimatedWave extends StatelessWidget {
   const AnimatedWave({super.key});
 
   @override
   Widget build(BuildContext context) {
     List<Color> primaryColors =  [
-      Color(0xFF393C49),
-      Color(0xFF393C49),
+      Colours.primary100,
+      Colours.primary100,
      // Colors.grey,
     ];
     List<Color> secondaryColors =  [
       //Colors.grey,
-      const Color(0xffEA7C69).withOpacity(0.7),
-      Color(0xFF393C49),
+      Colours.colorsButtonMenu.withOpacity(0.7),
+      Colours.primary100,
     ];
     return AnimateGradient(
       primaryColors: primaryColors,
