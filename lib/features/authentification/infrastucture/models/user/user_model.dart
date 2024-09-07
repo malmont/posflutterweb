@@ -1,12 +1,9 @@
-import 'dart:convert';
-
+import 'package:json_annotation/json_annotation.dart';
 import 'package:pos_flutter/features/authentification/domain/entities/user.dart';
 
+part 'user_model.g.dart';  // Indique à Dart de générer ce fichier
 
-UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
-
-String userModelToJson(UserModel data) => json.encode(data.toJson());
-
+@JsonSerializable()
 class UserModel extends User {
   const UserModel({
     required super.id,
@@ -15,17 +12,11 @@ class UserModel extends User {
     required super.email,
   });
 
-  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-    id: json["id"].toString(), 
-    firstName: json["firstName"] ?? '', 
-    lastName: json["lastName"] ?? '',  
-    email: json["email"] ?? '',
-  );
+  // Méthode générée automatiquement pour créer un UserModel à partir du JSON
+  factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "firstName": firstName,
-    "lastName": lastName,
-    "email": email,
-  };
+  // Méthode générée automatiquement pour convertir un UserModel en JSON
+  Map<String, dynamic> toJson() => _$UserModelToJson(this);
 }
+
+

@@ -27,30 +27,23 @@ class AuthenticationResponseModel {
         "user": user.toJson(),
       };
 
-static UserModel _decodeUserFromToken(String token) {
-  try {
+  static UserModel _decodeUserFromToken(String token) {
     final decodedPayload = _parseJwt(token);
-
-    print('Payload: $decodedPayload'); // Affiche le payload pour débogage
 
     final firstName = decodedPayload['firstName'] as String? ?? '';
     final lastName = decodedPayload['lastName'] as String? ?? '';
     final email = decodedPayload['email'] as String? ?? '';
+    final id = decodedPayload['id']?.toString() ?? '';
 
     return UserModel.fromJson({
       "firstName": firstName,
       "lastName": lastName,
       "email": email,
+      "id": id,
     });
-  } catch (e) {
-    print('Error during token decoding: $e'); // Capture et affiche l'erreur
-    rethrow; // Relance l'erreur après l'avoir affichée
   }
-}
 
-
- static Map<String, dynamic> _parseJwt(String token) {
-  try {
+  static Map<String, dynamic> _parseJwt(String token) {
     final parts = token.split('.');
     if (parts.length != 3) {
       throw Exception('Invalid token');
@@ -64,11 +57,7 @@ static UserModel _decodeUserFromToken(String token) {
     }
 
     return payloadMap;
-  } catch (e) {
-    print('Error during JWT parsing: $e');
-    rethrow;
   }
-}
 
   static String _decodeBase64(String str) {
     String output = str.replaceAll('-', '+').replaceAll('_', '/');

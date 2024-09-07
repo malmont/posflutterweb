@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 import 'package:pos_flutter/features/authentification/application/blocs/auth_bloc.dart';
 import 'package:pos_flutter/features/authentification/domain/entities/user.dart';
 import 'package:pos_flutter/features/authentification/domain/usecases/sign_in_usecase.dart';
+import 'package:pos_flutter/features/authentification/infrastucture/models/user/sign_in_params.dart';
 
 @injectable
 class SignInViewModel extends ChangeNotifier {

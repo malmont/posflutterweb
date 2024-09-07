@@ -1,49 +1,38 @@
 
-import 'dart:convert';
 
-import 'package:http/http.dart' as http;
+
+import 'package:dio/dio.dart';
+
 import 'package:injectable/injectable.dart';
 import 'package:pos_flutter/core/error/exeptions.dart';
-import 'package:pos_flutter/core/error/failures.dart';
-import 'package:pos_flutter/features/authentification/domain/usecases/sign_in_usecase.dart';
+import 'package:pos_flutter/core/services/data_sources/local/user_local_data_source.dart';
 import 'package:pos_flutter/features/authentification/infrastucture/models/user/authentication_response_model.dart';
+import 'package:pos_flutter/features/authentification/infrastucture/models/user/sign_in_params.dart';
+
+import '../../api/user_api_client.dart';
 
 abstract class UserRemoteDataSource {
   Future<AuthenticationResponseModel> signIn(SignInParams params);
-
 }
+
 @LazySingleton(as: UserRemoteDataSource)
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
-  final http.Client client;
-  UserRemoteDataSourceImpl({required this.client});
+  final UserApiClient apiClient;
+  final UserLocalDataSource userLocalDataSource;
 
- @override
+  UserRemoteDataSourceImpl({required this.apiClient, required this.userLocalDataSource});
+
+@override
 Future<AuthenticationResponseModel> signIn(SignInParams params) async {
   try {
-  final response = await client.post(
-    Uri.parse('https://backend-strapi.online/jeesign/api/login'),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: json.encode({
-      'username': params.username,
-      'password': params.password,
-    }),
-  );
-
-  if (response.statusCode == 200) {
-    return authenticationResponseModelFromJson(response.body);
-  } else if (response.statusCode == 400 || response.statusCode == 401) {
-    throw CredentialFailure();
-  } else {
-    throw ServerException();
+    final response = await apiClient.signIn(params);
+    return response;
+  } catch (e) {
+    if (e is DioException) {
+      // Gestion des erreurs de requête
+      print('Erreur lors de l\'authentification: ${e.response?.statusCode}');
+    }
+    throw ServerException();  // Ton exception personnalisée
   }
-} catch (e) {
-  print('Erreur lors de la connexion: $e');
-  throw ServerException();
 }
-}
-
-
- 
 }

@@ -30,8 +30,8 @@ class AuthRepositoryImpl implements AuthRepository {
         return remoteDataSource.signIn(params);
       });
     } catch (e) {
-      // Capture l'exception et retourne une Failure générique
-      return Left(ExceptionFailure()); // Tu peux personnaliser le type de Failure ici si nécessaire
+
+      return Left(ExceptionFailure()); 
     }
   }
   @override
