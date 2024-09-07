@@ -8,6 +8,7 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:dio/dio.dart' as _i361;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i558;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:http/http.dart' as _i519;
@@ -15,6 +16,7 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'package:internet_connection_checker/internet_connection_checker.dart'
     as _i973;
 import 'package:pos_flutter/core/network/network_info.dart' as _i40;
+import 'package:pos_flutter/core/services/api/user_api_client.dart' as _i324;
 import 'package:pos_flutter/core/services/data_sources/local/user_local_data_source.dart'
     as _i381;
 import 'package:pos_flutter/core/services/data_sources/remote/user_remote_data_source.dart'
@@ -62,10 +64,17 @@ extension GetItInjectableX on _i174.GetIt {
               sharedPreferences: gh<_i460.SharedPreferences>(),
               secureStorage: gh<_i558.FlutterSecureStorage>(),
             ));
-    gh.lazySingleton<_i1036.UserRemoteDataSource>(
-        () => _i1036.UserRemoteDataSourceImpl(client: gh<_i519.Client>()));
     gh.lazySingleton<_i40.NetworkInfo>(
         () => _i40.NetworkInfoImpl(gh<_i973.InternetConnectionChecker>()));
+    gh.lazySingleton<_i361.Dio>(
+        () => registerModule.dio(gh<_i381.UserLocalDataSource>()));
+    gh.lazySingleton<_i324.UserApiClient>(
+        () => registerModule.userApiClient(gh<_i361.Dio>()));
+    gh.lazySingleton<_i1036.UserRemoteDataSource>(
+        () => _i1036.UserRemoteDataSourceImpl(
+              apiClient: gh<_i324.UserApiClient>(),
+              userLocalDataSource: gh<_i381.UserLocalDataSource>(),
+            ));
     gh.lazySingleton<_i40.AuthRepository>(() => _i750.AuthRepositoryImpl(
           remoteDataSource: gh<_i1036.UserRemoteDataSource>(),
           localDataSource: gh<_i381.UserLocalDataSource>(),

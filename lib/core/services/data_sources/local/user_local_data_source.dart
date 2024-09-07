@@ -1,5 +1,7 @@
 
 
+import 'dart:convert';
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:pos_flutter/core/error/exeptions.dart';
@@ -26,6 +28,7 @@ const cachedUser = 'USER';
 class UserLocalDataSourceImpl implements UserLocalDataSource {
   final FlutterSecureStorage secureStorage;
   final SharedPreferences sharedPreferences;
+
   UserLocalDataSourceImpl(
       {required this.sharedPreferences, required this.secureStorage});
 
@@ -52,7 +55,7 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
     }
     final jsonString = sharedPreferences.getString(cachedUser);
     if (jsonString != null) {
-      return Future.value(userModelFromJson(jsonString));
+      return Future.value(UserModel.fromJson(json.decode(jsonString)));  // Utilisation de fromJson
     } else {
       throw CacheException();
     }
@@ -62,7 +65,7 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
   Future<void> saveUser(UserModel user) {
     return sharedPreferences.setString(
       cachedUser,
-      userModelToJson(user),
+      json.encode(user.toJson()),  // Utilisation de toJson générée automatiquement
     );
   }
 
@@ -75,7 +78,6 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
   @override
   Future<void> clearCache() async {
     await secureStorage.deleteAll();
-    // await sharedPreferences.remove(cachedCart);
     await sharedPreferences.remove(cachedUser);
   }
 }

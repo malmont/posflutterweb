@@ -13,6 +13,7 @@ import 'package:pos_flutter/features/authentification/domain/usecases/sign_in_us
 import 'package:pos_flutter/core/services/data_sources/local/user_local_data_source.dart';
 import 'package:pos_flutter/features/authentification/domain/entities/user.dart';
 import 'package:pos_flutter/features/authentification/domain/usecases/sign_out_usecase.dart';
+import 'package:pos_flutter/features/authentification/infrastucture/models/user/sign_in_params.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
