@@ -10,5 +10,6 @@ class SignInEvent extends AuthEvent {
   final SignInParams params;
   SignInEvent(this.params);
 }
+class SignOutEvent extends AuthEvent {}
 
 class TokenValidationEvent extends AuthEvent {}  // Nouvel événement pour vérifier la validité du token

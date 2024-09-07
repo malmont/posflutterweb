@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pos_flutter/features/home/application/blocs/side_menu_bloc.dart';
 import 'package:provider/provider.dart' as provider;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pos_flutter/core/router/app_router.dart';
@@ -7,15 +8,14 @@ import 'package:pos_flutter/features/authentification/application/blocs/auth_blo
 import 'package:pos_flutter/features/authentification/application/viewmodels/signin_viewmodel.dart';
 import 'package:pos_flutter/features/authentification/presentation/pages/sign_in_view-page.dart';
 import 'package:pos_flutter/features/home/presentation/pages/MainViewPage.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart' as riverpod;
+
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await configureDependencies();  // Initialise les dépendances via injectable
+  await configureDependencies(); // Initialise les dépendances via injectable
 
   runApp(
-    const riverpod.ProviderScope( // Utilisation de l'alias pour Riverpod
-      child: MyApp(),
-    ),
+    const MyApp(),
   );
 }
 
@@ -24,25 +24,26 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return provider.MultiProvider( // Utilisation de l'alias pour Provider
+    return provider.MultiProvider( 
       providers: [
         BlocProvider<AuthBloc>(
-          create: (context) => getIt<AuthBloc>()..add(CheckAuthenticationEvent()),
+          create: (context) => getIt<AuthBloc>()..add(CheckAuthenticationEvent()), 
         ),
-        provider.ChangeNotifierProvider<SignInViewModel>( // Utilisation de l'alias pour Provider
+        provider.ChangeNotifierProvider<SignInViewModel>( 
           create: (context) => SignInViewModel(getIt<AuthBloc>()),
         ),
-        // Ajoute d'autres providers si nécessaire
+        BlocProvider<SideMenuBloc>( 
+          create: (context) => SideMenuBloc(),
+        ),
       ],
       child: const MaterialApp(
         title: 'POS Flutter',
         onGenerateRoute: AppRouter.onGenerateRoute,
-        home: AuthWrapper(),  // Widget qui décide de la page d'accueil selon l'authentification
+        home: AuthWrapper(),
       ),
     );
   }
 }
-
 
 class AuthWrapper extends StatelessWidget {
   const AuthWrapper({super.key});
@@ -53,7 +54,7 @@ class AuthWrapper extends StatelessWidget {
       builder: (context, state) {
         if (state is Authenticated) {
           return const MainViewPage();  
-        } else if (state is Unauthenticated || state is AuthFailure) {
+        } else if (state is Unauthenticated || state is AuthFailure || state is AuthLoggedOut) {
           return const SignInViewPage(); 
         } else {
           return const Scaffold(body: Center(child: CircularProgressIndicator())); 

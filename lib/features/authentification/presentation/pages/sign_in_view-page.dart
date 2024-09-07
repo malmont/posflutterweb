@@ -3,6 +3,8 @@ import 'package:pos_flutter/features/authentification/application/viewmodels/sig
 import 'package:pos_flutter/features/home/presentation/pages/MainViewPage.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../design/design.dart';
+
 class SignInViewPage extends StatelessWidget {
   const SignInViewPage({super.key});
 
@@ -35,9 +37,9 @@ class SignInViewPage extends StatelessWidget {
                       margin: const EdgeInsets.only(bottom: 40),
                       child: Column(
                         children: [
-                          // Remplacez cette image par le logo de votre entreprise
+                     
                           Image.asset(
-                            'assets/logo.png', // Placez l'image du logo ici
+                            AppAssets.logo, // Placez l'image du logo ici
                             width: 320,
                             height: 320,
                             fit: BoxFit.cover,

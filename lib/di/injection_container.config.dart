@@ -30,6 +30,8 @@ import 'package:pos_flutter/features/authentification/domain/usecases/is_signed_
     as _i935;
 import 'package:pos_flutter/features/authentification/domain/usecases/sign_in_usecase.dart'
     as _i112;
+import 'package:pos_flutter/features/authentification/domain/usecases/sign_out_usecase.dart'
+    as _i360;
 import 'package:pos_flutter/features/authentification/infrastucture/repositories/auth_repository_impl.dart'
     as _i750;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
@@ -73,10 +75,13 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i935.CheckTokenValidityUseCase(gh<_i40.AuthRepository>()));
     gh.lazySingleton<_i112.SignInUseCase>(
         () => _i112.SignInUseCase(gh<_i40.AuthRepository>()));
+    gh.lazySingleton<_i360.SignOutUseCase>(
+        () => _i360.SignOutUseCase(gh<_i40.AuthRepository>()));
     gh.factory<_i644.AuthBloc>(() => _i644.AuthBloc(
           checkTokenValidityUseCase: gh<_i935.CheckTokenValidityUseCase>(),
           signInUseCase: gh<_i112.SignInUseCase>(),
           localDataSource: gh<_i381.UserLocalDataSource>(),
+          signOutUseCase: gh<_i360.SignOutUseCase>(),
         ));
     gh.factory<_i229.SignInViewModel>(
         () => _i229.SignInViewModel(gh<_i644.AuthBloc>()));
