@@ -33,6 +33,11 @@ class AuthFailure extends AuthState {
   List<Object> get props => [failure];
 }
 
+class AuthLoggedOut extends AuthState {
+  @override
+  List<Object> get props => [];
+}
+
 class TokenInvalid extends AuthState {  // Nouvel état pour gérer les tokens invalides
   @override
   List<Object> get props => [];
