@@ -15,6 +15,8 @@ import 'package:http/http.dart' as _i519;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:internet_connection_checker/internet_connection_checker.dart'
     as _i973;
+import 'package:pos_flutter/core/config/environment_config.dart' as _i1044;
+import 'package:pos_flutter/core/config/environment_repository.dart' as _i310;
 import 'package:pos_flutter/core/network/network_info.dart' as _i40;
 import 'package:pos_flutter/core/services/api/user_api_client.dart' as _i324;
 import 'package:pos_flutter/core/services/data_sources/local/user_local_data_source.dart'
@@ -59,6 +61,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i558.FlutterSecureStorage>(
         () => registerModule.secureStorage);
     gh.lazySingleton<_i519.Client>(() => registerModule.httpClient);
+    gh.lazySingleton<_i310.EnvironmentRepository>(
+        () => _i310.EnvironmentRepository());
     gh.lazySingleton<_i381.UserLocalDataSource>(
         () => _i381.UserLocalDataSourceImpl(
               sharedPreferences: gh<_i460.SharedPreferences>(),
@@ -66,8 +70,12 @@ extension GetItInjectableX on _i174.GetIt {
             ));
     gh.lazySingleton<_i40.NetworkInfo>(
         () => _i40.NetworkInfoImpl(gh<_i973.InternetConnectionChecker>()));
-    gh.lazySingleton<_i361.Dio>(
-        () => registerModule.dio(gh<_i381.UserLocalDataSource>()));
+    gh.lazySingleton<_i1044.EnvironmentConfig>(
+        () => _i1044.EnvironmentConfig(gh<_i310.EnvironmentRepository>()));
+    gh.lazySingleton<_i361.Dio>(() => registerModule.dio(
+          gh<_i381.UserLocalDataSource>(),
+          gh<_i1044.EnvironmentConfig>(),
+        ));
     gh.lazySingleton<_i324.UserApiClient>(
         () => registerModule.userApiClient(gh<_i361.Dio>()));
     gh.lazySingleton<_i1036.UserRemoteDataSource>(

@@ -8,11 +8,15 @@ import 'package:pos_flutter/features/authentification/application/blocs/auth_blo
 import 'package:pos_flutter/features/authentification/application/viewmodels/signin_viewmodel.dart';
 import 'package:pos_flutter/features/authentification/presentation/pages/sign_in_view-page.dart';
 import 'package:pos_flutter/features/home/presentation/pages/MainViewPage.dart';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart'; // Importation de dotenv pour gérer les fichiers .env
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await configureDependencies(); // Initialise les dépendances via injectable
+  const envFile =
+      String.fromEnvironment('ENV_FILE', defaultValue: ".env.local");
+  await dotenv.load(fileName: envFile);
+
+  await configureDependencies();
 
   runApp(
     const MyApp(),
@@ -24,15 +28,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return provider.MultiProvider( 
+    return provider.MultiProvider(
       providers: [
         BlocProvider<AuthBloc>(
-          create: (context) => getIt<AuthBloc>()..add(CheckAuthenticationEvent()), 
+          create: (context) =>
+              getIt<AuthBloc>()..add(CheckAuthenticationEvent()),
         ),
-        provider.ChangeNotifierProvider<SignInViewModel>( 
+        provider.ChangeNotifierProvider<SignInViewModel>(
           create: (context) => SignInViewModel(getIt<AuthBloc>()),
         ),
-        BlocProvider<SideMenuBloc>( 
+        BlocProvider<SideMenuBloc>(
           create: (context) => SideMenuBloc(),
         ),
       ],
@@ -53,11 +58,14 @@ class AuthWrapper extends StatelessWidget {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         if (state is Authenticated) {
-          return const MainViewPage();  
-        } else if (state is Unauthenticated || state is AuthFailure || state is AuthLoggedOut) {
-          return const SignInViewPage(); 
+          return const MainViewPage();
+        } else if (state is Unauthenticated ||
+            state is AuthFailure ||
+            state is AuthLoggedOut) {
+          return const SignInViewPage();
         } else {
-          return const Scaffold(body: Center(child: CircularProgressIndicator())); 
+          return const Scaffold(
+              body: Center(child: CircularProgressIndicator()));
         }
       },
     );

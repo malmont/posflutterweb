@@ -6,7 +6,7 @@ import 'package:pos_flutter/features/authentification/infrastucture/models/user/
 
 part 'user_api_client.g.dart';
 
-@RestApi(baseUrl: "https://backend-strapi.online/jeesign/api")
+@RestApi(baseUrl: '')
 abstract class UserApiClient {
   factory UserApiClient(Dio dio, {String? baseUrl}) = _UserApiClient;
 

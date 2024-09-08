@@ -1,3 +1,8 @@
 {
-    "java.compile.nullAnalysis.mode": "automatic"
+    "dart.flutterSdkPath": "/Users/malmont/flutter/flutter",
+    "dart.env": {
+        "FLUTTER_ENV": "local"
+    },
+    "files.autoSave": "onFocusChange",
+    "editor.formatOnSave": true
 }
