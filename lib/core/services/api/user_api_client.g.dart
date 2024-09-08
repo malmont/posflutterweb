@@ -13,9 +13,7 @@ class _UserApiClient implements UserApiClient {
     this._dio, {
     this.baseUrl,
     this.errorLogger,
-  }) {
-    baseUrl ??= 'https://backend-strapi.online/jeesign/api';
-  }
+  });
 
   final Dio _dio;
 
