@@ -1,14 +1,10 @@
-// features/authentication/application/blocs/auth_bloc.dart
 import 'dart:async';
-
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:pos_flutter/core/error/failures.dart';
 import 'package:pos_flutter/core/usecases/usecases.dart';
 import 'package:pos_flutter/features/authentification/domain/usecases/is_signed_usecase.dart';
-
 import 'package:pos_flutter/features/authentification/domain/usecases/sign_in_usecase.dart';
 import 'package:pos_flutter/core/services/data_sources/local/user_local_data_source.dart';
 import 'package:pos_flutter/features/authentification/domain/entities/user.dart';
@@ -62,13 +58,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _onSignIn(SignInEvent event, Emitter<AuthState> emit) async {
+    if (state is AuthLoading) {
+      return;
+    }
+    emit(AuthLoading());
+
     try {
-      emit(AuthLoading());
       final result = await signInUseCase(event.params);
-      emit(result.fold(
-        (failure) => AuthFailure(failure),
-        (user) => Authenticated(user),
-      ));
+      result.fold(
+        (failure) {
+          emit(AuthFailure(failure));
+        },
+        (user) {
+          emit(Authenticated(user));
+        },
+      );
     } catch (e) {
       emit(AuthFailure(ExceptionFailure()));
     }
@@ -79,7 +83,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthLoading());
       await signOutUseCase(NoParams());
       emit(Unauthenticated());
-      emit(AuthLoggedOut());
     } catch (e) {
       emit(AuthFailure(ExceptionFailure()));
     }

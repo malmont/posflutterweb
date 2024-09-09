@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pos_flutter/features/home/application/blocs/side_menu_bloc.dart';
 import 'package:provider/provider.dart' as provider;
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,10 +42,11 @@ class MyApp extends StatelessWidget {
           create: (context) => SideMenuBloc(),
         ),
       ],
-      child: const MaterialApp(
+      child: MaterialApp(
         title: 'POS Flutter',
         onGenerateRoute: AppRouter.onGenerateRoute,
-        home: AuthWrapper(),
+        home: const AuthWrapper(),
+        builder: EasyLoading.init(),
       ),
     );
   }
@@ -62,6 +64,7 @@ class AuthWrapper extends StatelessWidget {
         } else if (state is Unauthenticated ||
             state is AuthFailure ||
             state is AuthLoggedOut) {
+          EasyLoading.dismiss();
           return const SignInViewPage();
         } else {
           return const Scaffold(

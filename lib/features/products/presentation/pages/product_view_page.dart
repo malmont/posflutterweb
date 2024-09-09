@@ -82,7 +82,7 @@ class _ProductViewPageState extends State<ProductViewPage> {
                   itemBuilder: (context, index) {
                     return Column(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 30,
                         ),
                         ArticleCard(article: articles[index]),
@@ -101,8 +101,8 @@ class _ProductViewPageState extends State<ProductViewPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
+                  const Padding(
+                    padding: EdgeInsets.all(16.0),
                     child: Text(
                       'Détails supplémentaires',
                       style: TextStyle(
@@ -112,23 +112,22 @@ class _ProductViewPageState extends State<ProductViewPage> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  Text(
+                  const Text(
                     'Description',
                     style: TextStyle(fontSize: 16, color: Colours.white),
                   ),
                   const SizedBox(height: 10),
-                  Text(
+                  const Text(
                     'Informations diverses',
                     style: TextStyle(fontSize: 16, color: Colours.white),
                   ),
                   // Ajout d'autres éléments ici
                   const SizedBox(height: 10),
-                  Text(
+                  const Text(
                     'Autre information importante',
                     style: TextStyle(fontSize: 16, color: Colours.white),
                   ),
 
-                  // Le Spacer pousse les éléments vers le haut
                   Spacer(),
                   Padding(
                     padding: const EdgeInsets.all(16.0),

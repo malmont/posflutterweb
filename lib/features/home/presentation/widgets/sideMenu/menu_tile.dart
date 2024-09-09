@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pos_flutter/features/home/application/blocs/side_menu_bloc.dart';
 import 'package:pos_flutter/features/home/infrastucture/models/menu_item.dart';
 
-
 import '../../../../../design/design.dart';
 
 class MenuTile extends StatelessWidget {
@@ -35,7 +34,10 @@ class MenuTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(Units.radiusXXXXXLarge),
             ),
             leading: Padding(
-              padding: EdgeInsets.only(left: isCollapsed ? Units.edgeInsetsXXXLarge : Units.edgeInsetsLarge),
+              padding: EdgeInsets.only(
+                  left: isCollapsed
+                      ? Units.edgeInsetsXXXLarge
+                      : Units.edgeInsetsLarge),
               child: SvgPicture.asset(
                 menu.icon,
                 color: menu.index == selectedMenu

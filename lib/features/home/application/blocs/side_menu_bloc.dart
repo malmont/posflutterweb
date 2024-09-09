@@ -15,5 +15,9 @@ class SideMenuBloc extends Bloc<SideMenuEvent, SideMenuState> {
     on<ToggleMenuCollapseEvent>((event, emit) {
       emit(state.copyWith(isCollapsed: !state.isCollapsed));
     });
+
+    on<ChangeMenuIndexEvent>((event, emit) {
+      emit(state.copyWith(selectedMenuIndex: event.newIndex));
+    });
   }
 }
