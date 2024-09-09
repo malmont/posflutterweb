@@ -1,44 +1,34 @@
-// features/authentication/application/blocs/auth_state.dart
 part of 'auth_bloc.dart';
 
-@immutable
-abstract class AuthState extends Equatable {}
+abstract class AuthState extends Equatable {
+  const AuthState();
 
-class AuthInitial extends AuthState {
   @override
   List<Object> get props => [];
 }
 
-class AuthLoading extends AuthState {
-  @override
-  List<Object> get props => [];
-}
+class AuthInitial extends AuthState {}
+
+class AuthLoading extends AuthState {}
 
 class Authenticated extends AuthState {
   final User user;
-  Authenticated(this.user);
+
+  const Authenticated(this.user);
+
   @override
   List<Object> get props => [user];
 }
 
-class Unauthenticated extends AuthState {
-  @override
-  List<Object> get props => [];
-}
+class Unauthenticated extends AuthState {}
+
+class AuthLoggedOut extends AuthState {}
 
 class AuthFailure extends AuthState {
   final Failure failure;
-  AuthFailure(this.failure);
+
+  const AuthFailure(this.failure);
+
   @override
   List<Object> get props => [failure];
-}
-
-class AuthLoggedOut extends AuthState {
-  @override
-  List<Object> get props => [];
-}
-
-class TokenInvalid extends AuthState {  // Nouvel état pour gérer les tokens invalides
-  @override
-  List<Object> get props => [];
 }

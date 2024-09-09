@@ -1,15 +1,21 @@
-// features/authentication/application/blocs/auth_event.dart
 part of 'auth_bloc.dart';
 
-@immutable
-abstract class AuthEvent {}
+abstract class AuthEvent extends Equatable {
+  const AuthEvent();
+
+  @override
+  List<Object> get props => [];
+}
 
 class CheckAuthenticationEvent extends AuthEvent {}
 
 class SignInEvent extends AuthEvent {
   final SignInParams params;
-  SignInEvent(this.params);
-}
-class SignOutEvent extends AuthEvent {}
 
-class TokenValidationEvent extends AuthEvent {}  // Nouvel événement pour vérifier la validité du token
+  const SignInEvent(this.params);
+
+  @override
+  List<Object> get props => [params];
+}
+
+class SignOutEvent extends AuthEvent {}

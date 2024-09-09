@@ -1,4 +1,3 @@
-// side_menu_event.dart
 part of 'side_menu_bloc.dart';
 
 abstract class SideMenuEvent extends Equatable {
@@ -17,3 +16,12 @@ class SelectMenuItemEvent extends SideMenuEvent {
 }
 
 class ToggleMenuCollapseEvent extends SideMenuEvent {}
+
+class ChangeMenuIndexEvent extends SideMenuEvent {
+  final int newIndex;
+
+  const ChangeMenuIndexEvent(this.newIndex);
+
+  @override
+  List<Object> get props => [newIndex];
+}

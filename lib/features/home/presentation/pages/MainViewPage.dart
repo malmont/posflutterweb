@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pos_flutter/features/authentification/application/blocs/auth_bloc.dart';
-import 'package:pos_flutter/features/authentification/presentation/pages/Logout_page.dart';
 import 'package:pos_flutter/features/authentification/presentation/pages/sign_in_view_page.dart';
 import 'package:pos_flutter/features/dashboard/presentation/pages/dashboard_view_page.dart';
 import 'package:pos_flutter/features/home/application/blocs/side_menu_bloc.dart';
@@ -19,7 +18,7 @@ class MainViewPage extends StatelessWidget {
 
     final List<Widget> pages = [
       const ProductViewPage(),
-      const SignInViewPage(),
+      const SignInViewPage(), // Peut-être que ce n'est pas nécessaire ici
       const DashboardViewPage(),
       const SeatingViewPage(),
       const SeatingViewPage(),
@@ -29,7 +28,7 @@ class MainViewPage extends StatelessWidget {
     return BlocBuilder<SideMenuBloc, SideMenuState>(
       builder: (context, state) {
         bool isCollapsed = state.isCollapsed;
-        final int selectedMenu = state.selectedMenuIndex;
+        int selectedMenu = state.selectedMenuIndex;
 
         return Scaffold(
           backgroundColor: Colors.white,
@@ -78,6 +77,9 @@ class MainViewPage extends StatelessWidget {
                   builder: (context) {
                     if (selectedMenu == 6) {
                       context.read<AuthBloc>().add(SignOutEvent());
+                      context
+                          .read<SideMenuBloc>()
+                          .add(const ChangeMenuIndexEvent(0));
                       Future.microtask(() {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
