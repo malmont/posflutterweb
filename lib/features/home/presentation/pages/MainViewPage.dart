@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pos_flutter/features/authentification/application/blocs/auth_bloc.dart';
+import 'package:pos_flutter/features/authentification/presentation/pages/Logout_page.dart';
+import 'package:pos_flutter/features/authentification/presentation/pages/sign_in_view_page.dart';
 import 'package:pos_flutter/features/dashboard/presentation/pages/dashboard_view_page.dart';
 import 'package:pos_flutter/features/home/application/blocs/side_menu_bloc.dart';
 import 'package:pos_flutter/features/home/presentation/widgets/sideMenu/animated_wave.dart';
 import 'package:pos_flutter/features/home/side_menu/side_menu.dart';
 import 'package:pos_flutter/features/products/presentation/pages/product_view_page.dart';
 import 'package:pos_flutter/features/seeting/presentation/pages/seeting_view_page.dart';
-
-final List<Widget> pages = [
-  const ProductViewPage(),
-  const DashboardViewPage(),
-  const SeatingViewPage(),
-];
 
 class MainViewPage extends StatelessWidget {
   const MainViewPage({super.key});
@@ -20,18 +17,26 @@ class MainViewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     ColorScheme colorScheme = Theme.of(context).colorScheme;
 
+    final List<Widget> pages = [
+      const ProductViewPage(),
+      const SignInViewPage(),
+      const DashboardViewPage(),
+      const SeatingViewPage(),
+      const SeatingViewPage(),
+      const SeatingViewPage(),
+    ];
+
     return BlocBuilder<SideMenuBloc, SideMenuState>(
       builder: (context, state) {
-        bool isCollapsed = state.isCollapsed; // Récupérer l'état de réduction du menu
-        final int selectedMenu = state.selectedMenuIndex; // Récupérer l'index du menu sélectionné
+        bool isCollapsed = state.isCollapsed;
+        final int selectedMenu = state.selectedMenuIndex;
 
         return Scaffold(
           backgroundColor: Colors.white,
           body: Row(
             children: [
-              // Menu latéral
               Expanded(
-                flex: 2, // Ajuster ce ratio selon vos besoins
+                flex: 2,
                 child: Container(
                   decoration: const BoxDecoration(
                     image: DecorationImage(
@@ -43,7 +48,8 @@ class MainViewPage extends StatelessWidget {
                     children: [
                       const AnimatedWave(),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 24, vertical: 12),
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 200),
                           width: isCollapsed ? 128 : 280,
@@ -59,18 +65,32 @@ class MainViewPage extends StatelessWidget {
                             ],
                             borderRadius: BorderRadius.circular(24),
                           ),
-                          child: const SideMenu(), // Le menu reste inchangé
+                          child: const SideMenu(),
                         ),
                       ),
                     ],
                   ),
                 ),
               ),
-
-              // Page de contenu correspondant au menu sélectionné
               Expanded(
                 flex: 10,
-                child: pages[selectedMenu], // Afficher la page sélectionnée
+                child: Builder(
+                  builder: (context) {
+                    if (selectedMenu == 6) {
+                      context.read<AuthBloc>().add(SignOutEvent());
+                      Future.microtask(() {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => const SignInViewPage(),
+                          ),
+                        );
+                      });
+                      return const SizedBox.shrink();
+                    } else {
+                      return pages[selectedMenu];
+                    }
+                  },
+                ),
               ),
             ],
           ),

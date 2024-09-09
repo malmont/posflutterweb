@@ -55,4 +55,6 @@ class AppAssets {
   static String get profile => '${_svgPath}profile.svg';
 
   static String get swap => '${_svgPath}swap.svg';
+
+  static String get logout => '${_svgPath}logout.svg';
 }

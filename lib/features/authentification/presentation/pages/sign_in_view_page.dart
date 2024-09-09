@@ -11,16 +11,17 @@ class SignInViewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF393C49), // Couleur de fond
+      backgroundColor: const Color(0xFF393C49),
       body: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 500), // Largeur maximale plus réduite pour le bureau
+          constraints: const BoxConstraints(maxWidth: 500),
           child: Padding(
             padding: const EdgeInsets.all(32.0),
             child: Consumer<SignInViewModel>(
               builder: (context, viewModel, child) {
-                 if (viewModel.user != null) {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                // Redirection uniquement une fois après avoir vérifié l'état de l'utilisateur
+                if (viewModel.user != null) {
+                  Future.microtask(() {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (context) => const MainViewPage(),
@@ -32,14 +33,12 @@ class SignInViewPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // Logo ou nom de l'entreprise
                     Container(
                       margin: const EdgeInsets.only(bottom: 40),
                       child: Column(
                         children: [
-                     
                           Image.asset(
-                            AppAssets.logo, // Placez l'image du logo ici
+                            AppAssets.logo,
                             width: 320,
                             height: 320,
                             fit: BoxFit.cover,
@@ -50,7 +49,7 @@ class SignInViewPage extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
-                              color: Colors.white, // Couleur du texte du nom de l'entreprise
+                              color: Colors.white,
                             ),
                           ),
                         ],
@@ -58,11 +57,12 @@ class SignInViewPage extends StatelessWidget {
                     ),
                     if (viewModel.isLoading)
                       const CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFEA7C69)),
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(Color(0xFFEA7C69)),
                       ),
                     if (!viewModel.isLoading) ...[
                       TextField(
-                        style: const TextStyle(color: Colors.white), // Texte en blanc
+                        style: const TextStyle(color: Colors.white),
                         decoration: const InputDecoration(
                           labelText: 'Email',
                           labelStyle: TextStyle(color: Colors.white),
@@ -77,7 +77,7 @@ class SignInViewPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 20),
                       TextField(
-                        style: const TextStyle(color: Colors.white), // Texte en blanc
+                        style: const TextStyle(color: Colors.white),
                         decoration: const InputDecoration(
                           labelText: 'Password',
                           labelStyle: TextStyle(color: Colors.white),
@@ -97,12 +97,12 @@ class SignInViewPage extends StatelessWidget {
                           await viewModel.signIn();
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFEA7C69), // Couleur du bouton
+                          backgroundColor: const Color(0xFFEA7C69),
                           padding: const EdgeInsets.symmetric(vertical: 16.0),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0), // Bouton moins arrondi
+                            borderRadius: BorderRadius.circular(8.0),
                           ),
-                          minimumSize: const Size(double.infinity, 50), // Bouton plus large
+                          minimumSize: const Size(double.infinity, 50),
                         ),
                         child: const Text(
                           'Sign In',

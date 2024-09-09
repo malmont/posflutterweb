@@ -6,9 +6,9 @@ import 'package:pos_flutter/core/router/app_router.dart';
 import 'package:pos_flutter/di/injection_container.dart';
 import 'package:pos_flutter/features/authentification/application/blocs/auth_bloc.dart';
 import 'package:pos_flutter/features/authentification/application/viewmodels/signin_viewmodel.dart';
-import 'package:pos_flutter/features/authentification/presentation/pages/sign_in_view-page.dart';
+import 'package:pos_flutter/features/authentification/presentation/pages/sign_in_view_page.dart';
 import 'package:pos_flutter/features/home/presentation/pages/MainViewPage.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart'; // Importation de dotenv pour gérer les fichiers .env
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

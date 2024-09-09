@@ -24,15 +24,12 @@ abstract class RegisterModule {
   @lazySingleton
   http.Client get httpClient => http.Client();
 
-  // Injecter Dio via DioConfig
   @lazySingleton
   Dio dio(
       UserLocalDataSource userLocalDataSource, EnvironmentConfig envConfig) {
-    return DioConfig(userLocalDataSource, envConfig)
-        .createDio(); // Utiliser DioConfig
+    return DioConfig(userLocalDataSource, envConfig).createDio();
   }
 
-  // Enregistrer UserApiClient avec Retrofit et Dio
   @lazySingleton
   UserApiClient userApiClient(Dio dio) => UserApiClient(dio);
 }
