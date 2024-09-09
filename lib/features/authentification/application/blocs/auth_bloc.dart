@@ -36,8 +36,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignOutEvent>(_onSignOut);
   }
 
-  Future<void> _onCheckAuthentication(CheckAuthenticationEvent event, Emitter<AuthState> emit) async 
-  {
+  Future<void> _onCheckAuthentication(
+      CheckAuthenticationEvent event, Emitter<AuthState> emit) async {
     try {
       emit(AuthLoading());
 
@@ -74,7 +74,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  void _onSignOut (SignOutEvent event, Emitter<AuthState> emit) async {
+  void _onSignOut(SignOutEvent event, Emitter<AuthState> emit) async {
     try {
       emit(AuthLoading());
       await signOutUseCase(NoParams());

@@ -1,5 +1,6 @@
+import 'package:pos_flutter/core/router/app_router.dart';
 import 'package:pos_flutter/features/authentification/application/blocs/auth_bloc.dart';
-import 'package:pos_flutter/features/authentification/presentation/pages/sign_in_view-page.dart';
+import 'package:pos_flutter/features/authentification/presentation/pages/sign_in_view_page.dart';
 import 'package:pos_flutter/features/home/application/blocs/side_menu_bloc.dart';
 import 'package:pos_flutter/features/home/presentation/widgets/sideMenu/hide_menu.dart';
 import 'package:pos_flutter/features/home/presentation/widgets/sideMenu/menu_tile.dart';
@@ -17,10 +18,10 @@ class SideMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-        if (state is Unauthenticated) {
-          // Redirection vers la page de connexion après déconnexion
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const SignInViewPage()),
+        if (state is AuthLoggedOut) {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+            AppRouter.signIn,
+            (Route<dynamic> route) => false,
           );
         }
       },
@@ -44,7 +45,8 @@ class SideMenu extends StatelessWidget {
                       child: ProfileHeader(),
                     ),
                     const Padding(
-                      padding: EdgeInsets.symmetric(vertical: Units.edgeInsetsXXLarge),
+                      padding: EdgeInsets.symmetric(
+                          vertical: Units.edgeInsetsXXLarge),
                       child: Divider(height: 0),
                     ),
                     Expanded(
@@ -59,18 +61,6 @@ class SideMenu extends StatelessWidget {
                               (e) => MenuTile(menu: e),
                             )
                             .toList(),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          context.read<AuthBloc>().add(SignOutEvent()); // Déclenche la déconnexion
-                        },
-                        child: const Text(
-                          "Disconnect",
-                          style: TextStyles.interItalicTiny,
-                        ),
                       ),
                     ),
                   ],

@@ -3,17 +3,22 @@ import 'package:flutter/material.dart';
 
 import '../../../../../design/design.dart';
 
-class AnimatedWave extends StatelessWidget {
+class AnimatedWave extends StatefulWidget {
   const AnimatedWave({super.key});
 
   @override
+  State<AnimatedWave> createState() => _AnimatedWaveState();
+}
+
+class _AnimatedWaveState extends State<AnimatedWave> {
+  @override
   Widget build(BuildContext context) {
-    List<Color> primaryColors =  [
+    List<Color> primaryColors = [
       Colours.primary100,
       Colours.primary100,
-     // Colors.grey,
+      // Colors.grey,
     ];
-    List<Color> secondaryColors =  [
+    List<Color> secondaryColors = [
       //Colors.grey,
       Colours.colorsButtonMenu.withOpacity(0.7),
       Colours.primary100,
