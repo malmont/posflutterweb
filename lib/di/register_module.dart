@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:pos_flutter/core/config/dio_config.dart';
 import 'package:pos_flutter/core/config/environment_config.dart';
+import 'package:pos_flutter/core/services/api/product_api_client.dart';
 import 'package:pos_flutter/core/services/api/user_api_client.dart';
 import 'package:pos_flutter/core/services/data_sources/local/user_local_data_source.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,4 +33,7 @@ abstract class RegisterModule {
 
   @lazySingleton
   UserApiClient userApiClient(Dio dio) => UserApiClient(dio);
+
+  @lazySingleton
+  ProductApiClient productApiClient(Dio dio) => ProductApiClient(dio);
 }

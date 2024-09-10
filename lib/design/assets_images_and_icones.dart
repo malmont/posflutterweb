@@ -3,21 +3,28 @@ class AppAssets {
   static const String _svgPath = 'assets/svg/';
 
   ///IMAGES
-  // static String get avatar => '${_imgPath}avatar.png';
+  static String get deliveryInfo => '${_imgPath}delivery-info.png';
 
-  // static String get avatar2 => '${_imgPath}avatar2.png';
+  static String get emptyCart => '${_imgPath}empty-cart.png';
 
-  // static String get avatar3 => '${_imgPath}avatar3.png';
+  static String get empty => '${_imgPath}empty.png';
 
-  // static String get avatar4 => '${_imgPath}avatar4.png';
+  static String get noConnection => '${_imgPath}no-connection.png';
+
+  static String get orderDelivery => '${_imgPath}order-delivery.png';
+
+  static String get internalServerError =>
+      '${_imgPath}internal-server-error.png';
 
   static String get logo => '${_imgPath}logo.png';
 
   static List<String> get avatarList => [
-        // avatar,
-        // avatar2,
-        // avatar3,
-        // avatar4,
+        deliveryInfo,
+        emptyCart,
+        empty,
+        noConnection,
+        orderDelivery,
+        internalServerError,
         logo
       ];
 

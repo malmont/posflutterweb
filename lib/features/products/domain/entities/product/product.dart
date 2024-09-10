@@ -4,7 +4,7 @@ import 'package:pos_flutter/features/products/domain/entities/product/style.dart
 import 'package:pos_flutter/features/products/domain/entities/product/variant.dart';
 
 class Product extends Equatable {
-  final String id;
+  final int id;
   final String name;
   final String description;
   final String? moreInformations;
@@ -12,10 +12,10 @@ class Product extends Equatable {
   final int purchasePrice;
   final int coefficientMultiplier;
   final String? barcode;
-  final bool isBestseller;
-  final bool isNewArrival;
-  final bool isFeatured;
-  final bool isSpecialOffer;
+  final bool? isBestseller;
+  final bool? isNewArrival;
+  final bool? isFeatured;
+  final bool? isSpecialOffer;
   final String image;
   final int quantity;
   final DateTime createdAt;
