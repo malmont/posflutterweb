@@ -11,6 +11,7 @@ import 'package:pos_flutter/features/authentification/domain/repositories/auth_r
 import 'package:pos_flutter/features/authentification/infrastucture/models/user/authentication_response_model.dart';
 
 typedef _DataSourceChooser = Future<AuthenticationResponseModel> Function();
+
 @LazySingleton(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
   final UserRemoteDataSource remoteDataSource;
@@ -30,10 +31,10 @@ class AuthRepositoryImpl implements AuthRepository {
         return remoteDataSource.signIn(params);
       });
     } catch (e) {
-
-      return Left(ExceptionFailure()); 
+      return Left(ExceptionFailure());
     }
   }
+
   @override
   Future<Either<Failure, NoParams>> signOut() async {
     try {
@@ -58,7 +59,8 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
-Future<Either<Failure, User>> _authenticate(Future<AuthenticationResponseModel> Function() getDataSource) async {
+  Future<Either<Failure, User>> _authenticate(
+      Future<AuthenticationResponseModel> Function() getDataSource) async {
     if (await networkInfo.isConnected) {
       try {
         final remoteResponse = await getDataSource();
@@ -73,4 +75,3 @@ Future<Either<Failure, User>> _authenticate(Future<AuthenticationResponseModel> 
     }
   }
 }
-

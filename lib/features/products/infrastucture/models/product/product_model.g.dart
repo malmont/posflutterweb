@@ -7,7 +7,7 @@ part of 'product_model.dart';
 // **************************************************************************
 
 ProductModel _$ProductModelFromJson(Map<String, dynamic> json) => ProductModel(
-      id: json['id'] as String,
+      id: (json['id'] as num).toInt(),
       name: json['name'] as String,
       description: json['description'] as String,
       moreInformations: json['moreInformations'] as String?,
@@ -15,10 +15,10 @@ ProductModel _$ProductModelFromJson(Map<String, dynamic> json) => ProductModel(
       purchasePrice: (json['purchasePrice'] as num).toInt(),
       coefficientMultiplier: (json['coefficientMultiplier'] as num).toInt(),
       barcode: json['barcode'] as String?,
-      isBestseller: json['isBestseller'] as bool,
-      isNewArrival: json['isNewArrival'] as bool,
-      isFeatured: json['isFeatured'] as bool,
-      isSpecialOffer: json['isSpecialOffer'] as bool,
+      isBestseller: json['isBestseller'] as bool?,
+      isNewArrival: json['isNewArrival'] as bool?,
+      isFeatured: json['isFeatured'] as bool?,
+      isSpecialOffer: json['isSpecialOffer'] as bool?,
       image: json['image'] as String,
       quantity: (json['quantity'] as num).toInt(),
       createdAt: DateTime.parse(json['createdAt'] as String),
