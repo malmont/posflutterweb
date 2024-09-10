@@ -18,11 +18,7 @@ class SideMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-        print("BlocListener triggered with state: $state");
-
         if (state is AuthLoggedOut) {
-          print("AuthLoggedOut state detected, navigating to SignIn");
-
           Navigator.of(context).pushNamedAndRemoveUntil(
             AppRouter.signIn,
             (Route<dynamic> route) => false,
