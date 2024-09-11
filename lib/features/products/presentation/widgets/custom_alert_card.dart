@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../design/design.dart';
+
 class CustomAlertCard extends StatelessWidget {
   final String image;
   final String message;
@@ -19,8 +21,8 @@ class CustomAlertCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(image, width: 600),
-          const SizedBox(height: 20),
-          Text(message, style: const TextStyle(fontSize: 18)),
+          const SizedBox(height: Units.sizedbox_20),
+          Text(message, style: const TextStyle(fontSize: Units.sizedbox_20)),
           if (onClick != null)
             IconButton(
               onPressed: onClick,

@@ -23,7 +23,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
           params: const FilterProductParams(),
           metaData: PaginationMetaData(
             pageSize: 12,
-            limit: 1,
+            limit: 0,
             total: 0,
           ),
         )) {
@@ -38,10 +38,11 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     isFetching = true;
     try {
       emit(ProductLoading(
-        products: state.products,
-        params: event.params,
+        products: const [],
         metaData: state.metaData,
+        params: event.params,
       ));
+
       final result = await _getProductUseCase(event.params
           .copyWith(limit: currentPage, pageSize: state.metaData.pageSize));
 
@@ -50,14 +51,14 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
           isFetching = false;
           emit(ProductError(
             products: state.products,
-            params: event.params,
             metaData: state.metaData,
             failure: failure,
+            params: event.params,
           ));
         },
         (productResponse) {
-          isFetching = false;
           currentPage++;
+          isFetching = false;
           emit(ProductLoaded(
             metaData: productResponse.paginationMetaData,
             products: productResponse.products,
@@ -69,9 +70,9 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       isFetching = false;
       emit(ProductError(
         products: state.products,
-        params: event.params,
         metaData: state.metaData,
         failure: ExceptionFailure(),
+        params: event.params,
       ));
     } finally {
       isFetching = false;
@@ -91,8 +92,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         try {
           emit(ProductLoading(
             products: state.products,
-            params: state.params,
             metaData: state.metaData,
+            params: state.params,
           ));
           final result = await _getProductUseCase(state.params
               .copyWith(limit: currentPage, pageSize: state.metaData.pageSize));
@@ -102,30 +103,29 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
               isFetching = false;
               emit(ProductError(
                 products: state.products,
-                params: state.params,
                 metaData: state.metaData,
                 failure: failure,
+                params: state.params,
               ));
             },
             (productResponse) {
               List<Product> updatedProducts = List.from(state.products)
                 ..addAll(productResponse.products);
+
               currentPage++;
               emit(ProductLoaded(
-                metaData: productResponse
-                    .paginationMetaData, // Mettre à jour les metadata
+                metaData: productResponse.paginationMetaData,
                 products: updatedProducts,
                 params: state.params.copyWith(limit: currentPage),
               ));
             },
           );
         } catch (e) {
-          isFetching = false;
           emit(ProductError(
             products: state.products,
-            params: state.params,
             metaData: state.metaData,
             failure: ExceptionFailure(),
+            params: state.params,
           ));
         } finally {
           isFetching = false;
@@ -135,27 +135,37 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   }
 
   void _onSelectVariant(SelectVariantEvent event, Emitter<ProductState> emit) {
+    final state = this.state;
     if (state is ProductLoaded) {
-      final Product selectedProduct = state.products.firstWhere(
-        (product) =>
-            product.id ==
-            event.productId, // Utilise l'ID du produit de l'événement
-        orElse: () => throw Exception('Product not found'),
-      );
+      try {
+        final Product selectedProduct = state.products.firstWhere(
+          (product) => product.id == event.productId,
+          orElse: () => throw Exception('Produit non trouvé'),
+        );
+        final Variant selectedVariant = selectedProduct.variants.firstWhere(
+          (variant) =>
+              variant.color.codeHexa == event.color && //
+              variant.size.name == event.size,
+          orElse: () => throw Exception(
+              'Variant non trouvé pour la couleur et taille sélectionnées'),
+        );
 
-      final Variant selectedVariant = selectedProduct.variants.firstWhere(
-        (variant) =>
-            variant.color.name == event.color &&
-            variant.size.name == event.size,
-        orElse: () => throw Exception('Variant not found'),
-      );
+        emit(ProductLoaded(
+          products: state.products,
+          params: state.params,
+          metaData: state.metaData,
+          selectedVariant: selectedVariant,
+        ));
+      } catch (e) {
+        print('Erreur lors de la sélection du variant: $e');
 
-      emit(ProductLoaded(
-        products: state.products,
-        metaData: state.metaData,
-        params: state.params,
-        selectedVariant: selectedVariant,
-      ));
+        emit(ProductError(
+          products: state.products,
+          metaData: state.metaData,
+          failure: ExceptionFailure(),
+          params: state.params,
+        ));
+      }
     }
   }
 
