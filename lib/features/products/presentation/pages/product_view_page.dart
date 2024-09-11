@@ -8,9 +8,7 @@ import 'package:pos_flutter/features/products/domain/entities/product/filter_pro
 import 'package:pos_flutter/features/products/presentation/widgets/alert_card.dart';
 import 'package:pos_flutter/features/products/presentation/widgets/article_card.dart';
 import 'package:pos_flutter/features/products/presentation/widgets/category_list.dart';
-import 'package:pos_flutter/features/products/presentation/widgets/custom_alert_card.dart';
 import 'package:pos_flutter/features/products/presentation/widgets/header.dart';
-import 'package:pos_flutter/features/products/presentation/widgets/product_grid.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../design/design.dart';
@@ -91,7 +89,7 @@ class _ProductViewPageState extends State<ProductViewPage> {
     ];
 
     return Scaffold(
-      backgroundColor: const Color(0xff393C49),
+      backgroundColor: Colours.primary100,
       body: Row(
         children: [
           Expanded(
@@ -129,14 +127,12 @@ class _ProductViewPageState extends State<ProductViewPage> {
                 Expanded(
                   child: BlocBuilder<ProductBloc, ProductState>(
                     builder: (context, state) {
-                      // Résultat vide et pas d'erreur
                       if (state is ProductLoaded && state.products.isEmpty) {
                         return AlertCard(
                           image: AppAssets.empty,
                           message: "Products not found!",
                         );
                       }
-                      // Erreur et pas de données préchargées
                       if (state is ProductError && state.products.isEmpty) {
                         if (state.failure is NetworkFailure) {
                           return AlertCard(
@@ -180,9 +176,11 @@ class _ProductViewPageState extends State<ProductViewPage> {
                               .add(const GetProducts(FilterProductParams()));
                         },
                         child: Container(
-                          margin: const EdgeInsets.only(top: 10),
+                          margin:
+                              const EdgeInsets.only(top: Units.edgeInsetsLarge),
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding:
+                                const EdgeInsets.all(Units.edgeInsetsLarge),
                             child: GridView.builder(
                               gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(
@@ -192,13 +190,12 @@ class _ProductViewPageState extends State<ProductViewPage> {
                                 childAspectRatio: 0.75,
                               ),
                               itemCount: state.products.length,
-                              controller:
-                                  scrollController, // Ajout du scroll controller ici
+                              controller: scrollController,
                               itemBuilder: (context, index) {
                                 return Column(
                                   children: [
                                     const SizedBox(
-                                      height: 30,
+                                      height: Units.sizedbox_30,
                                     ),
                                     ArticleCard(article: state.products[index]),
                                   ],
@@ -216,10 +213,10 @@ class _ProductViewPageState extends State<ProductViewPage> {
                     if (state is ProductLoaded &&
                         state.products.length >= state.metaData.total) {
                       return const Padding(
-                        padding: EdgeInsets.all(16.0),
+                        padding: EdgeInsets.all(Units.edgeInsetsXXLarge),
                         child: Center(
                           child: Text("Tous les produits ont été chargés.",
-                              style: TextStyle(color: Colors.grey)),
+                              style: TextStyle(color: Colours.shadowHideMenu)),
                         ),
                       );
                     }

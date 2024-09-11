@@ -4,13 +4,13 @@ abstract class ProductState extends Equatable {
   final List<Product> products;
   final PaginationMetaData metaData;
   final FilterProductParams params;
-  final Variant? selectedVariant; // Ajout de la gestion du variant sélectionné
+  final Variant? selectedVariant;
 
   const ProductState({
     required this.products,
     required this.metaData,
     required this.params,
-    this.selectedVariant, // Le variant sélectionné est optionnel
+    this.selectedVariant,
   });
 
   @override
@@ -38,8 +38,8 @@ class ProductLoading extends ProductState {
     required super.products,
     required super.metaData,
     required super.params,
-    super.selectedVariant, // Conserver l'état du variant sélectionné pendant le chargement
-  }); // Passer directement le variant
+    super.selectedVariant,
+  });
 }
 
 class ProductLoaded extends ProductState {
@@ -47,8 +47,8 @@ class ProductLoaded extends ProductState {
     required super.products,
     required super.metaData,
     required super.params,
-    super.selectedVariant, // Inclure le variant sélectionné dans l'état ProductLoaded
-  }); // Pas besoin de passer "products" deux fois
+    super.selectedVariant,
+  });
 }
 
 class ProductError extends ProductState {
@@ -58,7 +58,7 @@ class ProductError extends ProductState {
     required super.metaData,
     required super.params,
     required this.failure,
-    super.selectedVariant, // Conserver l'état du variant sélectionné lors d'une erreur
+    super.selectedVariant,
   });
 
   @override

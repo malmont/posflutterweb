@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:pos_flutter/core/router/app_router.dart';
 import 'package:pos_flutter/design/colours.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:pos_flutter/features/products/domain/entities/product/product.dart';
+
+import '../../../../design/design.dart';
 
 class ArticleCard extends StatelessWidget {
   final Product article;
@@ -14,71 +17,79 @@ class ArticleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        SizedBox(
-          height: 200,
-          width: 250,
-          child: Card(
-            color: Colours.primaryPalette,
-            elevation: 4,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Spacer(),
-                  Text(
-                    article.name.length > 13
-                        ? '${article.name.substring(0, 13)}...'
-                        : article.name,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+    return GestureDetector(
+      onTap: () {
+        if (article != null) {
+          Navigator.of(context)
+              .pushNamed(AppRouter.productDetailsViewPage, arguments: article);
+        }
+      },
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          SizedBox(
+            height: 200,
+            width: 250,
+            child: Card(
+              color: Colours.primaryPalette,
+              elevation: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(Units.edgeInsetsLarge),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Spacer(),
+                    Text(
+                      article.name.length > 13
+                          ? '${article.name.substring(0, 13)}...'
+                          : article.name,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    '\$${(article.price / 100).toStringAsFixed(2)}',
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: Colors.green,
+                    const SizedBox(height: Units.edgeInsetsLarge),
+                    Text(
+                      '\$${(article.price / 100).toStringAsFixed(2)}',
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.green,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        Positioned(
-          top: -30,
-          left: 0,
-          right: 0,
-          child: Center(
-            child: CachedNetworkImage(
-              imageUrl: article.image,
-              imageBuilder: (context, imageProvider) => CircleAvatar(
-                radius: 80,
-                backgroundImage: imageProvider,
-              ),
-              placeholder: (context, url) => Shimmer.fromColors(
-                baseColor: Colors.grey.shade100,
-                highlightColor: Colors.white,
-                child: CircleAvatar(
-                  radius: 60,
-                  backgroundColor: Colors.grey.shade200,
+                  ],
                 ),
               ),
-              errorWidget: (context, url, error) => const CircleAvatar(
-                radius: 60,
-                child: Icon(Icons.error),
+            ),
+          ),
+          Positioned(
+            top: -30,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: CachedNetworkImage(
+                imageUrl: article.image,
+                imageBuilder: (context, imageProvider) => CircleAvatar(
+                  radius: Units.edgeInsetsXXXXXXXXXXLarge,
+                  backgroundImage: imageProvider,
+                ),
+                placeholder: (context, url) => Shimmer.fromColors(
+                  baseColor: Colors.grey.shade100,
+                  highlightColor: Colors.white,
+                  child: CircleAvatar(
+                    radius: Units.edgeInsetsXXXXXXXXLarge,
+                    backgroundColor: Colors.grey.shade200,
+                  ),
+                ),
+                errorWidget: (context, url, error) => const CircleAvatar(
+                  radius: Units.edgeInsetsXXXXXXXXLarge,
+                  child: Icon(Icons.error),
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

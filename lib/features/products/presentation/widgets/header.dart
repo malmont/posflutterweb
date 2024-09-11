@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../design/design.dart';
+
 class Header extends StatelessWidget {
   final Function(String) onSearchSubmitted;
 
@@ -11,28 +13,30 @@ class Header extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         const Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(Units.edgeInsetsXXLarge),
           child: Text(
             'LOLIBEE',
             textAlign: TextAlign.start,
             style: TextStyle(
-              fontSize: 18,
+              fontSize: Units.u18,
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
           ),
         ),
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(Units.edgeInsetsLarge),
           width: 300,
           child: TextField(
             onSubmitted: onSearchSubmitted,
             autofocus: false,
             decoration: InputDecoration(
-              contentPadding:
-                  const EdgeInsets.only(left: 20, bottom: 22, top: 22),
+              contentPadding: const EdgeInsets.only(
+                  left: Units.edgeInsetsXXXLarge,
+                  bottom: Units.edgeInsetsXXXLarge,
+                  top: Units.edgeInsetsXXXLarge),
               prefixIcon: const Padding(
-                padding: EdgeInsets.only(left: 8),
+                padding: EdgeInsets.only(left: Units.edgeInsetsLarge),
                 child: Icon(Icons.search),
               ),
               border: const OutlineInputBorder(),
@@ -40,12 +44,14 @@ class Header extends StatelessWidget {
               fillColor: Colors.grey.shade100,
               filled: true,
               focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.white, width: 3.0),
-                borderRadius: BorderRadius.circular(26),
+                borderSide:
+                    const BorderSide(color: Colors.white, width: Units.u4),
+                borderRadius: BorderRadius.circular(Units.radiusXXXXXXLarge),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(26),
-                borderSide: const BorderSide(color: Colors.white, width: 3.0),
+                borderRadius: BorderRadius.circular(Units.radiusXXXXXXLarge),
+                borderSide:
+                    const BorderSide(color: Colors.white, width: Units.u4),
               ),
             ),
           ),

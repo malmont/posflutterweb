@@ -21,6 +21,8 @@ class Units {
 
   static const double u16 = 16.0;
 
+  static const double u18 = 18.0;
+
   static const double u20 = 20.0;
 
   static const double u24 = 24.0;
@@ -72,6 +74,7 @@ class Units {
   static const double sizedbox_16 = 16;
   static const double sizedbox_20 = 20;
   static const double sizedbox_28 = 28;
+  static const double sizedbox_30 = 30;
   static const double sizedbox_26 = 26;
   static const double sizedbox_7 = 7;
   static const double sizedbox_14 = 14;
@@ -127,6 +130,13 @@ class Units {
   static const double edgeInsetsXXLarge = 16;
   static const double edgeInsetsXXXLarge = 24;
   static const double edgeInsetsXXXXLarge = 32;
+  static const double edgeInsetsXXXXXLarge = 40;
+  static const double edgeInsetsXXXXXXLarge = 48;
+  static const double edgeInsetsXXXXXXXLarge = 56;
+  static const double edgeInsetsXXXXXXXXLarge = 64;
+  static const double edgeInsetsXXXXXXXXXLarge = 72;
+  static const double edgeInsetsXXXXXXXXXXLarge = 80;
+  static const double edgeInsetsXXXXXXXXXXXLarge = 88;
 
   static const double position = 0;
   static const double positionSmall = 4;

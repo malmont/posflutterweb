@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pos_flutter/features/products/domain/entities/product/product.dart';
 import 'package:pos_flutter/features/products/presentation/widgets/article_card.dart';
 
+import '../../../../design/design.dart';
+
 class ProductGrid extends StatelessWidget {
   final List<Product> products;
   final ScrollController scrollController;
@@ -15,9 +17,9 @@ class ProductGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 10),
+      margin: const EdgeInsets.only(top: Units.edgeInsetsXLarge),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(Units.edgeInsetsLarge),
         child: GridView.builder(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 4,
@@ -30,7 +32,7 @@ class ProductGrid extends StatelessWidget {
           itemBuilder: (context, index) {
             return Column(
               children: [
-                const SizedBox(height: 30),
+                const SizedBox(height: Units.sizedbox_30),
                 ArticleCard(article: products[index]),
               ],
             );

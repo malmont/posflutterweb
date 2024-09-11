@@ -25,9 +25,11 @@ class CategoryList extends StatelessWidget {
           return GestureDetector(
             onTap: () => onCategorySelected(category.id),
             child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              margin: const EdgeInsets.symmetric(
+                  horizontal: Units.edgeInsetsXLarge,
+                  vertical: Units.edgeInsetsXLarge),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(Units.radiusXXLarge),
                 color:
                     isSelected ? Colours.colorsButtonMenu : Colours.primary100,
               ),
