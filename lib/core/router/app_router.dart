@@ -28,7 +28,10 @@ class AppRouter {
       case productDetailsViewPage:
         Product product = routeSettings.arguments as Product;
         return MaterialPageRoute(
-            builder: (_) => ProductDetailsViewPage(product: product));
+            builder: (_) => ProductDetailsViewPage(
+                  product: product,
+                  onBack: () {},
+                ));
       default:
         throw const RouteException('Route not found!');
     }

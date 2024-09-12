@@ -20,6 +20,8 @@ import 'package:pos_flutter/core/config/environment_repository.dart' as _i310;
 import 'package:pos_flutter/core/network/network_info.dart' as _i40;
 import 'package:pos_flutter/core/services/api/product_api_client.dart' as _i303;
 import 'package:pos_flutter/core/services/api/user_api_client.dart' as _i324;
+import 'package:pos_flutter/core/services/data_sources/local/cart_local_data_source.dart'
+    as _i531;
 import 'package:pos_flutter/core/services/data_sources/local/product_local_data_source.dart'
     as _i628;
 import 'package:pos_flutter/core/services/data_sources/local/user_local_data_source.dart'
@@ -43,6 +45,20 @@ import 'package:pos_flutter/features/authentification/domain/usecases/sign_out_u
     as _i360;
 import 'package:pos_flutter/features/authentification/infrastucture/repositories/auth_repository_impl.dart'
     as _i750;
+import 'package:pos_flutter/features/cart/application/blocs/cart_bloc.dart'
+    as _i734;
+import 'package:pos_flutter/features/cart/domain/repositories/cart_repository.dart'
+    as _i571;
+import 'package:pos_flutter/features/cart/domain/usecases/add_cart_item_usecase.dart'
+    as _i143;
+import 'package:pos_flutter/features/cart/domain/usecases/clear_cart_usecase.dart'
+    as _i801;
+import 'package:pos_flutter/features/cart/domain/usecases/get_cached_cart_usecase.dart'
+    as _i148;
+import 'package:pos_flutter/features/cart/domain/usecases/remove_cart_usecase.dart'
+    as _i300;
+import 'package:pos_flutter/features/cart/infrastucture/repositories/cart_repository_impl.dart'
+    as _i290;
 import 'package:pos_flutter/features/products/application/blocs/product_bloc.dart'
     as _i117;
 import 'package:pos_flutter/features/products/domain/repositories/product_repository.dart'
@@ -86,8 +102,30 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i628.ProductLocalDataSource>(() =>
         _i628.ProductLocalDataSourceImpl(
             sharedPreferences: gh<_i460.SharedPreferences>()));
+    gh.lazySingleton<_i531.CartLocalDataSource>(() =>
+        _i531.CartLocalDataSourceImpl(
+            sharedPreferences: gh<_i460.SharedPreferences>()));
     gh.lazySingleton<_i1044.EnvironmentConfig>(
         () => _i1044.EnvironmentConfig(gh<_i310.EnvironmentRepository>()));
+    gh.lazySingleton<_i571.CartRepository>(() => _i290.CartRepositoryImpl(
+          localDataSource: gh<_i531.CartLocalDataSource>(),
+          userLocalDataSource: gh<_i381.UserLocalDataSource>(),
+          networkInfo: gh<_i40.NetworkInfo>(),
+        ));
+    gh.lazySingleton<_i300.RemoveCartUseCase>(
+        () => _i300.RemoveCartUseCase(gh<_i571.CartRepository>()));
+    gh.lazySingleton<_i148.GetCachedCartUseCase>(
+        () => _i148.GetCachedCartUseCase(gh<_i571.CartRepository>()));
+    gh.lazySingleton<_i143.AddCartUseCase>(
+        () => _i143.AddCartUseCase(gh<_i571.CartRepository>()));
+    gh.lazySingleton<_i801.ClearCartUseCase>(
+        () => _i801.ClearCartUseCase(gh<_i571.CartRepository>()));
+    gh.factory<_i734.CartBloc>(() => _i734.CartBloc(
+          gh<_i148.GetCachedCartUseCase>(),
+          gh<_i143.AddCartUseCase>(),
+          gh<_i801.ClearCartUseCase>(),
+          gh<_i300.RemoveCartUseCase>(),
+        ));
     gh.lazySingleton<_i361.Dio>(() => registerModule.dio(
           gh<_i381.UserLocalDataSource>(),
           gh<_i1044.EnvironmentConfig>(),

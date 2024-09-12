@@ -80,7 +80,7 @@ class _VariantSelectorState extends State<VariantSelector> {
             Text(
               'Taille',
               style: TextStyles.interMediumH5.copyWith(
-                color: Colours.colorsButtonMenu,
+                color: Colours.primaryPalette,
               ),
             ),
             const SizedBox(width: 20),
@@ -126,14 +126,13 @@ class _VariantSelectorState extends State<VariantSelector> {
           ],
         ),
         const SizedBox(width: 50),
-        // Color Selector
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Couleur',
               style: TextStyles.interMediumH5.copyWith(
-                color: Colours.colorsButtonMenu,
+                color: Colours.primaryPalette,
               ),
             ),
             const SizedBox(width: 20),
@@ -181,6 +180,9 @@ class _VariantSelectorState extends State<VariantSelector> {
         ),
         const SizedBox(width: 50),
         ElevatedButton(
+          style: CustomButtonStyle.customButtonStyle(
+              type: ButtonType.cancelButton,
+              isSelected: selectedColor != null && selectedSize != null),
           onPressed: () {
             setState(() {
               selectedColor = null;
