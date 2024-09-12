@@ -43,6 +43,8 @@ dependencies:
   flutter_dotenv: ^5.0.2
   dio: ^5.0.0
   retrofit: ^4.0.0
+  bitsdojo_window: ^0.1.0
+  
 
   #local storage
   shared_preferences: ^2.2.0

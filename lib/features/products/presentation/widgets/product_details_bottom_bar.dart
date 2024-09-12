@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pos_flutter/design/design.dart';
 import 'package:pos_flutter/features/products/domain/entities/product/product.dart';
 import 'package:pos_flutter/features/products/domain/entities/product/variant.dart';
 
@@ -16,10 +17,11 @@ class ProductDetailsBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isSelected = true;
     return Container(
       margin: const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.secondary,
+        color: Colours.primaryPalette,
         borderRadius: BorderRadius.circular(15),
       ),
       height: 80 + MediaQuery.of(context).padding.bottom,
@@ -56,6 +58,8 @@ class ProductDetailsBottomBar extends StatelessWidget {
             width: 200,
             height: 50,
             child: ElevatedButton(
+              style: CustomButtonStyle.customButtonStyle(
+                  type: ButtonType.cancelButton, isSelected: isSelected),
               onPressed: onPressed, // Utilise le onPressed reçu en paramètre
               child: const Text('Ajouter au panier'),
             ),

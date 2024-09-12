@@ -33,7 +33,10 @@ class ProductGrid extends StatelessWidget {
             return Column(
               children: [
                 const SizedBox(height: Units.sizedbox_30),
-                ArticleCard(article: products[index]),
+                ArticleCard(
+                  article: products[index],
+                  onTap: (Product) {},
+                ),
               ],
             );
           },

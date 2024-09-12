@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:pos_flutter/core/router/app_router.dart';
 import 'package:pos_flutter/design/colours.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:pos_flutter/features/products/domain/entities/product/product.dart';
@@ -9,10 +8,12 @@ import '../../../../design/design.dart';
 
 class ArticleCard extends StatelessWidget {
   final Product article;
+  final void Function(Product) onTap; // Function to handle tap
 
   const ArticleCard({
     super.key,
     required this.article,
+    required this.onTap, // Add the function to the constructor
   });
 
   @override
@@ -20,8 +21,7 @@ class ArticleCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if (article != null) {
-          Navigator.of(context)
-              .pushNamed(AppRouter.productDetailsViewPage, arguments: article);
+          onTap(article); // Use the passed function to navigate
         }
       },
       child: Stack(

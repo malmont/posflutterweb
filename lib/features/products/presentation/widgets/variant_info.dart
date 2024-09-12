@@ -11,26 +11,61 @@ class VariantInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Couleur sélectionnée : ${selectedVariant.color.name}',
-          style: TextStyles.interRegularH6.copyWith(
-            color: Colours.colorsButtonMenu,
-          ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Couleur",
+              style: TextStyles.interRegularH5.copyWith(
+                color: Colours.primaryPalette,
+              ),
+            ),
+            Text(
+              ' ${selectedVariant.color.name}',
+              style: TextStyles.interRegularH6.copyWith(
+                color: Colours.colorsButtonMenu,
+              ),
+            ),
+          ],
         ),
-        Text(
-          'Taille sélectionnée : ${selectedVariant.size.name}',
-          style: TextStyles.interRegularH6.copyWith(
-            color: Colours.colorsButtonMenu,
-          ),
+        const SizedBox(width: 40),
+        Column(
+          children: [
+            Text(
+              "Taille",
+              style: TextStyles.interRegularH5.copyWith(
+                color: Colours.primaryPalette,
+              ),
+            ),
+            Text(
+              selectedVariant.size.name,
+              style: TextStyles.interRegularH6.copyWith(
+                color: Colours.colorsButtonMenu,
+              ),
+            ),
+          ],
         ),
-        Text(
-          'Quantité en stock : ${selectedVariant.stockQuantity}',
-          style: TextStyles.interRegularH6.copyWith(
-            color: Colours.colorsButtonMenu,
-          ),
+        const SizedBox(width: 40),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Quantité en stock",
+              style: TextStyles.interRegularH5.copyWith(
+                color: Colours.primaryPalette,
+              ),
+            ),
+            Text(
+              '${selectedVariant.stockQuantity}',
+              style: TextStyles.interRegularH6.copyWith(
+                color: Colours.colorsButtonMenu,
+              ),
+            ),
+          ],
         ),
       ],
     );

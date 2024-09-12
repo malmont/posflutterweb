@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:pos_flutter/features/cart/application/blocs/cart_bloc.dart';
 import 'package:pos_flutter/features/home/application/blocs/side_menu_bloc.dart';
 import 'package:pos_flutter/features/products/application/blocs/product_bloc.dart';
 import 'package:pos_flutter/features/products/domain/entities/product/filter_product_params.dart';
@@ -42,6 +43,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<SideMenuBloc>(
           create: (context) => SideMenuBloc(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<CartBloc>()..add(const GetCart()),
         ),
         BlocProvider(
           create: (context) => getIt<ProductBloc>()

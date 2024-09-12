@@ -1,8 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:pos_flutter/features/cart/application/blocs/cart_bloc.dart';
+import 'package:pos_flutter/features/cart/domain/entities/cart_item.dart';
 import 'package:pos_flutter/features/products/application/blocs/product_bloc.dart';
 import 'package:pos_flutter/features/products/domain/entities/product/product.dart';
 import 'package:pos_flutter/features/products/domain/entities/product/variant.dart';
@@ -11,14 +11,18 @@ import 'package:pos_flutter/features/products/presentation/widgets/product_detai
 import 'package:pos_flutter/features/products/presentation/widgets/product_image_carousel.dart';
 import 'package:pos_flutter/features/products/presentation/widgets/variant_info.dart';
 import 'package:pos_flutter/features/products/presentation/widgets/variant_selector.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../../design/design.dart';
 
 class ProductDetailsViewPage extends StatefulWidget {
   final Product product;
+  final VoidCallback onBack; // Add this parameter
 
-  const ProductDetailsViewPage({super.key, required this.product});
+  const ProductDetailsViewPage({
+    super.key,
+    required this.product,
+    required this.onBack, // Add the onBack callback
+  });
 
   @override
   State<ProductDetailsViewPage> createState() => _ProductDetailsViewPageState();
@@ -57,7 +61,12 @@ class _ProductDetailsViewPageState extends State<ProductDetailsViewPage> {
     return Scaffold(
       backgroundColor: Colours.primary100,
       appBar: AppBar(
+        backgroundColor: Colours.primary100,
         title: Text(widget.product.name),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back), // Add back button icon
+          onPressed: widget.onBack, // Use the onBack callback
+        ),
       ),
       body: BlocBuilder<ProductBloc, ProductState>(
         builder: (context, state) {
@@ -93,18 +102,24 @@ class _ProductDetailsViewPageState extends State<ProductDetailsViewPage> {
                       itemCount: 2,
                     ),
                   ),
-                  Text(
-                    widget.product.name,
-                    style: TextStyles.interMediumH5.copyWith(
-                      color: Colours.colorsButtonMenu,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        widget.product.name,
+                        style: TextStyles.interMediumH5.copyWith(
+                          color: Colours.colorsButtonMenu,
+                        ),
+                      ),
+                      const SizedBox(width: 50),
+                      Text(
+                        '\$${(widget.product.price / 100).toStringAsFixed(2)}',
+                        style: TextStyles.interMediumH5.copyWith(
+                          color: Colours.colorsButtonMenu,
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    '\$${(widget.product.price / 100).toStringAsFixed(2)}',
-                    style: TextStyles.interMediumH5.copyWith(
-                      color: Colours.colorsButtonMenu,
-                    ),
-                  ),
+                  const SizedBox(height: 20),
                   VariantSelector(
                     uniqueColors: uniqueColors,
                     uniqueSizes: uniqueSizes,
@@ -113,6 +128,7 @@ class _ProductDetailsViewPageState extends State<ProductDetailsViewPage> {
                     selectedColor: selectedColor,
                     selectedSize: selectedSize,
                   ),
+                  const SizedBox(height: 10),
                   if (selectedVariant != null)
                     VariantInfo(selectedVariant: selectedVariant!)
                   else
@@ -133,10 +149,16 @@ class _ProductDetailsViewPageState extends State<ProductDetailsViewPage> {
 
           return ProductDetailsBottomBar(
             product: widget.product,
-            selectedVariant: selectedVariant, // Passe selectedVariant ici
+            selectedVariant: selectedVariant,
             onPressed: selectedVariant != null
                 ? () {
-                    // Ajout au panier ou autre action
+                    context.read<CartBloc>().add(AddProduct(
+                        cartItem: CartItem(
+                            product: widget.product,
+                            variant: selectedVariant!)));
+
+                    context.read<ProductBloc>().add(const ResetVariantEvent());
+                    widget.onBack(); // Use the onBack callback to go back
                   }
                 : null,
           );
