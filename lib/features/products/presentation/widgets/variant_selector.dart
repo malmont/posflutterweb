@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pos_flutter/features/products/application/blocs/product_bloc.dart';
 import 'package:pos_flutter/features/products/domain/entities/product/product.dart';
-import 'package:pos_flutter/features/products/presentation/widgets/color_selector.dart';
-import 'package:pos_flutter/features/products/presentation/widgets/size_selector.dart';
 
 import '../../../../design/design.dart';
 

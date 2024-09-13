@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pos_flutter/features/order/domain/entities/order_details.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../../design/design.dart';
 import 'outline_label_card.dart';
 
 class OrderInfoCard extends StatelessWidget {
@@ -13,19 +14,17 @@ class OrderInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     if (orderDetails != null) {
       return Padding(
-        padding: const EdgeInsets.only(bottom: 10),
+        padding: const EdgeInsets.only(bottom: Units.edgeInsetsLarge),
         child: OutlineLabelCard(
           title: '',
           child: Container(
-            padding: const EdgeInsets.only(top: 12),
+            padding: const EdgeInsets.only(top: Units.edgeInsetsXLarge),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   "Order ID : ${orderDetails!.id}",
-                  style: const TextStyle(
-                    fontSize: 14,
-                  ),
+                  style: TextStyles.interSemiBoldBody1,
                 ),
                 Text(
                   "Order Items : ${orderDetails!.orderItems.length}",

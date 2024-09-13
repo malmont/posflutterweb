@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pos_flutter/design/colours.dart';
+import 'package:pos_flutter/features/order/presentation/widgets/order_analytics_Line_widget.dart';
+import 'package:pos_flutter/features/order/presentation/widgets/order_analytics_pie_widget.dart';
+
+import '../../../../design/design.dart';
 
 class StatistiquePageView extends StatelessWidget {
   const StatistiquePageView({super.key});
@@ -7,41 +11,52 @@ class StatistiquePageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colours.primaryPalette,
-      padding: const EdgeInsets.all(16.0),
-      child: const Column(
+      color: Colours.primary100,
+      padding: const EdgeInsets.all(Units.edgeInsetsXXLarge),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Statistics',
-            style: TextStyle(
-              fontSize: 24,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+          Expanded(
+            flex: 6,
+            child: Card(
+              color: Colours.primaryPalette,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Statistiques',
+                      style: TextStyles.interBoldH5
+                          .copyWith(color: Colours.colorsButtonMenu),
+                    ),
+                    const SizedBox(height: Units.sizedbox_80),
+                    Expanded(
+                      child: OrderAnalyticsPieWidget(),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
-          SizedBox(height: 20),
-          Text(
-            'Total Orders: 123',
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.white70,
-            ),
-          ),
-          SizedBox(height: 10),
-          Text(
-            'Completed Orders: 100',
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.greenAccent,
-            ),
-          ),
-          SizedBox(height: 10),
-          Text(
-            'Pending Orders: 23',
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.orangeAccent,
+          const SizedBox(height: Units.sizedbox_20),
+          Expanded(
+            flex: 4,
+            child: Card(
+              color: Colours.primaryPalette,
+              child: Center(
+                child: Column(
+                  children: [
+                    Text(
+                      'Statistiques',
+                      style: TextStyles.interBoldH5
+                          .copyWith(color: Colours.colorsButtonMenu),
+                    ),
+                    Expanded(
+                      child: OrderAnalyticsLineChart(),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ],

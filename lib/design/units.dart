@@ -70,6 +70,7 @@ class Units {
   static const double xxlarge = 64;
   static const double xxxlarge = 72;
   static const double sizedbox_8 = 8;
+  static const double sizedbox_10 = 10;
   static const double sizedbox_12 = 12;
   static const double sizedbox_16 = 16;
   static const double sizedbox_20 = 20;
@@ -81,8 +82,12 @@ class Units {
   static const double sizedbox_40 = 40;
   static const double sizedbox_50 = 50;
   static const double sizedbox_56 = 56;
+  static const double sizedbox_80 = 80;
   static const double sizedbox_150 = 150;
   static const double sizedbox_200 = 200;
+  static const double sizedbox_250 = 250;
+  static const double sizedbox_280 = 280;
+  static const double sizedbox_700 = 700;
   static const double menusizedbox = 360;
   static const double pagesizedbox = 1200;
 
@@ -100,6 +105,7 @@ class Units {
   static const double formButtonMaxWidth = 168;
   static const double formMaxWidth = 940.0;
 
+  static const double iconXXSmall = 10;
   static const double iconXSmall = 12;
   static const double iconSmall = 16;
   static const double iconMedium = 18;

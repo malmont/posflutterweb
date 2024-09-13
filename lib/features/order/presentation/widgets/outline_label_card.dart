@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../design/design.dart';
+
 class OutlineLabelCard extends StatelessWidget {
   final String title;
   final Widget child;
@@ -13,10 +15,13 @@ class OutlineLabelCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InputDecorator(
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+        labelStyle:
+            TextStyles.interMediumH6.copyWith(color: Colours.colorsButtonMenu),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: Units.edgeInsetsLarge),
         labelText: title,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.0),
+          borderRadius: BorderRadius.circular(Units.radiusXXXXLarge),
         ),
       ),
       child: child,

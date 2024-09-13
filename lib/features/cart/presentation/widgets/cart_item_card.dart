@@ -96,7 +96,6 @@ class CartItemCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      // Affichage de la taille
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

@@ -4,6 +4,7 @@ import 'package:pos_flutter/design/design.dart';
 import 'package:pos_flutter/features/order/application/blocs/order_fetch/order_fetch_cubit.dart';
 import 'package:pos_flutter/features/order/domain/entities/filter_order_params.dart';
 import 'package:pos_flutter/features/order/domain/entities/order_details.dart';
+import 'package:pos_flutter/features/order/presentation/widgets/dashboard_card.dart';
 import 'package:pos_flutter/features/products/presentation/widgets/generic_list.dart';
 
 class OrdersListPage extends StatefulWidget {
@@ -44,135 +45,30 @@ class _OrdersListPageState extends State<OrdersListPage> {
       ),
       body: Column(
         children: [
-          Row(
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Row(
-                children: [
-                  Card(
-                    color: Colours.primaryPalette,
-                    elevation: 5,
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 40, horizontal: 70),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(10.0),
-                            child: Icon(
-                              Icons.money_rounded,
-                              color: Colours.colorsButtonMenu,
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(
-                              '1000',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(
-                              "Total revenur",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Card(
-                    color: Colours.primaryPalette,
-                    elevation: 5,
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 40, horizontal: 70),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(10.0),
-                            child: Icon(
-                              Icons.money_rounded,
-                              color: Colours.colorsButtonMenu,
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(
-                              '1000',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(
-                              "Total revenur",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Card(
-                    color: Colours.primaryPalette,
-                    elevation: 5,
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 40, horizontal: 70),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(10.0),
-                            child: Icon(
-                              Icons.money_rounded,
-                              color: Colours.colorsButtonMenu,
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(
-                              '1000',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(
-                              "Total revenur",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              )
+              Expanded(
+                child: DashboardCard(
+                  icon: Icons.shopping_cart,
+                  value: '1000',
+                  label: 'Total Orders',
+                ),
+              ),
+              Expanded(
+                child: DashboardCard(
+                  icon: Icons.monetization_on,
+                  value: '500',
+                  label: 'Total Taxes',
+                ),
+              ),
+              Expanded(
+                child: DashboardCard(
+                  icon: Icons.attach_money_rounded,
+                  value: '15000',
+                  label: 'Total Revenue',
+                ),
+              ),
             ],
           ),
           GenericList<DaySelection>(
@@ -199,7 +95,7 @@ class _OrdersListPageState extends State<OrdersListPage> {
                 color:
                     isSelected ? Colours.colorsButtonMenu : Colours.primary100,
               ),
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(Units.edgeInsetsXXLarge),
               child: Text(
                 daySelection.name,
                 style: TextStyle(
@@ -225,25 +121,26 @@ class _OrdersListPageState extends State<OrdersListPage> {
                       color: Colours.primaryPalette,
                       elevation: 5,
                       margin: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 16),
+                          vertical: Units.edgeInsetsLarge,
+                          horizontal: Units.edgeInsetsXXLarge),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(20.0),
+                        padding: const EdgeInsets.all(Units.edgeInsetsXXLarge),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             _buildHeaderRow(order),
-                            const SizedBox(width: 80),
+                            const SizedBox(width: Units.sizedbox_80),
                             _buildDetailsRow(
                                 'Total Amount',
                                 '\$${order.totalAmount.toStringAsFixed(2)}',
                                 Colors.greenAccent),
-                            const SizedBox(width: 80),
+                            const SizedBox(width: Units.sizedbox_80),
                             _buildDetailsRow(
                                 'Order Date', order.orderDate, Colors.grey),
-                            const SizedBox(width: 80),
+                            const SizedBox(width: Units.sizedbox_80),
                             _buildStatusRow(order),
                           ],
                         ),
@@ -267,10 +164,11 @@ class _OrdersListPageState extends State<OrdersListPage> {
           'Order ID: ${order.id}',
           style: TextStyles.interBoldH5.copyWith(color: Colors.white),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: Units.sizedbox_10),
         Text(
           order.reference,
-          style: TextStyles.interRegularBody1.copyWith(color: Colors.white),
+          style: TextStyles.interRegularBody1
+              .copyWith(color: Colours.colorsButtonMenu),
         ),
       ],
     );
@@ -284,14 +182,11 @@ class _OrdersListPageState extends State<OrdersListPage> {
           label,
           style: TextStyles.interRegularBody1.copyWith(color: Colors.white),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: Units.sizedbox_10),
         Text(
           value,
-          style: TextStyle(
-            fontSize: 16,
-            color: valueColor,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyles.interRegularBody1
+              .copyWith(color: Colours.colorsButtonMenu),
         ),
       ],
     );
@@ -305,19 +200,18 @@ class _OrdersListPageState extends State<OrdersListPage> {
           'Status',
           style: TextStyles.interRegularBody1.copyWith(color: Colors.white),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: Units.sizedbox_10),
         Container(
-          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+          padding: const EdgeInsets.symmetric(
+              vertical: Units.edgeInsetsMedium,
+              horizontal: Units.edgeInsetsXLarge),
           decoration: BoxDecoration(
             color: _getStatusColor('Completed'),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(Units.radiusXXLarge),
           ),
-          child: const Text(
+          child: Text(
             'Completed',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyles.interRegularBody1.copyWith(color: Colors.white),
           ),
         ),
       ],
