@@ -11,7 +11,6 @@ class BearerTokenInterceptor extends Interceptor {
       RequestOptions options, RequestInterceptorHandler handler) async {
     final excludedPaths = ['/login', '/products/'];
 
-    // Vérifie si le chemin commence par l'un des chemins exclus
     final isExcluded =
         excludedPaths.any((path) => options.path.startsWith(path));
 

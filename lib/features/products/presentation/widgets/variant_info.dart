@@ -6,8 +6,7 @@ import '../../../../design/design.dart';
 class VariantInfo extends StatelessWidget {
   final Variant selectedVariant;
 
-  const VariantInfo({Key? key, required this.selectedVariant})
-      : super(key: key);
+  const VariantInfo({super.key, required this.selectedVariant});
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,3 @@
-
-
-
 import 'package:dio/dio.dart';
 
 import 'package:injectable/injectable.dart';
@@ -20,19 +17,19 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   final UserApiClient apiClient;
   final UserLocalDataSource userLocalDataSource;
 
-  UserRemoteDataSourceImpl({required this.apiClient, required this.userLocalDataSource});
+  UserRemoteDataSourceImpl(
+      {required this.apiClient, required this.userLocalDataSource});
 
-@override
-Future<AuthenticationResponseModel> signIn(SignInParams params) async {
-  try {
-    final response = await apiClient.signIn(params);
-    return response;
-  } catch (e) {
-    if (e is DioException) {
-      // Gestion des erreurs de requête
-      print('Erreur lors de l\'authentification: ${e.response?.statusCode}');
+  @override
+  Future<AuthenticationResponseModel> signIn(SignInParams params) async {
+    try {
+      final response = await apiClient.signIn(params);
+      return response;
+    } catch (e) {
+      if (e is DioException) {
+        print('Erreur lors de l\'authentification: ${e.response?.statusCode}');
+      }
+      throw ServerException();
     }
-    throw ServerException();  // Ton exception personnalisée
   }
-}
 }

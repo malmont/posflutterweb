@@ -9,7 +9,7 @@ import 'package:pos_flutter/features/products/domain/entities/product/product.da
 import 'package:pos_flutter/features/products/presentation/pages/product_details_view_page.dart';
 import 'package:pos_flutter/features/products/presentation/widgets/alert_card.dart';
 import 'package:pos_flutter/features/products/presentation/widgets/article_card.dart';
-import 'package:pos_flutter/features/products/presentation/widgets/category_list.dart';
+import 'package:pos_flutter/features/products/presentation/widgets/generic_list.dart';
 import 'package:pos_flutter/features/products/presentation/widgets/header.dart';
 import 'package:provider/provider.dart';
 
@@ -56,14 +56,12 @@ class _ProductViewPageState extends State<ProductViewPage> {
     super.dispose();
   }
 
-  // Function to navigate to the details page by setting the selected product
   void navigateToDetails(Product product) {
     setState(() {
       selectedProduct = product;
     });
   }
 
-  // Function to go back to the product list
   void goBackToList() {
     setState(() {
       selectedProduct = null;
@@ -108,27 +106,23 @@ class _ProductViewPageState extends State<ProductViewPage> {
       backgroundColor: Colours.primary100,
       body: Row(
         children: [
-          // Partie gauche pour la navigation des produits ou la vue détails
           Expanded(
             flex: 7,
             child: Stack(
               children: [
-                // Page des produits
                 if (selectedProduct == null)
                   _buildProductContent(context, categories),
-                // Page des détails du produit
                 if (selectedProduct != null)
                   ProductDetailsViewPage(
                     product: selectedProduct!,
-                    onBack: goBackToList, // Function to go back to the list
+                    onBack: goBackToList,
                   ),
               ],
             ),
           ),
-          // Partie droite pour la CartViewPage qui reste toujours visible
           const Expanded(
             flex: 3,
-            child: CartViewPage(), // Cart always visible
+            child: CartViewPage(),
           ),
         ],
       ),
@@ -147,22 +141,41 @@ class _ProductViewPageState extends State<ProductViewPage> {
                 .add(GetProducts(FilterProductParams(keyword: val)));
           },
         ),
-        CategoryList(
-          categories: categories,
-          selectedCategoryId: selectedCategoryId,
-          onCategorySelected: (id) {
+        GenericList<Category>(
+          items: categories,
+          selectedIndex: categories
+              .indexWhere((category) => category.id == selectedCategoryId),
+          onItemSelected: (index) {
+            final selectedCategory = categories[index];
             setState(() {
-              selectedCategoryId = id;
-              if (id == 5) {
+              selectedCategoryId = selectedCategory.id;
+              if (selectedCategoryId == 5) {
                 context
                     .read<ProductBloc>()
                     .add(const GetProducts(FilterProductParams()));
               } else {
-                context.read<ProductBloc>().add(GetProducts(FilterProductParams(
-                    categories: [categories.firstWhere((c) => c.id == id)])));
+                context.read<ProductBloc>().add(GetProducts(
+                    FilterProductParams(categories: [selectedCategory])));
               }
             });
           },
+          itemBuilder: (category, isSelected) => Container(
+            margin: const EdgeInsets.symmetric(
+                horizontal: Units.edgeInsetsXLarge,
+                vertical: Units.edgeInsetsXLarge),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(Units.radiusXXLarge),
+              color: isSelected ? Colours.colorsButtonMenu : Colours.primary100,
+            ),
+            padding: const EdgeInsets.all(16),
+            child: Text(
+              category.name,
+              style: TextStyle(
+                color: isSelected ? Colors.white : Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
         ),
         Expanded(
           child: BlocBuilder<ProductBloc, ProductState>(

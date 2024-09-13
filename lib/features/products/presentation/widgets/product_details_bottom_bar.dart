@@ -6,13 +6,13 @@ import 'package:pos_flutter/features/products/domain/entities/product/variant.da
 class ProductDetailsBottomBar extends StatelessWidget {
   final Product product;
   final Variant? selectedVariant;
-  final VoidCallback? onPressed; // Nouveau paramètre pour la gestion du bouton
+  final VoidCallback? onPressed;
 
   const ProductDetailsBottomBar({
     super.key,
     required this.product,
     required this.selectedVariant,
-    this.onPressed, // Récupère l'action à effectuer sur le bouton
+    this.onPressed,
   });
 
   @override
