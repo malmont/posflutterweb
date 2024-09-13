@@ -4,6 +4,7 @@ import 'package:pos_flutter/core/services/api/order_api_client.dart';
 import 'package:pos_flutter/features/order/domain/entities/filter_order_params.dart';
 import 'package:pos_flutter/features/order/infrastucture/models/order_detail_response_model.dart';
 import 'package:pos_flutter/features/order/infrastucture/models/order_details_model.dart';
+import 'package:retrofit/dio.dart';
 
 abstract class OrderRemoteDataSource {
   Future<bool> addOrder(OrderDetailResponseModel params);
@@ -19,8 +20,11 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
   @override
   Future<bool> addOrder(OrderDetailResponseModel params) async {
     try {
-      final response = await apiClient.createOrder(params);
-      return response;
+      final HttpResponse response = await apiClient.createOrder(params);
+      if (response.response.statusCode == 201) {
+        return true;
+      }
+      return false;
     } catch (e) {
       throw ServerException();
     }

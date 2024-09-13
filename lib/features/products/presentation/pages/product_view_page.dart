@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pos_flutter/core/error/failures.dart';
-import 'package:pos_flutter/features/cart/presentation/pages/cart_view_page.dart';
+import 'package:pos_flutter/features/order/presentation/widgets/cart-checkout_flip_page.dart';
 import 'package:pos_flutter/features/products/application/blocs/product_bloc.dart';
 import 'package:pos_flutter/features/products/domain/entities/categoty/category.dart';
 import 'package:pos_flutter/features/products/domain/entities/product/filter_product_params.dart';
@@ -122,7 +122,7 @@ class _ProductViewPageState extends State<ProductViewPage> {
           ),
           const Expanded(
             flex: 3,
-            child: CartViewPage(),
+            child: CartCheckoutFlipPage(),
           ),
         ],
       ),

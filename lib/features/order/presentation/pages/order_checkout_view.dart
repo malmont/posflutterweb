@@ -3,19 +3,34 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:pos_flutter/core/router/app_router.dart';
+import 'package:pos_flutter/design/design.dart';
 import 'package:pos_flutter/di/injection_container.dart';
 import 'package:pos_flutter/features/cart/application/blocs/cart_bloc.dart';
 import 'package:pos_flutter/features/cart/domain/entities/cart_item.dart';
 import 'package:pos_flutter/features/cart/presentation/widgets/input_form_button.dart';
 import 'package:pos_flutter/features/order/application/blocs/order_add/order_add_cubit.dart';
 import 'package:pos_flutter/features/order/domain/entities/order_detail_response.dart';
+import 'package:pos_flutter/features/order/presentation/widgets/order_type_selection.dart';
 import 'package:pos_flutter/features/order/presentation/widgets/outline_label_card.dart';
+import 'package:pos_flutter/features/order/presentation/widgets/payment_method_selection.dart';
 
-class OrderCheckoutView extends StatelessWidget {
+class OrderCheckoutView extends StatefulWidget {
+  final VoidCallback onOrderPlaced;
   final List<CartItem> items;
-  const OrderCheckoutView({super.key, required this.items});
 
+  const OrderCheckoutView({
+    super.key,
+    required this.items,
+    required this.onOrderPlaced,
+  });
+
+  @override
+  OrderCheckoutViewState createState() => OrderCheckoutViewState();
+}
+
+class OrderCheckoutViewState extends State<OrderCheckoutView> {
+  int? selectedPaymentMethodId = 1;
+  int? selectedOrderType = 1;
   @override
   Widget build(BuildContext context) {
     int deliveryCharge = 0;
@@ -28,197 +43,268 @@ class OrderCheckoutView extends StatelessWidget {
             EasyLoading.show(status: 'Loading...');
           } else if (state is OrderAddSuccess) {
             context.read<CartBloc>().add(const ClearCart());
-            Navigator.of(context).pop();
+            setState(() {
+              widget.items.clear();
+            });
+            widget.onOrderPlaced();
             EasyLoading.showSuccess("Order Placed Successfully");
           } else if (state is OrderAddFail) {
             EasyLoading.showError("Error");
           }
         },
         child: Scaffold(
+          backgroundColor: Colours.primaryPalette,
           appBar: AppBar(
-            backgroundColor: Colors.white,
-            title: const Text('Order Checkout'),
+            backgroundColor: Colours.primaryPalette,
+            title: Text(
+              'Order Checkout',
+              style:
+                  TextStyles.interRegularBody1.copyWith(color: Colours.white),
+            ),
           ),
           body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.all(Units.edgeInsetsXXLarge),
             child: ListView(
               physics: const BouncingScrollPhysics(),
               children: [
+                OrderTypeSelection(
+                  selectedMethodId: selectedOrderType,
+                  onSelectMethod: (id) {
+                    setState(() {
+                      selectedOrderType = id;
+                    });
+                  },
+                ),
+                const SizedBox(
+                  height: Units.edgeInsetsXXLarge,
+                ),
+                PaymentMethodSelection(
+                  selectedMethodId: selectedPaymentMethodId,
+                  onSelectMethod: (id) {
+                    setState(() {
+                      selectedPaymentMethodId = id;
+                    });
+                  },
+                ),
+                const SizedBox(
+                  height: Units.edgeInsetsXXLarge,
+                ),
                 OutlineLabelCard(
                   title: 'Selected Products',
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 18, bottom: 8),
-                    child: Column(
-                      children: items
-                          .map((product) => Padding(
-                                padding: const EdgeInsets.only(bottom: 8),
-                                child: Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 75,
-                                      child: AspectRatio(
-                                        aspectRatio: 0.88,
-                                        child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: CachedNetworkImage(
-                                                imageUrl: product.product.image,
-                                              ),
-                                            )),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 20),
-                                    Flexible(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                    padding: const EdgeInsets.only(
+                        top: Units.edgeInsetsXXLarge,
+                        bottom: Units.edgeInsetsLarge),
+                    child: widget.items.isEmpty
+                        ? Text(
+                            'No items in the cart',
+                            style: TextStyles.interRegularBody1
+                                .copyWith(color: Colors.red),
+                          )
+                        : Column(
+                            children: widget.items
+                                .map((product) => Padding(
+                                      padding: const EdgeInsets.only(
+                                          bottom: Units.edgeInsetsLarge),
+                                      child: Row(
                                         children: [
-                                          Text(
-                                            product.product.name,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .labelLarge,
+                                          SizedBox(
+                                            width: 75,
+                                            child: AspectRatio(
+                                              aspectRatio: 0.88,
+                                              child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          Units.radiusXXLarge),
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .all(
+                                                        Units.edgeInsetsLarge),
+                                                    child: CachedNetworkImage(
+                                                      imageUrl:
+                                                          product.product.image,
+                                                    ),
+                                                  )),
+                                            ),
                                           ),
                                           const SizedBox(
-                                            height: 4,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                '\$${(product.product.price / 100).toStringAsFixed(2)}',
-                                              ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              Text(
-                                                'x${product.quantity}',
-                                                style: const TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600,
+                                              width: Units.sizedbox_20),
+                                          Flexible(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  product.product.name,
+                                                  style: TextStyles
+                                                      .interRegularBody1
+                                                      .copyWith(
+                                                          color: Colours
+                                                              .colorsButtonMenu),
                                                 ),
-                                              ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  // Affichage de la taille
-                                                  Wrap(
-                                                    children: [
-                                                      Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                                horizontal: 5,
-                                                                vertical: 2),
-                                                        margin: const EdgeInsets
-                                                            .all(4),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          border: Border.all(
-                                                            color: Colors.black,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(8),
+                                                const SizedBox(
+                                                  height: 4,
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      '\$${(product.product.price / 100).toStringAsFixed(2)}',
+                                                      style: TextStyles
+                                                          .interRegularBody1
+                                                          .copyWith(
+                                                              color: Colours
+                                                                  .colorsButtonMenu),
+                                                    ),
+                                                    const SizedBox(
+                                                      width: Units.sizedbox_10,
+                                                    ),
+                                                    Text(
+                                                      'x${product.quantity}',
+                                                      style: TextStyles
+                                                          .interRegularBody1
+                                                          .copyWith(
+                                                              color: Colours
+                                                                  .colorsButtonMenu),
+                                                    ),
+                                                    const SizedBox(
+                                                      width: Units.sizedbox_10,
+                                                    ),
+                                                    Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Wrap(
+                                                          children: [
+                                                            Container(
+                                                              padding: const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal: Units
+                                                                      .edgeInsetsMedium,
+                                                                  vertical: Units
+                                                                      .edgeInsetsSmall),
+                                                              margin: const EdgeInsets
+                                                                  .all(Units
+                                                                      .edgeInsetsMedium),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                border:
+                                                                    Border.all(
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            Units.radiusXXLarge),
+                                                              ),
+                                                              child: Text(
+                                                                product.variant
+                                                                    .size.name
+                                                                    .substring(
+                                                                        0, 1),
+                                                                style: TextStyles
+                                                                    .interRegularBody1
+                                                                    .copyWith(
+                                                                        color: Colours
+                                                                            .colorsButtonMenu),
+                                                              ),
+                                                            )
+                                                          ],
                                                         ),
-                                                        child: Text(
-                                                          product
-                                                              .variant.size.name
-                                                              .substring(0, 1),
-                                                          style:
-                                                              const TextStyle(
-                                                            fontSize: 10,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                          ),
+                                                        Wrap(
+                                                          children: [
+                                                            Container(
+                                                              margin: const EdgeInsets
+                                                                  .all(Units
+                                                                      .edgeInsetsMedium),
+                                                              width: Units.u20,
+                                                              height: Units.u20,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                shape: BoxShape
+                                                                    .circle,
+                                                                color: Color(int.parse(
+                                                                        product
+                                                                            .variant
+                                                                            .color
+                                                                            .codeHexa
+                                                                            .replaceFirst('#',
+                                                                                ''),
+                                                                        radix:
+                                                                            16) +
+                                                                    0xFF000000),
+                                                                border: Border.all(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    width: 2),
+                                                              ),
+                                                            ),
+                                                          ],
                                                         ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                  Wrap(
-                                                    children: [
-                                                      Container(
-                                                        margin: const EdgeInsets
-                                                            .all(4),
-                                                        width: 20,
-                                                        height: 20,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          shape:
-                                                              BoxShape.circle,
-                                                          color: Color(int.parse(
-                                                                  product
-                                                                      .variant
-                                                                      .color
-                                                                      .codeHexa
-                                                                      .replaceFirst(
-                                                                          '#',
-                                                                          ''),
-                                                                  radix: 16) +
-                                                              0xFF000000),
-                                                          border: Border.all(
-                                                              color:
-                                                                  Colors.black,
-                                                              width: 2),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          )
+                                                      ],
+                                                    ),
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                          ),
                                         ],
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ))
-                          .toList(),
-                    ),
+                                    ))
+                                .toList(),
+                          ),
                   ),
                 ),
                 const SizedBox(
-                  height: 16,
+                  height: Units.sizedbox_16,
                 ),
                 OutlineLabelCard(
-                  title: 'Order Summery',
+                  title: 'Order Summary',
                   child: Container(
                     height: 120,
-                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: Units.edgeInsetsLarge),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text("Total Number of Items"),
+                            Text(
+                              "Total Number of Items",
+                              style: TextStyles.interRegularBody1
+                                  .copyWith(color: Colours.colorsButtonMenu),
+                            ),
                             BlocBuilder<CartBloc, CartState>(
                                 builder: (context, state) {
                               if (state.cart.isEmpty) {
                                 return const SizedBox();
                               }
 
-                              return Text("x${state.totalItems}");
+                              return Text(
+                                "x${state.totalItems}",
+                                style: TextStyles.interRegularBody1
+                                    .copyWith(color: Colours.colorsButtonMenu),
+                              );
                             }),
                           ],
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text("Total Price"),
+                            Text("Total Price",
+                                style: TextStyles.interRegularBody1
+                                    .copyWith(color: Colours.colorsButtonMenu)),
                             Text(
-                                '\$${(items.fold(0.0, (previousValue, element) => ((element.product.price * element.quantity) + previousValue)) / 100).toStringAsFixed(2)}'),
+                                '\$${(widget.items.fold(0.0, (previousValue, element) => ((element.product.price * element.quantity) + previousValue)) / 100).toStringAsFixed(2)}',
+                                style: TextStyles.interRegularBody1
+                                    .copyWith(color: Colours.colorsButtonMenu)),
                           ],
                         ),
                         Column(
@@ -226,14 +312,20 @@ class OrderCheckoutView extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Text("Delivery Charge"),
+                                Text("Delivery Charge",
+                                    style: TextStyles.interRegularBody1
+                                        .copyWith(
+                                            color: Colours.colorsButtonMenu)),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      '\$${(deliveryCharge / 100).toStringAsFixed(2)}', // Affichage correct du montant
-                                    ),
+                                        '\$${(deliveryCharge / 100).toStringAsFixed(2)}',
+                                        style: TextStyles.interRegularBody1
+                                            .copyWith(
+                                                color:
+                                                    Colours.colorsButtonMenu)),
                                   ],
                                 )
                               ],
@@ -244,9 +336,15 @@ class OrderCheckoutView extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Text("Total"),
+                                Text("Total",
+                                    style: TextStyles.interRegularBody1
+                                        .copyWith(
+                                            color: Colours.colorsButtonMenu)),
                                 Text(
-                                    '\$${((items.fold(0.0, (previousValue, element) => (((element.product.price * element.quantity) + previousValue)) + deliveryCharge) / 100)).toStringAsFixed(2)}')
+                                    '\$${((widget.items.fold(0.0, (previousValue, element) => (((element.product.price * element.quantity) + previousValue)) + deliveryCharge) / 100)).toStringAsFixed(2)}',
+                                    style: TextStyles.interRegularBody1
+                                        .copyWith(
+                                            color: Colours.colorsButtonMenu))
                               ],
                             )
                           ],
@@ -266,28 +364,17 @@ class OrderCheckoutView extends StatelessWidget {
                   color: Colors.black87,
                   onClick: () {
                     context.read<OrderAddCubit>().addOrder(OrderDetailResponse(
-                        orderSource: 3,
-                        addressId: 1,
-                        paymentMethod: 1,
-                        carrierId: 1,
-                        typeOrder: 1,
-                        items: items
+                        orderSource: 2,
+                        addressId: 38,
+                        paymentMethod: selectedPaymentMethodId ?? 1,
+                        carrierId: 7,
+                        typeOrder: selectedOrderType ?? 1,
+                        items: widget.items
                             .map((e) => OrderItemDetail(
                                   productVariantId: e.variant.id,
                                   quantity: e.quantity,
                                 ))
                             .toList()));
-
-                    context.read<OrderAddCubit>().stream.listen((state) {
-                      if (state is OrderAddSuccess) {
-                        EasyLoading.showSuccess("Order Placed Successfully");
-                        context.read<CartBloc>().add(const ClearCart());
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                            AppRouter.home, (Route<dynamic> route) => false);
-                      } else if (state is OrderAddFail) {
-                        EasyLoading.showError("Error placing order");
-                      }
-                    });
                   },
                   titleText: 'Confirm',
                 );

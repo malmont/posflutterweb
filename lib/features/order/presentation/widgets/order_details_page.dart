@@ -24,15 +24,22 @@ class OrderDetailsPage extends StatelessWidget {
       ),
       body: Container(
         color: Colours.primary100,
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(Units.edgeInsetsXXLarge),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildOrderInfoCard(),
-            const SizedBox(height: 20),
-            const Text(
-              'Items:',
-              style: TextStyles.interBoldH6,
+            const SizedBox(height: Units.sizedbox_20),
+            Card(
+              color: Colours.primaryPalette,
+              child: Padding(
+                padding: const EdgeInsets.all(Units.edgeInsetsLarge),
+                child: Text(
+                  'Items',
+                  style: TextStyles.interBoldH6
+                      .copyWith(color: Colours.colorsButtonMenu),
+                ),
+              ),
             ),
             const SizedBox(height: 10),
             Expanded(
@@ -60,18 +67,18 @@ class OrderDetailsPage extends StatelessWidget {
     return Card(
       color: Colours.primaryPalette,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(Units.radiusXXXXLarge),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(Units.edgeInsetsXXXLarge),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildInfoColumn('Order Reference', orderDetails.reference),
-            const SizedBox(height: 10),
+            const SizedBox(height: Units.sizedbox_10),
             _buildInfoColumn('Total Amount',
                 '\$${orderDetails.totalAmount.toStringAsFixed(2)}'),
-            const SizedBox(height: 10),
+            const SizedBox(height: Units.sizedbox_10),
             _buildInfoColumn('Order Date', orderDetails.orderDate),
           ],
         ),
@@ -87,7 +94,7 @@ class OrderDetailsPage extends StatelessWidget {
           label,
           style: TextStyles.interBoldBody1.copyWith(color: Colors.white70),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: Units.xsmall),
         Text(
           value,
           style: TextStyles.interBoldBody1.copyWith(color: Colors.white),
@@ -100,16 +107,16 @@ class OrderDetailsPage extends StatelessWidget {
     return Card(
       color: Colours.primaryPalette,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(Units.radiusXXXXLarge),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(Units.radiusXXXXLarge),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
+                borderRadius: BorderRadius.circular(Units.radiusXXLarge),
                 child: CachedNetworkImage(
                   imageUrl: item.productImage,
                   width: double.infinity,
@@ -117,19 +124,19 @@ class OrderDetailsPage extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: Units.sizedbox_8),
             Text(
               item.productVariantName,
               style: TextStyles.interBoldBody1.copyWith(color: Colors.white),
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: Units.sizedbox_8),
             Text(
               'Quantity: ${item.quantity}',
               style:
                   TextStyles.interRegularBody1.copyWith(color: Colors.white70),
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: Units.sizedbox_8),
             Text(
               'Price: \$${item.totalPrice.toStringAsFixed(2)}',
               style: TextStyles.interRegularBody1

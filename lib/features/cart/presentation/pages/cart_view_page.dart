@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pos_flutter/core/router/app_router.dart';
 import 'package:pos_flutter/features/cart/application/blocs/cart_bloc.dart';
 import 'package:pos_flutter/features/cart/domain/entities/cart_item.dart';
 import 'package:pos_flutter/features/cart/presentation/widgets/cart_item_card.dart';
-import 'package:pos_flutter/features/cart/presentation/widgets/input_form_button.dart';
+import 'package:pos_flutter/features/order/application/blocs/order_fetch/order_fetch_cubit.dart';
 
 import '../../../../design/design.dart';
 
 class CartViewPage extends StatefulWidget {
-  const CartViewPage({super.key});
+  final VoidCallback onCheckoutPressed;
+  const CartViewPage({super.key, required this.onCheckoutPressed});
 
   @override
   State<CartViewPage> createState() => _CartViewPageState();
@@ -17,6 +17,7 @@ class CartViewPage extends StatefulWidget {
 
 class _CartViewPageState extends State<CartViewPage> {
   List<CartItem> selectedCartItems = [];
+
   String _getTotalItems(List<CartItem> cart) {
     int totalItems = cart.fold(0, (sum, item) => sum + item.quantity);
     return 'Total ($totalItems items)';
@@ -26,6 +27,11 @@ class _CartViewPageState extends State<CartViewPage> {
   Widget build(BuildContext context) {
     bool isSelected = true;
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Cart',
+            style: TextStyles.interMediumH6.copyWith(color: Colours.white)),
+        backgroundColor: Colours.primaryPalette,
+      ),
       backgroundColor: Colours.primaryPalette,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -143,6 +149,7 @@ class _CartViewPageState extends State<CartViewPage> {
                                     // Navigator.of(context).pushNamed(
                                     //     AppRouter.orderCheckout,
                                     //     arguments: state.cart);
+                                    widget.onCheckoutPressed();
                                   },
                                   style: CustomButtonStyle.customButtonStyle(
                                       type: ButtonType.cancelButton,

@@ -49,7 +49,7 @@ class _OrderViewState extends State<OrderView> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SizedBox(
-                              width: 700,
+                              width: Units.sizedbox_700,
                               child: Image.asset(AppAssets.orderDelivery),
                             ),
                             const Text("Orders are Empty!"),
@@ -75,8 +75,7 @@ class _OrderViewState extends State<OrderView> {
                                 (10 + MediaQuery.of(context).padding.bottom),
                             top: 10,
                           ),
-                          itemBuilder: (context, index) =>
-                              const OrderInfoCard(),
+                          itemBuilder: (context, index) => const SizedBox(),
                         );
                       }
                     },
