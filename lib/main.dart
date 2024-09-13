@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pos_flutter/features/cart/application/blocs/cart_bloc.dart';
 import 'package:pos_flutter/features/home/application/blocs/side_menu_bloc.dart';
+import 'package:pos_flutter/features/order/application/blocs/order_fetch/order_fetch_cubit.dart';
+import 'package:pos_flutter/features/order/domain/entities/filter_order_params.dart';
 import 'package:pos_flutter/features/products/application/blocs/product_bloc.dart';
 import 'package:pos_flutter/features/products/domain/entities/product/filter_product_params.dart';
 import 'package:provider/provider.dart' as provider;
@@ -46,6 +48,13 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => getIt<CartBloc>()..add(const GetCart()),
+        ),
+        BlocProvider(
+          create: (context) => getIt<OrderFetchCubit>()
+            ..getOrders(const FilterOrderParams(
+              orderSource: 2,
+              days: 10,
+            )),
         ),
         BlocProvider(
           create: (context) => getIt<ProductBloc>()

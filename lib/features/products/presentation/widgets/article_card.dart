@@ -8,12 +8,12 @@ import '../../../../design/design.dart';
 
 class ArticleCard extends StatelessWidget {
   final Product article;
-  final void Function(Product) onTap; // Function to handle tap
+  final void Function(Product) onTap;
 
   const ArticleCard({
     super.key,
     required this.article,
-    required this.onTap, // Add the function to the constructor
+    required this.onTap,
   });
 
   @override
@@ -21,7 +21,7 @@ class ArticleCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if (article != null) {
-          onTap(article); // Use the passed function to navigate
+          onTap(article);
         }
       },
       child: Stack(

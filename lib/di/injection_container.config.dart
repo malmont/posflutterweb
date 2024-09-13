@@ -18,14 +18,19 @@ import 'package:internet_connection_checker/internet_connection_checker.dart'
 import 'package:pos_flutter/core/config/environment_config.dart' as _i1044;
 import 'package:pos_flutter/core/config/environment_repository.dart' as _i310;
 import 'package:pos_flutter/core/network/network_info.dart' as _i40;
+import 'package:pos_flutter/core/services/api/order_api_client.dart' as _i482;
 import 'package:pos_flutter/core/services/api/product_api_client.dart' as _i303;
 import 'package:pos_flutter/core/services/api/user_api_client.dart' as _i324;
 import 'package:pos_flutter/core/services/data_sources/local/cart_local_data_source.dart'
     as _i531;
+import 'package:pos_flutter/core/services/data_sources/local/order_local_data_source.dart'
+    as _i339;
 import 'package:pos_flutter/core/services/data_sources/local/product_local_data_source.dart'
     as _i628;
 import 'package:pos_flutter/core/services/data_sources/local/user_local_data_source.dart'
     as _i381;
+import 'package:pos_flutter/core/services/data_sources/remote/order_remote_data_source.dart'
+    as _i950;
 import 'package:pos_flutter/core/services/data_sources/remote/product_remote-data_sourceImpl.dart'
     as _i308;
 import 'package:pos_flutter/core/services/data_sources/remote/user_remote_data_source.dart'
@@ -59,6 +64,22 @@ import 'package:pos_flutter/features/cart/domain/usecases/remove_cart_usecase.da
     as _i300;
 import 'package:pos_flutter/features/cart/infrastucture/repositories/cart_repository_impl.dart'
     as _i290;
+import 'package:pos_flutter/features/order/application/blocs/order_add/order_add_cubit.dart'
+    as _i216;
+import 'package:pos_flutter/features/order/application/blocs/order_fetch/order_fetch_cubit.dart'
+    as _i542;
+import 'package:pos_flutter/features/order/domain/repositories/order_repository.dart'
+    as _i342;
+import 'package:pos_flutter/features/order/domain/usecases/add_order_usecase.dart'
+    as _i434;
+import 'package:pos_flutter/features/order/domain/usecases/clear_local_order_usecase.dart'
+    as _i767;
+import 'package:pos_flutter/features/order/domain/usecases/get_cached_orders_usecase.dart'
+    as _i739;
+import 'package:pos_flutter/features/order/domain/usecases/get_remote_orders_usecase.dart'
+    as _i555;
+import 'package:pos_flutter/features/order/infrastucture/repositories/order_repository_impl.dart'
+    as _i263;
 import 'package:pos_flutter/features/products/application/blocs/product_bloc.dart'
     as _i117;
 import 'package:pos_flutter/features/products/domain/repositories/product_repository.dart'
@@ -99,6 +120,9 @@ extension GetItInjectableX on _i174.GetIt {
             ));
     gh.lazySingleton<_i40.NetworkInfo>(
         () => _i40.NetworkInfoImpl(gh<_i973.InternetConnectionChecker>()));
+    gh.lazySingleton<_i339.OrderLocalDataSource>(() =>
+        _i339.OrderLocalDataSourceImpl(
+            sharedPreferences: gh<_i460.SharedPreferences>()));
     gh.lazySingleton<_i628.ProductLocalDataSource>(() =>
         _i628.ProductLocalDataSourceImpl(
             sharedPreferences: gh<_i460.SharedPreferences>()));
@@ -134,6 +158,10 @@ extension GetItInjectableX on _i174.GetIt {
         () => registerModule.userApiClient(gh<_i361.Dio>()));
     gh.lazySingleton<_i303.ProductApiClient>(
         () => registerModule.productApiClient(gh<_i361.Dio>()));
+    gh.lazySingleton<_i482.OrderApiClient>(
+        () => registerModule.orderApiClient(gh<_i361.Dio>()));
+    gh.lazySingleton<_i950.OrderRemoteDataSource>(() =>
+        _i950.OrderRemoteDataSourceImpl(apiClient: gh<_i482.OrderApiClient>()));
     gh.lazySingleton<_i1036.UserRemoteDataSource>(
         () => _i1036.UserRemoteDataSourceImpl(
               apiClient: gh<_i324.UserApiClient>(),
@@ -152,8 +180,22 @@ extension GetItInjectableX on _i174.GetIt {
           localDataSource: gh<_i628.ProductLocalDataSource>(),
           networkInfo: gh<_i40.NetworkInfo>(),
         ));
+    gh.lazySingleton<_i342.OrderRepository>(() => _i263.OrderRepositoryImpl(
+          remoteDataSource: gh<_i950.OrderRemoteDataSource>(),
+          localDataSource: gh<_i339.OrderLocalDataSource>(),
+          userLocalDataSource: gh<_i381.UserLocalDataSource>(),
+          networkInfo: gh<_i40.NetworkInfo>(),
+        ));
     gh.lazySingleton<_i323.GetProductUseCase>(
         () => _i323.GetProductUseCase(gh<_i116.ProductRepository>()));
+    gh.lazySingleton<_i434.AddOrderUseCase>(
+        () => _i434.AddOrderUseCase(gh<_i342.OrderRepository>()));
+    gh.lazySingleton<_i555.GetRemoteOrdersUseCase>(
+        () => _i555.GetRemoteOrdersUseCase(gh<_i342.OrderRepository>()));
+    gh.lazySingleton<_i767.ClearLocalOrdersUseCase>(
+        () => _i767.ClearLocalOrdersUseCase(gh<_i342.OrderRepository>()));
+    gh.lazySingleton<_i739.GetCachedOrdersUseCase>(
+        () => _i739.GetCachedOrdersUseCase(gh<_i342.OrderRepository>()));
     gh.lazySingleton<_i935.CheckTokenValidityUseCase>(
         () => _i935.CheckTokenValidityUseCase(gh<_i40.AuthRepository>()));
     gh.lazySingleton<_i112.SignInUseCase>(
@@ -168,6 +210,13 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.factory<_i117.ProductBloc>(
         () => _i117.ProductBloc(gh<_i323.GetProductUseCase>()));
+    gh.factory<_i542.OrderFetchCubit>(() => _i542.OrderFetchCubit(
+          gh<_i555.GetRemoteOrdersUseCase>(),
+          gh<_i739.GetCachedOrdersUseCase>(),
+          gh<_i767.ClearLocalOrdersUseCase>(),
+        ));
+    gh.factory<_i216.OrderAddCubit>(
+        () => _i216.OrderAddCubit(gh<_i434.AddOrderUseCase>()));
     gh.factory<_i229.SignInViewModel>(
         () => _i229.SignInViewModel(gh<_i644.AuthBloc>()));
     return this;

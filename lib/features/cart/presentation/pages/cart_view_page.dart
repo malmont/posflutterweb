@@ -144,10 +144,10 @@ class _CartViewPageState extends State<CartViewPage> {
                                     //     AppRouter.orderCheckout,
                                     //     arguments: state.cart);
                                   },
-                                  child: const Text('Checkout'),
                                   style: CustomButtonStyle.customButtonStyle(
                                       type: ButtonType.cancelButton,
                                       isSelected: isSelected),
+                                  child: const Text('Checkout'),
                                 ),
                               ],
                             ),

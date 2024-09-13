@@ -158,7 +158,7 @@ class _ProductDetailsViewPageState extends State<ProductDetailsViewPage> {
                             variant: selectedVariant!)));
 
                     context.read<ProductBloc>().add(const ResetVariantEvent());
-                    widget.onBack(); // Use the onBack callback to go back
+                    // widget.onBack();
                   }
                 : null,
           );

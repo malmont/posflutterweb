@@ -20,16 +20,14 @@ class DioConfig {
       ),
     );
 
-    // Ajouter l'interceptor du token
     dio.interceptors.add(BearerTokenInterceptor(userLocalDataSource));
 
-    // Ajouter un LogInterceptor pour le débogage
     dio.interceptors.add(LogInterceptor(
-      requestBody: true,
-      responseBody: true,
-      requestHeader: true,
-      responseHeader: true,
-    ));
+        // requestBody: true,
+        // responseBody: true,
+        // requestHeader: true,
+        // responseHeader: true,
+        ));
 
     return dio;
   }

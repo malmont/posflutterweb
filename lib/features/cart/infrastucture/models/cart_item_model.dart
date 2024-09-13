@@ -23,11 +23,11 @@ String cartItemModelToJson(List<CartItemModel> data) =>
 
 class CartItemModel extends CartItem {
   const CartItemModel({
-    String? id,
-    required ProductModel product,
-    int quantity = 1,
-    required VariantModel variant,
-  }) : super(id: id, product: product, quantity: quantity, variant: variant);
+    super.id,
+    required ProductModel super.product,
+    super.quantity,
+    required VariantModel super.variant,
+  });
 
   factory CartItemModel.fromJson(Map<String, dynamic> json) {
     return CartItemModel(
@@ -68,20 +68,18 @@ class CartItemModel extends CartItem {
   @override
   CartItemModel copyWith({
     String? id,
-    Product? product, // Utilisation du type générique Product
+    Product? product,
     int? quantity,
-    Variant? variant, // Utilisation du type générique Variant
+    Variant? variant,
   }) {
     return CartItemModel(
       variant: variant is VariantModel
           ? variant
-          : VariantModel.fromEntity(variant ??
-              this.variant), // Conversion en VariantModel si nécessaire
+          : VariantModel.fromEntity(variant ?? this.variant),
       id: id ?? this.id,
       product: product is ProductModel
           ? product
-          : ProductModel.fromEntity(product ??
-              this.product), // Conversion en ProductModel si nécessaire
+          : ProductModel.fromEntity(product ?? this.product),
       quantity: quantity ?? this.quantity,
     );
   }
