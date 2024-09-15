@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pos_flutter/features/cart/application/blocs/cart_bloc.dart';
 import 'package:pos_flutter/features/cart/domain/entities/cart_item.dart';
 import 'package:pos_flutter/features/cart/presentation/widgets/cart_item_card.dart';
-import 'package:pos_flutter/features/order/application/blocs/order_fetch/order_fetch_cubit.dart';
 
 import '../../../../design/design.dart';
 
@@ -146,9 +145,6 @@ class _CartViewPageState extends State<CartViewPage> {
                               children: [
                                 ElevatedButton(
                                   onPressed: () {
-                                    // Navigator.of(context).pushNamed(
-                                    //     AppRouter.orderCheckout,
-                                    //     arguments: state.cart);
                                     widget.onCheckoutPressed();
                                   },
                                   style: CustomButtonStyle.customButtonStyle(

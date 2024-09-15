@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pos_flutter/features/order/application/blocs/order_fetch/order_fetch_cubit.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:pos_flutter/features/order/application/blocs/order_bloc.dart';
 import 'package:pos_flutter/features/order/domain/entities/order_details.dart';
-import 'package:pos_flutter/features/order/presentation/widgets/order_info_card.dart';
 import 'package:pos_flutter/features/order/presentation/widgets/orders_list_page.dart';
 import 'package:pos_flutter/features/order/presentation/widgets/order_details_page.dart';
 import 'package:pos_flutter/features/order/presentation/pages/statistic_view_page.dart';
@@ -42,24 +42,13 @@ class _OrderViewState extends State<OrderView> {
             child: Stack(
               children: [
                 if (selectedOrder == null)
-                  BlocBuilder<OrderFetchCubit, OrderFetchState>(
+                  BlocBuilder<OrderBloc, OrderState>(
                     builder: (context, state) {
                       if (state is! OrderFetchLoading && state.orders.isEmpty) {
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: Units.sizedbox_700,
-                              child: Image.asset(AppAssets.orderDelivery),
-                            ),
-                            const Text("Orders are Empty!"),
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.1,
-                            ),
-                          ],
-                        );
+                        EasyLoading.show(status: 'Loading...');
                       }
                       if (state is OrderFetchSuccess) {
+                        EasyLoading.dismiss();
                         return OrdersListPage(
                           orders: state.orders,
                           onSelectOrder: navigateToDetails,

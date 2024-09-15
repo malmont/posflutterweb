@@ -64,10 +64,8 @@ import 'package:pos_flutter/features/cart/domain/usecases/remove_cart_usecase.da
     as _i300;
 import 'package:pos_flutter/features/cart/infrastucture/repositories/cart_repository_impl.dart'
     as _i290;
-import 'package:pos_flutter/features/order/application/blocs/order_add/order_add_cubit.dart'
-    as _i216;
-import 'package:pos_flutter/features/order/application/blocs/order_fetch/order_fetch_cubit.dart'
-    as _i542;
+import 'package:pos_flutter/features/order/application/blocs/order_bloc.dart'
+    as _i813;
 import 'package:pos_flutter/features/order/domain/repositories/order_repository.dart'
     as _i342;
 import 'package:pos_flutter/features/order/domain/usecases/add_order_usecase.dart'
@@ -210,13 +208,12 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.factory<_i117.ProductBloc>(
         () => _i117.ProductBloc(gh<_i323.GetProductUseCase>()));
-    gh.factory<_i542.OrderFetchCubit>(() => _i542.OrderFetchCubit(
+    gh.factory<_i813.OrderBloc>(() => _i813.OrderBloc(
           gh<_i555.GetRemoteOrdersUseCase>(),
           gh<_i739.GetCachedOrdersUseCase>(),
           gh<_i767.ClearLocalOrdersUseCase>(),
+          gh<_i434.AddOrderUseCase>(),
         ));
-    gh.factory<_i216.OrderAddCubit>(
-        () => _i216.OrderAddCubit(gh<_i434.AddOrderUseCase>()));
     gh.factory<_i229.SignInViewModel>(
         () => _i229.SignInViewModel(gh<_i644.AuthBloc>()));
     return this;

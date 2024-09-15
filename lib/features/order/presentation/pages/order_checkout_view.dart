@@ -8,7 +8,7 @@ import 'package:pos_flutter/di/injection_container.dart';
 import 'package:pos_flutter/features/cart/application/blocs/cart_bloc.dart';
 import 'package:pos_flutter/features/cart/domain/entities/cart_item.dart';
 import 'package:pos_flutter/features/cart/presentation/widgets/input_form_button.dart';
-import 'package:pos_flutter/features/order/application/blocs/order_add/order_add_cubit.dart';
+import 'package:pos_flutter/features/order/application/blocs/order_bloc.dart';
 import 'package:pos_flutter/features/order/domain/entities/order_detail_response.dart';
 import 'package:pos_flutter/features/order/presentation/widgets/order_type_selection.dart';
 import 'package:pos_flutter/features/order/presentation/widgets/outline_label_card.dart';
@@ -35,8 +35,8 @@ class OrderCheckoutViewState extends State<OrderCheckoutView> {
   Widget build(BuildContext context) {
     int deliveryCharge = 0;
     return BlocProvider(
-      create: (context) => getIt<OrderAddCubit>(),
-      child: BlocListener<OrderAddCubit, OrderAddState>(
+      create: (context) => getIt<OrderBloc>(),
+      child: BlocListener<OrderBloc, OrderState>(
         listener: (context, state) {
           EasyLoading.dismiss();
           if (state is OrderAddLoading) {
@@ -363,18 +363,20 @@ class OrderCheckoutViewState extends State<OrderCheckoutView> {
                 return InputFormButton(
                   color: Colors.black87,
                   onClick: () {
-                    context.read<OrderAddCubit>().addOrder(OrderDetailResponse(
-                        orderSource: 2,
-                        addressId: 38,
-                        paymentMethod: selectedPaymentMethodId ?? 1,
-                        carrierId: 7,
-                        typeOrder: selectedOrderType ?? 1,
-                        items: widget.items
-                            .map((e) => OrderItemDetail(
-                                  productVariantId: e.variant.id,
-                                  quantity: e.quantity,
-                                ))
-                            .toList()));
+                    context.read<OrderBloc>().add(
+                          AddOrder(OrderDetailResponse(
+                              orderSource: 2,
+                              addressId: 38,
+                              paymentMethod: selectedPaymentMethodId ?? 1,
+                              carrierId: 7,
+                              typeOrder: selectedOrderType ?? 1,
+                              items: widget.items
+                                  .map((e) => OrderItemDetail(
+                                        productVariantId: e.variant.id,
+                                        quantity: e.quantity,
+                                      ))
+                                  .toList())),
+                        );
                   },
                   titleText: 'Confirm',
                 );
