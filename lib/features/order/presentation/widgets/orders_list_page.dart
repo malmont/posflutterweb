@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pos_flutter/design/design.dart';
-import 'package:pos_flutter/features/order/application/blocs/order_fetch/order_fetch_cubit.dart';
+import 'package:pos_flutter/features/order/application/blocs/order_bloc.dart';
 import 'package:pos_flutter/features/order/domain/entities/filter_order_params.dart';
 import 'package:pos_flutter/features/order/domain/entities/order_details.dart';
 import 'package:pos_flutter/features/order/presentation/widgets/dashboard_card.dart';
@@ -78,12 +78,12 @@ class _OrdersListPageState extends State<OrdersListPage> {
               setState(() {
                 selectedDayIndex = index;
                 final selectedDays = daySelections[index].days;
-                context.read<OrderFetchCubit>().getOrders(
+                context.read<OrderBloc>().add(GetOrders(
                       FilterOrderParams(
                         orderSource: 2,
                         days: daySelections[index].days,
                       ),
-                    );
+                    ));
               });
             },
             itemBuilder: (daySelection, isSelected) => Container(
@@ -233,8 +233,8 @@ class _OrdersListPageState extends State<OrdersListPage> {
 }
 
 class DaySelection {
-  final String name; // Nom qui sera affiché
-  final int days; // Nombre de jours correspondant
+  final String name;
+  final int days;
 
   DaySelection({required this.name, required this.days});
 }

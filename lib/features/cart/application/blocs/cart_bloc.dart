@@ -45,15 +45,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         },
         (cart) async {
           emit(CartLoaded(cart: cart, totalItems: _getTotalItems(cart)));
-          // final syncResult = await _syncCartUseCase(NoParams());
-          // syncResult.fold(
-          //   (failure) => emit(CartError(
-          //       cart: cart,
-          //       failure: failure,
-          //       totalItems: _getTotalItems(cart))),
-          //   (syncedCart) => emit(CartLoaded(
-          //       cart: syncedCart, totalItems: _getTotalItems(syncedCart))),
-          // );
         },
       );
     } catch (e) {

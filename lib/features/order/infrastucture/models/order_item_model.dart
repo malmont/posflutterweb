@@ -1,5 +1,9 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:pos_flutter/features/order/domain/entities/order_item.dart';
 
+part 'order_item_model.g.dart';
+
+@JsonSerializable()
 class OrderItemModel extends OrderItem {
   const OrderItemModel({
     required int id,
@@ -19,35 +23,10 @@ class OrderItemModel extends OrderItem {
           productImage: productImage,
         );
 
-  factory OrderItemModel.fromJson(Map<String, dynamic> json) => OrderItemModel(
-        id: json["id"],
-        quantity: json["quantity"],
-        unitPrice: json["unitPrice"],
-        totalPrice: json["totalPrice"],
-        productId: json["productId"],
-        productVariantName: json["productVariantName"],
-        productImage: json["productImage"],
-      );
+  factory OrderItemModel.fromJson(Map<String, dynamic> json) =>
+      _$OrderItemModelFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "quantity": quantity,
-        "unitPrice": unitPrice,
-        "totalPrice": totalPrice,
-        "productId": productId,
-        "productVariantName": productVariantName,
-        "productImage": productImage,
-      };
-
-  Map<String, dynamic> toJsonBody() => {
-        "id": id,
-        "quantity": quantity,
-        "unitPrice": unitPrice,
-        "totalPrice": totalPrice,
-        "productId": productId,
-        "productVariantName": productVariantName,
-        "productImage": productImage,
-      };
+  Map<String, dynamic> toJson() => _$OrderItemModelToJson(this);
 
   factory OrderItemModel.fromEntity(OrderItem entity) => OrderItemModel(
         id: entity.id,
@@ -58,4 +37,14 @@ class OrderItemModel extends OrderItem {
         productVariantName: entity.productVariantName,
         productImage: entity.productImage,
       );
+
+  Map<String, dynamic> toJsonBody() => {
+        "id": id,
+        "quantity": quantity,
+        "unitPrice": unitPrice,
+        "totalPrice": totalPrice,
+        "productId": productId,
+        "productVariantName": productVariantName,
+        "productImage": productImage,
+      };
 }
