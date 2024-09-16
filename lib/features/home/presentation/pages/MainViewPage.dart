@@ -8,6 +8,7 @@ import 'package:pos_flutter/features/home/application/blocs/side_menu_bloc.dart'
 import 'package:pos_flutter/features/home/presentation/widgets/sideMenu/animated_wave.dart';
 import 'package:pos_flutter/features/home/side_menu/side_menu.dart';
 import 'package:pos_flutter/features/order/presentation/pages/order_view.dart';
+import 'package:pos_flutter/features/payment/presentation/pages/payement_view_page.dart';
 import 'package:pos_flutter/features/products/presentation/pages/product_view_page.dart';
 import 'package:pos_flutter/features/seeting/presentation/pages/seeting_view_page.dart';
 
@@ -22,7 +23,7 @@ class MainViewPage extends StatelessWidget {
       const ProductViewPage(),
       const OrderView(),
       const CaisseView(),
-      const DashboardViewPage(),
+      const PaymentViewPage(),
       const SeatingViewPage(),
       const SeatingViewPage(),
     ];

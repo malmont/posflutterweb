@@ -34,7 +34,11 @@ class _OrdersListPageState extends State<OrdersListPage> {
     return Scaffold(
       backgroundColor: Colours.primary100,
       appBar: AppBar(
-        title: const Text('Orders'),
+        title: Text(
+          'Orders',
+          style: TextStyles.interRegularH5
+              .copyWith(color: Colours.colorsButtonMenu),
+        ),
         backgroundColor: Colours.primary100,
         actions: [
           IconButton(

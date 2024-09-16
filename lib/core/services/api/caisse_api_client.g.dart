@@ -113,11 +113,13 @@ class _CaisseApiClient implements CaisseApiClient {
   }
 
   @override
-  Future<HttpResponse<dynamic>> withdrawCaisse(double amount) async {
+  Future<HttpResponse<dynamic>> withdrawCaisse(
+      Map<String, dynamic> body) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = amount;
+    final _data = <String, dynamic>{};
+    _data.addAll(body);
     final _options = _setStreamType<HttpResponse<dynamic>>(Options(
       method: 'POST',
       headers: _headers,
@@ -141,11 +143,12 @@ class _CaisseApiClient implements CaisseApiClient {
   }
 
   @override
-  Future<HttpResponse<dynamic>> depositCaisse(double amount) async {
+  Future<HttpResponse<dynamic>> depositCaisse(Map<String, dynamic> body) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = amount;
+    final _data = <String, dynamic>{};
+    _data.addAll(body);
     final _options = _setStreamType<HttpResponse<dynamic>>(Options(
       method: 'POST',
       headers: _headers,

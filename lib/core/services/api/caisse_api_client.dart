@@ -20,8 +20,8 @@ abstract class CaisseApiClient {
   Future<HttpResponse> closeCaisse();
 
   @POST('/caisse/withdraw')
-  Future<HttpResponse> withdrawCaisse(@Body() double amount);
+  Future<HttpResponse> withdrawCaisse(@Body() Map<String, dynamic> body);
 
   @POST('/caisse/deposit')
-  Future<HttpResponse> depositCaisse(@Body() double amount);
+  Future<HttpResponse> depositCaisse(@Body() Map<String, dynamic> body);
 }

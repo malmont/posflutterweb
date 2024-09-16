@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pos_flutter/design/design.dart';
+import 'package:pos_flutter/features/Caisse/application/blocs/caisse_bloc.dart';
 import 'package:pos_flutter/features/Caisse/domain/entities/caisse.dart';
+import 'package:pos_flutter/features/payment/presentation/widgets/payments_list_page_view.dart';
+import 'package:pos_flutter/features/products/presentation/widgets/generic_list.dart';
 
 class CaisseListPage extends StatefulWidget {
   final List<Caisse> caisses;
-  final Function(Caisse) onSelectCaisse; // Add the onSelectCaisse callback
+  final Function(Caisse) onSelectCaisse;
 
   const CaisseListPage(
       {super.key, required this.caisses, required this.onSelectCaisse});
@@ -13,19 +17,60 @@ class CaisseListPage extends StatefulWidget {
   State<CaisseListPage> createState() => _CaisseListPageState();
 }
 
+int selectedDayIndex = 0;
+final List<DaySelection> daySelections = [
+  DaySelection(name: "10 jours", days: 10),
+  DaySelection(name: "20 jours", days: 20),
+  DaySelection(name: "30 jours", days: 30),
+  DaySelection(name: "2 mois", days: 60),
+  DaySelection(name: "6 mois", days: 180),
+];
+
 class _CaisseListPageState extends State<CaisseListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colours.primary100,
       appBar: AppBar(
-        title: const Text('Caisses'),
+        title: Text(
+          'Caisses',
+          style: TextStyles.interRegularH5
+              .copyWith(color: Colours.colorsButtonMenu),
+        ),
         backgroundColor: Colours.primary100,
       ),
       body: Column(
         children: [
+          GenericList<DaySelection>(
+            items: daySelections,
+            selectedIndex: selectedDayIndex,
+            onItemSelected: (index) {
+              setState(() {
+                selectedDayIndex = index;
+                final selectedDays = daySelections[index].days;
+                context.read<CaisseBloc>().add(
+                      GetCaisse(days: selectedDays),
+                    );
+              });
+            },
+            itemBuilder: (daySelection, isSelected) => Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: isSelected ? Colours.colorsButtonMenu : Colors.grey[200],
+              ),
+              padding: const EdgeInsets.all(16),
+              child: Text(
+                daySelection.name,
+                style: TextStyles.interRegularBody1.copyWith(
+                  color: isSelected ? Colors.white : Colors.black,
+                ),
+              ),
+            ),
+          ),
           Expanded(
             child: Container(
+              padding: const EdgeInsets.all(Units.edgeInsetsLarge),
               height: double.infinity,
               color: Colours.primary100,
               child: ListView.builder(
@@ -79,7 +124,7 @@ class _CaisseListPageState extends State<CaisseListPage> {
       children: [
         Text(
           'Caisse ID: ${caisse.id}',
-          style: TextStyles.interBoldH5.copyWith(color: Colors.white),
+          style: TextStyles.interBoldH6.copyWith(color: Colors.white),
         ),
         const SizedBox(height: Units.sizedbox_10),
         Text(

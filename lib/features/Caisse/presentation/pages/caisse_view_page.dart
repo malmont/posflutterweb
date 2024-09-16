@@ -90,10 +90,16 @@ class _CaisseViewState extends State<CaisseView> {
                   return const Center(child: CircularProgressIndicator());
                 } else if (state is CaisseSuccess && state.caisses.isNotEmpty) {
                   EasyLoading.dismiss();
+                  Caisse? openCaisse;
+
+                  for (var caisse in state.caisses) {
+                    if (caisse.isOpen) {
+                      openCaisse = caisse;
+                    }
+                  }
+
                   return CaisseActionsPage(
-                    caisseDetails: state.caisses.firstWhere(
-                      (caisse) => caisse.isOpen,
-                    ),
+                    caisseDetails: openCaisse,
                     onOpenCaisse: () {
                       context.read<CaisseBloc>().add(const OpenCaisse());
                     },

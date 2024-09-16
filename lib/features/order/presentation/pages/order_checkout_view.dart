@@ -5,14 +5,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pos_flutter/design/design.dart';
 import 'package:pos_flutter/di/injection_container.dart';
+import 'package:pos_flutter/features/Caisse/application/blocs/caisse_bloc.dart';
 import 'package:pos_flutter/features/cart/application/blocs/cart_bloc.dart';
 import 'package:pos_flutter/features/cart/domain/entities/cart_item.dart';
 import 'package:pos_flutter/features/cart/presentation/widgets/input_form_button.dart';
 import 'package:pos_flutter/features/order/application/blocs/order_bloc.dart';
+import 'package:pos_flutter/features/order/domain/entities/filter_order_params.dart';
 import 'package:pos_flutter/features/order/domain/entities/order_detail_response.dart';
 import 'package:pos_flutter/features/order/presentation/widgets/order_type_selection.dart';
 import 'package:pos_flutter/features/order/presentation/widgets/outline_label_card.dart';
 import 'package:pos_flutter/features/order/presentation/widgets/payment_method_selection.dart';
+import 'package:pos_flutter/features/payment/application/blocs/payment_bloc.dart';
 
 class OrderCheckoutView extends StatefulWidget {
   final VoidCallback onOrderPlaced;
@@ -47,6 +50,12 @@ class OrderCheckoutViewState extends State<OrderCheckoutView> {
               widget.items.clear();
             });
             widget.onOrderPlaced();
+            context
+                .read<PaymentBloc>()
+                .add(const GetPayments(FilterOrderParams()));
+            context.read<CaisseBloc>().add(const GetCaisse(days: 15));
+            context.read<OrderBloc>().add(const GetOrders(FilterOrderParams()));
+
             EasyLoading.showSuccess("Order Placed Successfully");
           } else if (state is OrderAddFail) {
             EasyLoading.showError("Error");

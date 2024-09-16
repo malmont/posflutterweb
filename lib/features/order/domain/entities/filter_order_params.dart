@@ -4,7 +4,7 @@ class FilterOrderParams {
 
   const FilterOrderParams({
     this.orderSource = 2,
-    this.days = 1,
+    this.days = 10,
   });
 
   FilterOrderParams copyWith({

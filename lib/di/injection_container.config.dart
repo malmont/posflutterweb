@@ -20,6 +20,7 @@ import 'package:pos_flutter/core/config/environment_repository.dart' as _i310;
 import 'package:pos_flutter/core/network/network_info.dart' as _i40;
 import 'package:pos_flutter/core/services/api/caisse_api_client.dart' as _i784;
 import 'package:pos_flutter/core/services/api/order_api_client.dart' as _i482;
+import 'package:pos_flutter/core/services/api/payment_api_client.dart' as _i577;
 import 'package:pos_flutter/core/services/api/product_api_client.dart' as _i303;
 import 'package:pos_flutter/core/services/api/user_api_client.dart' as _i324;
 import 'package:pos_flutter/core/services/data_sources/local/caisse_local_data_source.dart'
@@ -28,6 +29,8 @@ import 'package:pos_flutter/core/services/data_sources/local/cart_local_data_sou
     as _i531;
 import 'package:pos_flutter/core/services/data_sources/local/order_local_data_source.dart'
     as _i339;
+import 'package:pos_flutter/core/services/data_sources/local/payment_local_data_source.dart'
+    as _i489;
 import 'package:pos_flutter/core/services/data_sources/local/product_local_data_source.dart'
     as _i628;
 import 'package:pos_flutter/core/services/data_sources/local/user_local_data_source.dart'
@@ -36,6 +39,8 @@ import 'package:pos_flutter/core/services/data_sources/remote/caisse_remote_data
     as _i517;
 import 'package:pos_flutter/core/services/data_sources/remote/order_remote_data_source.dart'
     as _i950;
+import 'package:pos_flutter/core/services/data_sources/remote/payment_remote_data_source.dart'
+    as _i807;
 import 'package:pos_flutter/core/services/data_sources/remote/product_remote-data_sourceImpl.dart'
     as _i308;
 import 'package:pos_flutter/core/services/data_sources/remote/user_remote_data_source.dart'
@@ -103,6 +108,16 @@ import 'package:pos_flutter/features/order/domain/usecases/get_remote_orders_use
     as _i555;
 import 'package:pos_flutter/features/order/infrastucture/repositories/order_repository_impl.dart'
     as _i263;
+import 'package:pos_flutter/features/payment/application/blocs/payment_bloc.dart'
+    as _i305;
+import 'package:pos_flutter/features/payment/domain/repositories/payment_repository.dart'
+    as _i660;
+import 'package:pos_flutter/features/payment/domain/usecases/get_cached_payment_usecase.dart'
+    as _i974;
+import 'package:pos_flutter/features/payment/domain/usecases/get_remote_payment_usecase.dart'
+    as _i510;
+import 'package:pos_flutter/features/payment/infrastucture/repositories/payment_repository_impl.dart'
+    as _i805;
 import 'package:pos_flutter/features/products/application/blocs/product_bloc.dart'
     as _i117;
 import 'package:pos_flutter/features/products/domain/repositories/product_repository.dart'
@@ -152,6 +167,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i531.CartLocalDataSource>(() =>
         _i531.CartLocalDataSourceImpl(
             sharedPreferences: gh<_i460.SharedPreferences>()));
+    gh.lazySingleton<_i489.PaymentLocalDataSource>(() =>
+        _i489.PaymentLocalDataSourceImpl(
+            sharedPreferences: gh<_i460.SharedPreferences>()));
     gh.lazySingleton<_i1030.CaisseLocalDataSOurce>(() =>
         _i1030.CaisseLocalDataSOurceImpl(
             sharedPreferences: gh<_i460.SharedPreferences>()));
@@ -188,8 +206,13 @@ extension GetItInjectableX on _i174.GetIt {
         () => registerModule.orderApiClient(gh<_i361.Dio>()));
     gh.lazySingleton<_i784.CaisseApiClient>(
         () => registerModule.caisseApiClient(gh<_i361.Dio>()));
+    gh.lazySingleton<_i577.PaymentApiClient>(
+        () => registerModule.paymentApiClient(gh<_i361.Dio>()));
     gh.lazySingleton<_i950.OrderRemoteDataSource>(() =>
         _i950.OrderRemoteDataSourceImpl(apiClient: gh<_i482.OrderApiClient>()));
+    gh.lazySingleton<_i807.PaymentRemoteDataSource>(() =>
+        _i807.PaymentRemoteDataSourceImpl(
+            apiClient: gh<_i577.PaymentApiClient>()));
     gh.lazySingleton<_i1036.UserRemoteDataSource>(
         () => _i1036.UserRemoteDataSourceImpl(
               apiClient: gh<_i324.UserApiClient>(),
@@ -223,8 +246,18 @@ extension GetItInjectableX on _i174.GetIt {
           userLocalDataSource: gh<_i381.UserLocalDataSource>(),
           networkInfo: gh<_i40.NetworkInfo>(),
         ));
+    gh.lazySingleton<_i660.PaymentRepository>(() => _i805.PaymentRepositoryImpl(
+          gh<_i381.UserLocalDataSource>(),
+          remoteDataSource: gh<_i807.PaymentRemoteDataSource>(),
+          localDataSource: gh<_i489.PaymentLocalDataSource>(),
+          networkInfo: gh<_i40.NetworkInfo>(),
+        ));
     gh.lazySingleton<_i323.GetProductUseCase>(
         () => _i323.GetProductUseCase(gh<_i116.ProductRepository>()));
+    gh.lazySingleton<_i510.GetRemotePaymentUsecase>(
+        () => _i510.GetRemotePaymentUsecase(gh<_i660.PaymentRepository>()));
+    gh.lazySingleton<_i974.GetCachedPaymentUsecase>(
+        () => _i974.GetCachedPaymentUsecase(gh<_i660.PaymentRepository>()));
     gh.lazySingleton<_i434.AddOrderUseCase>(
         () => _i434.AddOrderUseCase(gh<_i342.OrderRepository>()));
     gh.lazySingleton<_i555.GetRemoteOrdersUseCase>(
@@ -275,6 +308,10 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i739.GetCachedOrdersUseCase>(),
           gh<_i767.ClearLocalOrdersUseCase>(),
           gh<_i434.AddOrderUseCase>(),
+        ));
+    gh.factory<_i305.PaymentBloc>(() => _i305.PaymentBloc(
+          gh<_i510.GetRemotePaymentUsecase>(),
+          gh<_i974.GetCachedPaymentUsecase>(),
         ));
     gh.factory<_i229.SignInViewModel>(
         () => _i229.SignInViewModel(gh<_i644.AuthBloc>()));
