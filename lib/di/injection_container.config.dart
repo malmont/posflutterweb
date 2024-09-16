@@ -18,9 +18,12 @@ import 'package:internet_connection_checker/internet_connection_checker.dart'
 import 'package:pos_flutter/core/config/environment_config.dart' as _i1044;
 import 'package:pos_flutter/core/config/environment_repository.dart' as _i310;
 import 'package:pos_flutter/core/network/network_info.dart' as _i40;
+import 'package:pos_flutter/core/services/api/caisse_api_client.dart' as _i784;
 import 'package:pos_flutter/core/services/api/order_api_client.dart' as _i482;
 import 'package:pos_flutter/core/services/api/product_api_client.dart' as _i303;
 import 'package:pos_flutter/core/services/api/user_api_client.dart' as _i324;
+import 'package:pos_flutter/core/services/data_sources/local/caisse_local_data_source.dart'
+    as _i1030;
 import 'package:pos_flutter/core/services/data_sources/local/cart_local_data_source.dart'
     as _i531;
 import 'package:pos_flutter/core/services/data_sources/local/order_local_data_source.dart'
@@ -29,6 +32,8 @@ import 'package:pos_flutter/core/services/data_sources/local/product_local_data_
     as _i628;
 import 'package:pos_flutter/core/services/data_sources/local/user_local_data_source.dart'
     as _i381;
+import 'package:pos_flutter/core/services/data_sources/remote/caisse_remote_datat_source.dart'
+    as _i517;
 import 'package:pos_flutter/core/services/data_sources/remote/order_remote_data_source.dart'
     as _i950;
 import 'package:pos_flutter/core/services/data_sources/remote/product_remote-data_sourceImpl.dart'
@@ -50,6 +55,26 @@ import 'package:pos_flutter/features/authentification/domain/usecases/sign_out_u
     as _i360;
 import 'package:pos_flutter/features/authentification/infrastucture/repositories/auth_repository_impl.dart'
     as _i750;
+import 'package:pos_flutter/features/Caisse/application/blocs/caisse_bloc.dart'
+    as _i13;
+import 'package:pos_flutter/features/Caisse/domain/repositories/caisse_repository.dart'
+    as _i402;
+import 'package:pos_flutter/features/Caisse/domain/usecases/clear_local_caisse_use_case.dart'
+    as _i712;
+import 'package:pos_flutter/features/Caisse/domain/usecases/close_caisse_use_case.dart'
+    as _i360;
+import 'package:pos_flutter/features/Caisse/domain/usecases/deposit_caisse_use_case.dart'
+    as _i951;
+import 'package:pos_flutter/features/Caisse/domain/usecases/get_cached_caisse_use_case.dart'
+    as _i525;
+import 'package:pos_flutter/features/Caisse/domain/usecases/get_remote_caisse_use_case.dart'
+    as _i594;
+import 'package:pos_flutter/features/Caisse/domain/usecases/open_caisse_use_case.dart'
+    as _i925;
+import 'package:pos_flutter/features/Caisse/domain/usecases/with_draw_caisse_use_case.dart'
+    as _i722;
+import 'package:pos_flutter/features/Caisse/infrastucture/repositories/caisse_repository_impl.dart'
+    as _i283;
 import 'package:pos_flutter/features/cart/application/blocs/cart_bloc.dart'
     as _i734;
 import 'package:pos_flutter/features/cart/domain/repositories/cart_repository.dart'
@@ -127,6 +152,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i531.CartLocalDataSource>(() =>
         _i531.CartLocalDataSourceImpl(
             sharedPreferences: gh<_i460.SharedPreferences>()));
+    gh.lazySingleton<_i1030.CaisseLocalDataSOurce>(() =>
+        _i1030.CaisseLocalDataSOurceImpl(
+            sharedPreferences: gh<_i460.SharedPreferences>()));
     gh.lazySingleton<_i1044.EnvironmentConfig>(
         () => _i1044.EnvironmentConfig(gh<_i310.EnvironmentRepository>()));
     gh.lazySingleton<_i571.CartRepository>(() => _i290.CartRepositoryImpl(
@@ -158,6 +186,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => registerModule.productApiClient(gh<_i361.Dio>()));
     gh.lazySingleton<_i482.OrderApiClient>(
         () => registerModule.orderApiClient(gh<_i361.Dio>()));
+    gh.lazySingleton<_i784.CaisseApiClient>(
+        () => registerModule.caisseApiClient(gh<_i361.Dio>()));
     gh.lazySingleton<_i950.OrderRemoteDataSource>(() =>
         _i950.OrderRemoteDataSourceImpl(apiClient: gh<_i482.OrderApiClient>()));
     gh.lazySingleton<_i1036.UserRemoteDataSource>(
@@ -168,6 +198,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i308.ProductRemoteDataSource>(() =>
         _i308.ProductRemoteDataSourceImpl(
             apiClient: gh<_i303.ProductApiClient>()));
+    gh.lazySingleton<_i517.CaisseRemoteDataSource>(() =>
+        _i517.CaisseRemoteDataSourceImpl(
+            apiClient: gh<_i784.CaisseApiClient>()));
     gh.lazySingleton<_i40.AuthRepository>(() => _i750.AuthRepositoryImpl(
           remoteDataSource: gh<_i1036.UserRemoteDataSource>(),
           localDataSource: gh<_i381.UserLocalDataSource>(),
@@ -177,6 +210,12 @@ extension GetItInjectableX on _i174.GetIt {
           remoteDataSource: gh<_i308.ProductRemoteDataSource>(),
           localDataSource: gh<_i628.ProductLocalDataSource>(),
           networkInfo: gh<_i40.NetworkInfo>(),
+        ));
+    gh.lazySingleton<_i402.CaisseRepository>(() => _i283.CaisseRepositoryImpl(
+          remoteDataSource: gh<_i517.CaisseRemoteDataSource>(),
+          localDataSource: gh<_i1030.CaisseLocalDataSOurce>(),
+          networkInfo: gh<_i40.NetworkInfo>(),
+          userLocalDataSource: gh<_i381.UserLocalDataSource>(),
         ));
     gh.lazySingleton<_i342.OrderRepository>(() => _i263.OrderRepositoryImpl(
           remoteDataSource: gh<_i950.OrderRemoteDataSource>(),
@@ -208,6 +247,29 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.factory<_i117.ProductBloc>(
         () => _i117.ProductBloc(gh<_i323.GetProductUseCase>()));
+    gh.lazySingleton<_i951.DepositCaisseUseCase>(
+        () => _i951.DepositCaisseUseCase(gh<_i402.CaisseRepository>()));
+    gh.lazySingleton<_i925.OpenCaisseUseCase>(
+        () => _i925.OpenCaisseUseCase(gh<_i402.CaisseRepository>()));
+    gh.lazySingleton<_i525.GetCachedCaisseUseCase>(
+        () => _i525.GetCachedCaisseUseCase(gh<_i402.CaisseRepository>()));
+    gh.lazySingleton<_i360.CloseCaisseUseCase>(
+        () => _i360.CloseCaisseUseCase(gh<_i402.CaisseRepository>()));
+    gh.lazySingleton<_i722.WithDrawCaisseUseCase>(
+        () => _i722.WithDrawCaisseUseCase(gh<_i402.CaisseRepository>()));
+    gh.lazySingleton<_i712.ClearLocalCaisseUseCase>(
+        () => _i712.ClearLocalCaisseUseCase(gh<_i402.CaisseRepository>()));
+    gh.lazySingleton<_i594.GetRemoteCaisseUseCase>(
+        () => _i594.GetRemoteCaisseUseCase(gh<_i402.CaisseRepository>()));
+    gh.factory<_i13.CaisseBloc>(() => _i13.CaisseBloc(
+          gh<_i594.GetRemoteCaisseUseCase>(),
+          gh<_i525.GetCachedCaisseUseCase>(),
+          gh<_i712.ClearLocalCaisseUseCase>(),
+          gh<_i360.CloseCaisseUseCase>(),
+          gh<_i925.OpenCaisseUseCase>(),
+          gh<_i722.WithDrawCaisseUseCase>(),
+          gh<_i951.DepositCaisseUseCase>(),
+        ));
     gh.factory<_i813.OrderBloc>(() => _i813.OrderBloc(
           gh<_i555.GetRemoteOrdersUseCase>(),
           gh<_i739.GetCachedOrdersUseCase>(),

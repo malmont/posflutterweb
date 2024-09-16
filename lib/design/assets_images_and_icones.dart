@@ -64,4 +64,10 @@ class AppAssets {
   static String get swap => '${_svgPath}swap.svg';
 
   static String get logout => '${_svgPath}logout.svg';
+
+  static String get order => '${_svgPath}order.svg';
+
+  static String get paiement => '${_svgPath}paiement.svg';
+
+  static String get caisse => '${_svgPath}caisse.svg';
 }

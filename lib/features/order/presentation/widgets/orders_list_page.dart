@@ -135,7 +135,7 @@ class _OrdersListPageState extends State<OrdersListPage> {
                             const SizedBox(width: Units.sizedbox_80),
                             _buildDetailsRow(
                                 'Total Amount',
-                                '\$${order.totalAmount.toStringAsFixed(2)}',
+                                '\$${(order.totalAmount / 100).toStringAsFixed(2)}',
                                 Colors.greenAccent),
                             const SizedBox(width: Units.sizedbox_80),
                             _buildDetailsRow(

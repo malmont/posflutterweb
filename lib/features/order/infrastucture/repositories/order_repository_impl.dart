@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
+import 'package:pos_flutter/core/error/exeptions.dart';
 import 'package:pos_flutter/core/network/network_info.dart';
 import 'package:pos_flutter/core/services/data_sources/local/order_local_data_source.dart';
 import 'package:pos_flutter/core/services/data_sources/local/user_local_data_source.dart';
@@ -30,10 +31,16 @@ class OrderRepositoryImpl implements OrderRepository {
   @override
   Future<Either<Failure, bool>> addOrder(OrderDetailResponse params) async {
     if (await userLocalDataSource.isTokenAvailable()) {
-      final remoteProduct = await remoteDataSource.addOrder(
-        OrderDetailResponseModel.fromEntity(params),
-      );
-      return Right(remoteProduct);
+      try {
+        final remoteProduct = await remoteDataSource.addOrder(
+          OrderDetailResponseModel.fromEntity(params),
+        );
+        return Right(remoteProduct);
+      } on ServerException {
+        return Left(ServerFailure());
+      } catch (e) {
+        return Left(UnknownFailure());
+      }
     } else {
       return Left(NetworkFailure());
     }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pos_flutter/features/Caisse/presentation/pages/caisse_view_page.dart';
 import 'package:pos_flutter/features/authentification/application/blocs/auth_bloc.dart';
 import 'package:pos_flutter/features/authentification/presentation/pages/sign_in_view_page.dart';
 import 'package:pos_flutter/features/dashboard/presentation/pages/dashboard_view_page.dart';
@@ -7,7 +8,6 @@ import 'package:pos_flutter/features/home/application/blocs/side_menu_bloc.dart'
 import 'package:pos_flutter/features/home/presentation/widgets/sideMenu/animated_wave.dart';
 import 'package:pos_flutter/features/home/side_menu/side_menu.dart';
 import 'package:pos_flutter/features/order/presentation/pages/order_view.dart';
-import 'package:pos_flutter/features/order/presentation/widgets/order_info_card.dart';
 import 'package:pos_flutter/features/products/presentation/pages/product_view_page.dart';
 import 'package:pos_flutter/features/seeting/presentation/pages/seeting_view_page.dart';
 
@@ -21,8 +21,8 @@ class MainViewPage extends StatelessWidget {
     final List<Widget> pages = [
       const ProductViewPage(),
       const OrderView(),
+      const CaisseView(),
       const DashboardViewPage(),
-      const SeatingViewPage(),
       const SeatingViewPage(),
       const SeatingViewPage(),
     ];

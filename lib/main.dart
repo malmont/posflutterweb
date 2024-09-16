@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:pos_flutter/features/Caisse/application/blocs/caisse_bloc.dart';
 import 'package:pos_flutter/features/cart/application/blocs/cart_bloc.dart';
 import 'package:pos_flutter/features/home/application/blocs/side_menu_bloc.dart';
 import 'package:pos_flutter/features/order/application/blocs/order_bloc.dart';
@@ -52,6 +53,10 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) =>
               getIt<OrderBloc>()..add(const GetOrders(FilterOrderParams())),
+        ),
+        BlocProvider<CaisseBloc>(
+          create: (context) =>
+              getIt<CaisseBloc>()..add(const GetCaisse(days: 15)),
         ),
         BlocProvider(
           create: (context) => getIt<ProductBloc>()

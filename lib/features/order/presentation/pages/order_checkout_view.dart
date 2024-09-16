@@ -61,6 +61,10 @@ class OrderCheckoutViewState extends State<OrderCheckoutView> {
               style:
                   TextStyles.interRegularBody1.copyWith(color: Colours.white),
             ),
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: widget.onOrderPlaced,
+            ),
           ),
           body: Padding(
             padding: const EdgeInsets.all(Units.edgeInsetsXXLarge),

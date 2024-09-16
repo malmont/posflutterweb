@@ -64,8 +64,8 @@ class _ProductDetailsViewPageState extends State<ProductDetailsViewPage> {
         backgroundColor: Colours.primary100,
         title: Text(widget.product.name),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back), // Add back button icon
-          onPressed: widget.onBack, // Use the onBack callback
+          icon: const Icon(Icons.arrow_back),
+          onPressed: widget.onBack,
         ),
       ),
       body: BlocBuilder<ProductBloc, ProductState>(
@@ -79,8 +79,7 @@ class _ProductDetailsViewPageState extends State<ProductDetailsViewPage> {
           }
 
           if (state is ProductLoaded) {
-            selectedVariant =
-                state.selectedVariant; // Assign selectedVariant here
+            selectedVariant = state.selectedVariant;
 
             return Padding(
               padding: const EdgeInsets.all(16.0),

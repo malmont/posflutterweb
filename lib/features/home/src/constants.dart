@@ -4,9 +4,9 @@ import 'package:pos_flutter/design/assets_images_and_icones.dart';
 
 List<MenuItemModel> menuItems = [
   MenuItemModel(icon: AppAssets.home, title: 'Home', index: 0),
-  MenuItemModel(icon: AppAssets.calendar, title: 'Calendar', index: 1),
-  MenuItemModel(icon: AppAssets.dashboard, title: 'Dashboard', index: 2),
-  MenuItemModel(icon: AppAssets.mail, title: 'Mail', index: 3),
+  MenuItemModel(icon: AppAssets.order, title: 'Order', index: 1),
+  MenuItemModel(icon: AppAssets.caisse, title: 'Caisse', index: 2),
+  MenuItemModel(icon: AppAssets.paiement, title: 'paiement', index: 3),
   MenuItemModel(icon: AppAssets.notification, title: 'Notification', index: 4),
   MenuItemModel(icon: AppAssets.sales, title: 'Sales', index: 5),
   MenuItemModel(

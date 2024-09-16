@@ -28,7 +28,8 @@ class _CartViewPageState extends State<CartViewPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Cart',
-            style: TextStyles.interMediumH6.copyWith(color: Colours.white)),
+            style: TextStyles.interMediumH4
+                .copyWith(color: Colours.colorsButtonMenu)),
         backgroundColor: Colours.primaryPalette,
       ),
       backgroundColor: Colours.primaryPalette,
@@ -47,7 +48,12 @@ class _CartViewPageState extends State<CartViewPage> {
                           return const Center(child: Text('Cart is Empty'));
                         }
                         if (state.cart.isEmpty) {
-                          return const Center(child: Text('Cart is Empty'));
+                          return Center(
+                            child: Text('Cart is Empty',
+                                style: TextStyles.interMediumH4.copyWith(
+                                  color: Colours.colorsButtonMenu,
+                                )),
+                          );
                         }
                         return ListView.builder(
                           itemCount: state.cart.length,

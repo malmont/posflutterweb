@@ -138,7 +138,7 @@ class OrderDetailsPage extends StatelessWidget {
             ),
             const SizedBox(height: Units.sizedbox_8),
             Text(
-              'Price: \$${item.totalPrice.toStringAsFixed(2)}',
+              'Price: \$${(item.totalPrice / 100).toStringAsFixed(2)}',
               style: TextStyles.interRegularBody1
                   .copyWith(color: Colors.greenAccent),
             ),
