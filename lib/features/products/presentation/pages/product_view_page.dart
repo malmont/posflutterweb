@@ -25,7 +25,7 @@ class ProductViewPage extends StatefulWidget {
 class _ProductViewPageState extends State<ProductViewPage> {
   final ScrollController scrollController = ScrollController();
   int selectedCategoryId = 5;
-  Product? selectedProduct; // Holds the selected product for the details page
+  Product? selectedProduct;
 
   void _scrollListener() {
     double maxScroll = scrollController.position.maxScrollExtent;
