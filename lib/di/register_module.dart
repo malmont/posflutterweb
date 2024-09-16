@@ -5,6 +5,7 @@ import 'package:pos_flutter/core/config/dio_config.dart';
 import 'package:pos_flutter/core/config/environment_config.dart';
 import 'package:pos_flutter/core/services/api/caisse_api_client.dart';
 import 'package:pos_flutter/core/services/api/order_api_client.dart';
+import 'package:pos_flutter/core/services/api/payment_api_client.dart';
 import 'package:pos_flutter/core/services/api/product_api_client.dart';
 import 'package:pos_flutter/core/services/api/user_api_client.dart';
 import 'package:pos_flutter/core/services/data_sources/local/user_local_data_source.dart';
@@ -44,4 +45,7 @@ abstract class RegisterModule {
 
   @lazySingleton
   CaisseApiClient caisseApiClient(Dio dio) => CaisseApiClient(dio);
+
+  @lazySingleton
+  PaymentApiClient paymentApiClient(Dio dio) => PaymentApiClient(dio);
 }

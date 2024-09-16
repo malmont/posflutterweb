@@ -1,7 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:pos_flutter/core/error/exeptions.dart';
 import 'package:pos_flutter/core/services/api/caisse_api_client.dart';
-import 'package:pos_flutter/core/usecases/usecases.dart';
 import 'package:pos_flutter/features/Caisse/infrastucture/models/caisse_model.dart';
 import 'package:retrofit/dio.dart';
 
@@ -58,7 +57,9 @@ class CaisseRemoteDataSourceImpl implements CaisseRemoteDataSource {
   @override
   Future<bool> depositCaisse(double amount) async {
     try {
-      final HttpResponse response = await apiClient.depositCaisse(amount);
+      final HttpResponse response = await apiClient.depositCaisse({
+        'amount': amount,
+      });
       if (response.response.statusCode == 201) {
         return true;
       }
@@ -71,7 +72,9 @@ class CaisseRemoteDataSourceImpl implements CaisseRemoteDataSource {
   @override
   Future<bool> withdrawCaisse(double amount) async {
     try {
-      final HttpResponse response = await apiClient.withdrawCaisse(amount);
+      final HttpResponse response = await apiClient.withdrawCaisse({
+        'amount': amount,
+      });
       if (response.response.statusCode == 201) {
         return true;
       }

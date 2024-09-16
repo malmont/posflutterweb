@@ -95,11 +95,14 @@ class CaisseBloc extends Bloc<CaisseEvent, CaisseState> {
       final remoteResult = await _closeCaisseUseCase(NoParams());
       remoteResult.fold(
         (failure) => _emitError(emit, failure),
-        (result) => emit(CaisseMouvement(
-            isSucces: result,
-            caisses: state.caisses,
-            days: state.days,
-            amount: state.amount)),
+        (result) {
+          emit(CaisseMouvement(
+              isSucces: result,
+              caisses: state.caisses,
+              days: state.days,
+              amount: state.amount));
+          add(GetCaisse(days: state.days));
+        },
       );
     } catch (e, stackTrace) {
       print('Erreur: $e, stack: $stackTrace');
@@ -118,11 +121,14 @@ class CaisseBloc extends Bloc<CaisseEvent, CaisseState> {
       final remoteResult = await _openCaisseUseCase(NoParams());
       remoteResult.fold(
         (failure) => _emitError(emit, failure),
-        (result) => emit(CaisseMouvement(
-            isSucces: result,
-            caisses: state.caisses,
-            days: state.days,
-            amount: state.amount)),
+        (result) {
+          emit(CaisseMouvement(
+              isSucces: result,
+              caisses: state.caisses,
+              days: state.days,
+              amount: state.amount));
+          add(GetCaisse(days: state.days));
+        },
       );
     } catch (e, stackTrace) {
       print('Erreur: $e, stack: $stackTrace');
@@ -142,11 +148,14 @@ class CaisseBloc extends Bloc<CaisseEvent, CaisseState> {
       final remoteResult = await _withDrawCaisseUseCase(event.amount);
       remoteResult.fold(
         (failure) => _emitError(emit, failure),
-        (result) => emit(CaisseMouvement(
-            isSucces: result,
-            caisses: state.caisses,
-            days: state.days,
-            amount: state.amount)),
+        (result) {
+          emit(CaisseMouvement(
+              isSucces: result,
+              caisses: state.caisses,
+              days: state.days,
+              amount: state.amount));
+          add(GetCaisse(days: state.days));
+        },
       );
     } catch (e, stackTrace) {
       print('Erreur: $e, stack: $stackTrace');
@@ -165,11 +174,14 @@ class CaisseBloc extends Bloc<CaisseEvent, CaisseState> {
       final remoteResult = await _depositCaisseUseCase(event.amount);
       remoteResult.fold(
         (failure) => _emitError(emit, failure),
-        (result) => emit(CaisseMouvement(
-            caisses: state.caisses,
-            days: state.days,
-            amount: state.amount,
-            isSucces: result)),
+        (result) {
+          emit(CaisseMouvement(
+              caisses: state.caisses,
+              days: state.days,
+              amount: state.amount,
+              isSucces: result));
+          add(GetCaisse(days: state.days));
+        },
       );
     } catch (e, stackTrace) {
       print('Erreur: $e, stack: $stackTrace');

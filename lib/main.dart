@@ -17,6 +17,8 @@ import 'package:pos_flutter/features/authentification/presentation/pages/sign_in
 import 'package:pos_flutter/features/home/presentation/pages/MainViewPage.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import 'features/payment/application/blocs/payment_bloc.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   const envFile =
@@ -61,6 +63,10 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => getIt<ProductBloc>()
             ..add(const GetProducts(FilterProductParams())),
+        ),
+        BlocProvider(
+          create: (context) =>
+              getIt<PaymentBloc>()..add(const GetPayments(FilterOrderParams())),
         ),
       ],
       child: MaterialApp(
