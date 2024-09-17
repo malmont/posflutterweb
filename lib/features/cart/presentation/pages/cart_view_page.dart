@@ -45,14 +45,30 @@ class _CartViewPageState extends State<CartViewPage> {
                     child: BlocBuilder<CartBloc, CartState>(
                       builder: (context, state) {
                         if (state is CartError && state.cart.isEmpty) {
-                          return const Center(child: Text('Cart is Empty'));
+                          return const Center(
+                              child: Column(
+                            children: [
+                              Text('Cart is Empty'),
+                              Text('Please add items to cart'),
+                            ],
+                          ));
                         }
                         if (state.cart.isEmpty) {
                           return Center(
-                            child: Text('Cart is Empty',
-                                style: TextStyles.interMediumH4.copyWith(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('Cart is Empty',
+                                    style: TextStyles.interMediumH4.copyWith(
+                                      color: Colours.colorsButtonMenu,
+                                    )),
+                                const Icon(
+                                  Icons.shopping_cart,
+                                  size: 100,
                                   color: Colours.colorsButtonMenu,
-                                )),
+                                ),
+                              ],
+                            ),
                           );
                         }
                         return ListView.builder(

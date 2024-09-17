@@ -73,28 +73,28 @@ class _ProductViewPageState extends State<ProductViewPage> {
     const List<Category> categories = [
       Category(
         id: 1,
-        name: 'Vêtements',
+        name: 'Top',
         description: 'Fashion items',
         image:
             'https://cdn.pixabay.com/photo/2015/09/04/19/51/woman-922621_1280.jpg',
       ),
       Category(
         id: 2,
-        name: 'Accessoires',
+        name: 'Dress',
         description: 'Accessories',
         image:
             'https://cdn.pixabay.com/photo/2015/09/04/19/51/woman-922621_1280.jpg',
       ),
       Category(
         id: 3,
-        name: 'Chaussures',
+        name: 'jeans',
         description: 'Shoes',
         image:
             'https://cdn.pixabay.com/photo/2015/09/04/19/51/woman-922621_1280.jpg',
       ),
       Category(
         id: 4,
-        name: 'Chaussures',
+        name: 'Jumpsuit',
         description: 'Shoes',
         image:
             'https://cdn.pixabay.com/photo/2015/09/04/19/51/woman-922621_1280.jpg',
@@ -170,9 +170,8 @@ class _ProductViewPageState extends State<ProductViewPage> {
             padding: const EdgeInsets.all(16),
             child: Text(
               category.name,
-              style: TextStyle(
-                color: isSelected ? Colors.white : Colors.black,
-                fontWeight: FontWeight.bold,
+              style: TextStyles.interBoldH6.copyWith(
+                color: isSelected ? Colours.primary100 : Colours.white,
               ),
             ),
           ),

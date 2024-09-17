@@ -102,9 +102,8 @@ class _OrdersListPageState extends State<OrdersListPage> {
               padding: const EdgeInsets.all(Units.edgeInsetsXXLarge),
               child: Text(
                 daySelection.name,
-                style: TextStyle(
-                  color: isSelected ? Colors.white : Colors.black,
-                  fontWeight: FontWeight.bold,
+                style: TextStyles.interBoldH6.copyWith(
+                  color: isSelected ? Colours.primary100 : Colours.white,
                 ),
               ),
             ),
@@ -166,7 +165,7 @@ class _OrdersListPageState extends State<OrdersListPage> {
       children: [
         Text(
           'Order ID: ${order.id}',
-          style: TextStyles.interBoldH5.copyWith(color: Colors.white),
+          style: TextStyles.interBoldH6.copyWith(color: Colors.white),
         ),
         const SizedBox(height: Units.sizedbox_10),
         Text(
