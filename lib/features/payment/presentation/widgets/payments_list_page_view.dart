@@ -93,7 +93,7 @@ class _PaymentsListPageState extends State<PaymentsListPage> {
               padding: const EdgeInsets.all(16),
               child: Text(
                 daySelection.name,
-                style: TextStyles.interRegularBody1.copyWith(
+                style: TextStyles.interBoldH6.copyWith(
                   color: isSelected ? Colors.white : Colors.black,
                 ),
               ),

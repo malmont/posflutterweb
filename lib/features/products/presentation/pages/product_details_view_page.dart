@@ -62,9 +62,14 @@ class _ProductDetailsViewPageState extends State<ProductDetailsViewPage> {
       backgroundColor: Colours.primary100,
       appBar: AppBar(
         backgroundColor: Colours.primary100,
-        title: Text(widget.product.name),
+        title: Text(widget.product.name,
+            style: TextStyles.interMediumH4
+                .copyWith(color: Colours.colorsButtonMenu)),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colours.colorsButtonMenu,
+          ),
           onPressed: widget.onBack,
         ),
       ),

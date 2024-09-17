@@ -62,8 +62,8 @@ class _CaisseListPageState extends State<CaisseListPage> {
               padding: const EdgeInsets.all(16),
               child: Text(
                 daySelection.name,
-                style: TextStyles.interRegularBody1.copyWith(
-                  color: isSelected ? Colors.white : Colors.black,
+                style: TextStyles.interBoldH6.copyWith(
+                  color: isSelected ? Colours.white : Colours.primary100,
                 ),
               ),
             ),

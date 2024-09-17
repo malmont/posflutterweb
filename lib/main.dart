@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pos_flutter/features/Caisse/application/blocs/caisse_bloc.dart';
 import 'package:pos_flutter/features/cart/application/blocs/cart_bloc.dart';
@@ -15,7 +16,6 @@ import 'package:pos_flutter/features/authentification/application/blocs/auth_blo
 import 'package:pos_flutter/features/authentification/application/viewmodels/signin_viewmodel.dart';
 import 'package:pos_flutter/features/authentification/presentation/pages/sign_in_view_page.dart';
 import 'package:pos_flutter/features/home/presentation/pages/MainViewPage.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'features/payment/application/blocs/payment_bloc.dart';
 
@@ -69,11 +69,26 @@ class MyApp extends StatelessWidget {
               getIt<PaymentBloc>()..add(const GetPayments(FilterOrderParams())),
         ),
       ],
-      child: MaterialApp(
-        title: 'POS Flutter',
-        onGenerateRoute: AppRouter.onGenerateRoute,
-        home: const AuthWrapper(),
-        builder: EasyLoading.init(),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return MaterialApp(
+            title: 'POS Flutter',
+            onGenerateRoute: AppRouter.onGenerateRoute,
+            home: Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth:
+                      constraints.maxWidth > 1280 ? 1920 : constraints.maxWidth,
+                  maxHeight: constraints.maxHeight > 1024
+                      ? 1080
+                      : constraints.maxHeight,
+                ),
+                child: const AuthWrapper(),
+              ),
+            ),
+            builder: EasyLoading.init(),
+          );
+        },
       ),
     );
   }
