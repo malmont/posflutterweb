@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:pos_flutter/design/units.dart';
 import 'package:pos_flutter/features/cart/application/blocs/cart_bloc.dart';
 import 'package:pos_flutter/features/cart/domain/entities/cart_item.dart';
 import 'package:pos_flutter/features/products/application/blocs/product_bloc.dart';
@@ -16,12 +17,12 @@ import '../../../../design/design.dart';
 
 class ProductDetailsViewPage extends StatefulWidget {
   final Product product;
-  final VoidCallback onBack; // Add this parameter
+  final VoidCallback onBack;
 
   const ProductDetailsViewPage({
     super.key,
     required this.product,
-    required this.onBack, // Add the onBack callback
+    required this.onBack,
   });
 
   @override
@@ -32,7 +33,7 @@ class _ProductDetailsViewPageState extends State<ProductDetailsViewPage> {
   int _currentIndex = 0;
   String? selectedColor;
   String? selectedSize;
-  Variant? selectedVariant; // Declare selectedVariant here
+  Variant? selectedVariant;
   late ProductBloc productBloc;
 
   @override
@@ -114,7 +115,7 @@ class _ProductDetailsViewPageState extends State<ProductDetailsViewPage> {
                           color: Colours.colorsButtonMenu,
                         ),
                       ),
-                      const SizedBox(width: 50),
+                      const SizedBox(width: Units.sizedbox_50),
                       Text(
                         '\$${(widget.product.price / 100).toStringAsFixed(2)}',
                         style: TextStyles.interMediumH5.copyWith(
@@ -123,7 +124,7 @@ class _ProductDetailsViewPageState extends State<ProductDetailsViewPage> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: Units.sizedbox_20),
                   VariantSelector(
                     uniqueColors: uniqueColors,
                     uniqueSizes: uniqueSizes,
@@ -132,7 +133,7 @@ class _ProductDetailsViewPageState extends State<ProductDetailsViewPage> {
                     selectedColor: selectedColor,
                     selectedSize: selectedSize,
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: Units.sizedbox_10),
                   if (selectedVariant != null)
                     VariantInfo(selectedVariant: selectedVariant!)
                   else
@@ -159,7 +160,7 @@ class _ProductDetailsViewPageState extends State<ProductDetailsViewPage> {
                     context.read<CartBloc>().add(AddProduct(
                         cartItem: CartItem(
                             product: widget.product,
-                            variant: selectedVariant!)));
+                            variant: selectedVariant)));
 
                     context.read<ProductBloc>().add(const ResetVariantEvent());
                     // widget.onBack();
