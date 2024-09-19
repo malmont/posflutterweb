@@ -102,6 +102,7 @@ class AuthWrapper extends StatelessWidget {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         if (state is Authenticated) {
+          EasyLoading.dismiss();
           return const MainViewPage();
         } else if (state is Unauthenticated ||
             state is AuthFailure ||
