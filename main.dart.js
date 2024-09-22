@@ -103224,7 +103224,7 @@ Fj(){var s=0,r=A.t(t.o),q,p=this,o,n,m,l,k,j
 var $async$Fj=A.o(function(a,b){if(a===1)return A.p(b,r)
 while(true)switch(s){case 0:o=t.N
 n=t.z
-m=A.ka(A.w(o,n),A.w(o,n),"POST")
+m=A.ka(A.w(o,n),A.w(o,n),"GET")
 l=p.a
 k=l.dJ$
 k===$&&A.a()
