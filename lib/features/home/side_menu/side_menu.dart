@@ -30,8 +30,8 @@ class SideMenu extends StatelessWidget {
           bool isCollapsed = state.isCollapsed;
 
           return AnimatedContainer(
-            duration: const Duration(milliseconds: 300), // Durée de l'animation
-            width: isCollapsed ? 128 : 280, // Largeur du menu selon son état
+            duration: const Duration(milliseconds: 300),
+            width: isCollapsed ? 128 : 280,
             decoration: BoxDecoration(
               color: Colours.primaryPalette,
               borderRadius: BorderRadius.circular(Units.radiusXXXXXXLarge),

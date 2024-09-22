@@ -5,6 +5,7 @@ import 'package:pos_flutter/core/network/network_info.dart';
 import 'package:pos_flutter/core/services/data_sources/local/payment_local_data_source.dart';
 import 'package:pos_flutter/core/services/data_sources/local/user_local_data_source.dart';
 import 'package:pos_flutter/core/services/data_sources/remote/payment_remote_data_source.dart';
+import 'package:pos_flutter/core/utils/api_call_helper.dart';
 import 'package:pos_flutter/features/order/domain/entities/filter_order_params.dart';
 import 'package:pos_flutter/features/payment/domain/entities/payment_details.dart';
 import 'package:pos_flutter/features/payment/domain/repositories/payment_repository.dart';
@@ -26,21 +27,11 @@ class PaymentRepositoryImpl implements PaymentRepository {
   @override
   Future<Either<Failure, List<PaymentDetails>>> getPayments(
       FilterOrderParams params) async {
-    if (await networkInfo.isConnected) {
-      if (await userLocalDataSource.isTokenAvailable()) {
-        try {
-          final remoteProduct = await remoteDataSource.getPayments(params);
-          await localDataSource.savePayment(remoteProduct);
-          return Right(remoteProduct);
-        } on Failure catch (failure) {
-          return Left(failure);
-        }
-      } else {
-        return Left(AuthenticationFailure());
-      }
-    } else {
-      return Left(NetworkFailure());
-    }
+    return await executeApiCall(() async {
+      final remoteProduct = await remoteDataSource.getPayments(params);
+      await localDataSource.savePayment(remoteProduct);
+      return remoteProduct;
+    }, userLocalDataSource);
   }
 
   @override

@@ -26,7 +26,6 @@ class CartRepositoryImpl implements CartRepository {
     try {
       final List<CartItemModel> cartItems = await localDataSource.getCart();
 
-      // Comparer à la fois product.id et variant.id pour identifier un élément unique
       final existingItemIndex = cartItems.indexWhere(
         (item) =>
             item.product.id == params.product.id &&
@@ -52,8 +51,6 @@ class CartRepositoryImpl implements CartRepository {
   Future<Either<Failure, void>> removeFromCart(CartItem params) async {
     try {
       final List<CartItemModel> cartItems = await localDataSource.getCart();
-
-      // Comparer à la fois product.id et variant.id pour identifier un élément unique
       final existingItemIndex = cartItems.indexWhere(
         (item) =>
             item.product.id == params.product.id &&

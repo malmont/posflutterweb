@@ -18,7 +18,7 @@ class AuthenticationResponseModel {
 
   factory AuthenticationResponseModel.fromJson(Map<String, dynamic> json) =>
       AuthenticationResponseModel(
-        token: json["token"],  // Extraction du token à partir du JSON
+        token: json["token"],
         user: _decodeUserFromToken(json["token"]),
       );
 

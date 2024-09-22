@@ -11,4 +11,16 @@ abstract class UserApiClient {
 
   @POST('/login')
   Future<AuthenticationResponseModel> signIn(@Body() SignInParams params);
+
+  @POST('/login-web')
+  Future<AuthenticationResponseModel> signInWeb(@Body() SignInParams params);
+
+  @POST('/token/refresh')
+  Future<HttpResponse> refreshToken();
+
+  @POST('/validate-token')
+  Future<HttpResponse> validateToken();
+
+  @POST('/logout')
+  Future<HttpResponse> signOut();
 }
