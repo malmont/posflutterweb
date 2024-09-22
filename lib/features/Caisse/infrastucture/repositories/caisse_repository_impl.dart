@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:pos_flutter/core/error/failures.dart';
 import 'package:pos_flutter/core/network/network_info.dart';
@@ -6,6 +7,7 @@ import 'package:pos_flutter/core/services/data_sources/local/caisse_local_data_s
 import 'package:pos_flutter/core/services/data_sources/local/user_local_data_source.dart';
 import 'package:pos_flutter/core/services/data_sources/remote/caisse_remote_datat_source.dart';
 import 'package:pos_flutter/core/usecases/usecases.dart';
+import 'package:pos_flutter/core/utils/api_call_helper.dart';
 import 'package:pos_flutter/features/Caisse/domain/entities/caisse.dart';
 import 'package:pos_flutter/features/Caisse/domain/repositories/caisse_repository.dart';
 
@@ -25,61 +27,39 @@ class CaisseRepositoryImpl implements CaisseRepository {
 
   @override
   Future<Either<Failure, bool>> closeCaisse(noParams) async {
-    if (await userLocalDataSource.isTokenAvailable()) {
-      final remoteProduct = await remoteDataSource.closeCaise(noParams);
-      return Right(remoteProduct);
-    } else {
-      return Left(NetworkFailure());
-    }
+    return await executeApiCall(() {
+      return remoteDataSource.closeCaise(noParams);
+    }, userLocalDataSource);
   }
 
   @override
   Future<Either<Failure, bool>> depositCaisse(double amount) async {
-    if (await userLocalDataSource.isTokenAvailable()) {
-      final remoteProduct = await remoteDataSource.depositCaisse(amount);
-      return Right(remoteProduct);
-    } else {
-      return Left(NetworkFailure());
-    }
+    return await executeApiCall(() {
+      return remoteDataSource.depositCaisse(amount);
+    }, userLocalDataSource);
   }
 
   @override
   Future<Either<Failure, List<Caisse>>> getRemoteCaisse(int days) async {
-    if (await networkInfo.isConnected) {
-      if (await userLocalDataSource.isTokenAvailable()) {
-        try {
-          final remoteProduct = await remoteDataSource.getCaisse(days);
-          await localDataSource.saveCaisse(remoteProduct);
-          return Right(remoteProduct);
-        } on Failure catch (failure) {
-          return Left(failure);
-        }
-      } else {
-        return Left(AuthenticationFailure());
-      }
-    } else {
-      return Left(NetworkFailure());
-    }
+    return await executeApiCall(() async {
+      final remoteCaisse = await remoteDataSource.getCaisse(days);
+      await localDataSource.saveCaisse(remoteCaisse);
+      return remoteCaisse;
+    }, userLocalDataSource);
   }
 
   @override
   Future<Either<Failure, bool>> openCaisse(noParams) async {
-    if (await userLocalDataSource.isTokenAvailable()) {
-      final remoteProduct = await remoteDataSource.openCaise(noParams);
-      return Right(remoteProduct);
-    } else {
-      return Left(NetworkFailure());
-    }
+    return await executeApiCall(() {
+      return remoteDataSource.openCaise(noParams);
+    }, userLocalDataSource);
   }
 
   @override
   Future<Either<Failure, bool>> withdrawCaisse(double amount) async {
-    if (await userLocalDataSource.isTokenAvailable()) {
-      final remoteProduct = await remoteDataSource.withdrawCaisse(amount);
-      return Right(remoteProduct);
-    } else {
-      return Left(NetworkFailure());
-    }
+    return await executeApiCall(() {
+      return remoteDataSource.withdrawCaisse(amount);
+    }, userLocalDataSource);
   }
 
   @override

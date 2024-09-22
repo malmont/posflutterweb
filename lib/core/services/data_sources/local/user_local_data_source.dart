@@ -1,5 +1,3 @@
-
-
 import 'dart:convert';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -24,6 +22,7 @@ abstract class UserLocalDataSource {
 
 const cachedToken = 'TOKEN';
 const cachedUser = 'USER';
+
 @LazySingleton(as: UserLocalDataSource)
 class UserLocalDataSourceImpl implements UserLocalDataSource {
   final FlutterSecureStorage secureStorage;
@@ -55,7 +54,7 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
     }
     final jsonString = sharedPreferences.getString(cachedUser);
     if (jsonString != null) {
-      return Future.value(UserModel.fromJson(json.decode(jsonString)));  // Utilisation de fromJson
+      return Future.value(UserModel.fromJson(json.decode(jsonString)));
     } else {
       throw CacheException();
     }
@@ -65,7 +64,7 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
   Future<void> saveUser(UserModel user) {
     return sharedPreferences.setString(
       cachedUser,
-      json.encode(user.toJson()),  // Utilisation de toJson générée automatiquement
+      json.encode(user.toJson()),
     );
   }
 

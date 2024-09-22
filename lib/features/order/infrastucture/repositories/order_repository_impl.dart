@@ -6,6 +6,7 @@ import 'package:pos_flutter/core/services/data_sources/local/order_local_data_so
 import 'package:pos_flutter/core/services/data_sources/local/user_local_data_source.dart';
 import 'package:pos_flutter/core/services/data_sources/remote/order_remote_data_source.dart';
 import 'package:pos_flutter/core/usecases/usecases.dart';
+import 'package:pos_flutter/core/utils/api_call_helper.dart';
 import 'package:pos_flutter/features/order/domain/entities/filter_order_params.dart';
 import 'package:pos_flutter/features/order/domain/entities/order_detail_response.dart';
 import 'package:pos_flutter/features/order/domain/entities/order_details.dart';
@@ -30,40 +31,21 @@ class OrderRepositoryImpl implements OrderRepository {
 
   @override
   Future<Either<Failure, bool>> addOrder(OrderDetailResponse params) async {
-    if (await userLocalDataSource.isTokenAvailable()) {
-      try {
-        final remoteProduct = await remoteDataSource.addOrder(
-          OrderDetailResponseModel.fromEntity(params),
-        );
-        return Right(remoteProduct);
-      } on ServerException {
-        return Left(ServerFailure());
-      } catch (e) {
-        return Left(UnknownFailure());
-      }
-    } else {
-      return Left(NetworkFailure());
-    }
+    return await executeApiCall(() {
+      return remoteDataSource.addOrder(
+        OrderDetailResponseModel.fromEntity(params),
+      );
+    }, userLocalDataSource);
   }
 
   @override
   Future<Either<Failure, List<OrderDetails>>> getRemoteOrders(
       FilterOrderParams params) async {
-    if (await networkInfo.isConnected) {
-      if (await userLocalDataSource.isTokenAvailable()) {
-        try {
-          final remoteProduct = await remoteDataSource.getOrders(params);
-          await localDataSource.saveOrders(remoteProduct);
-          return Right(remoteProduct);
-        } on Failure catch (failure) {
-          return Left(failure);
-        }
-      } else {
-        return Left(AuthenticationFailure());
-      }
-    } else {
-      return Left(NetworkFailure());
-    }
+    return await executeApiCall(() async {
+      final remoteProduct = await remoteDataSource.getOrders(params);
+      await localDataSource.saveOrders(remoteProduct);
+      return remoteProduct;
+    }, userLocalDataSource);
   }
 
   @override

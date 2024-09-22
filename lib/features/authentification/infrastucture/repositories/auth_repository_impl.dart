@@ -1,5 +1,6 @@
 // features/authentication/infrastructure/repositories/auth_repository_impl.dart
 import 'package:dartz/dartz.dart';
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:pos_flutter/core/error/failures.dart';
 import 'package:pos_flutter/core/network/network_info.dart';
@@ -38,22 +39,58 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Failure, NoParams>> signOut() async {
     try {
+      if (kIsWeb) {
+        final response = await remoteDataSource.signOut();
+        if (!response) {
+          return Left(ServerFailure());
+        }
+      }
       await localDataSource.clearCache();
       return Right(NoParams());
     } on CacheFailure {
       return Left(CacheFailure());
+    } catch (e) {
+      return Left(ServerFailure());
     }
   }
 
   @override
   Future<Either<Failure, bool>> isTokenValid() async {
     try {
-      final tokenValid = await localDataSource.isTokenAvailable();
-      if (!tokenValid) {
-        await localDataSource.clearCache();
-        return Right(false);
+      if (kIsWeb) {
+        try {
+          final tokenValid = await remoteDataSource.isTokenValid();
+
+          if (tokenValid) {
+            return const Right(true);
+          } else {
+            print('Token expiré, tentative de rafraîchissement via cookies.');
+            try {
+              final refreshResponse = await remoteDataSource.refreshToken();
+              if (refreshResponse != null) {
+                print('Token rafraîchi avec succès.');
+                return const Right(true);
+              } else {
+                print('Échec du rafraîchissement du token.');
+                return const Right(false);
+              }
+            } catch (refreshError) {
+              print('Erreur lors du rafraîchissement du token : $refreshError');
+              return const Right(false);
+            }
+          }
+        } catch (e) {
+          print('Erreur lors de la validation du token : $e');
+          return const Right(false);
+        }
+      } else {
+        final tokenValid = await localDataSource.isTokenAvailable();
+        if (!tokenValid) {
+          await localDataSource.clearCache();
+          return const Right(false);
+        }
+        return const Right(true);
       }
-      return Right(true);
     } catch (e) {
       return Left(CacheFailure());
     }
@@ -64,14 +101,16 @@ class AuthRepositoryImpl implements AuthRepository {
     if (await networkInfo.isConnected) {
       try {
         final remoteResponse = await getDataSource();
-        localDataSource.saveToken(remoteResponse.token);
         localDataSource.saveUser(remoteResponse.user);
+        if (!kIsWeb) {
+          localDataSource.saveToken(remoteResponse.token);
+        }
         return Right(remoteResponse.user);
       } catch (e) {
-        return Left(ServerFailure()); // Échec au niveau du serveur
+        return Left(ServerFailure());
       }
     } else {
-      return Left(NetworkFailure()); // Pas de connexion réseau
+      return Left(NetworkFailure());
     }
   }
 }
