@@ -15,13 +15,12 @@ import 'package:pos_flutter/features/Caisse/domain/repositories/caisse_repositor
 class CaisseRepositoryImpl implements CaisseRepository {
   final CaisseRemoteDataSource remoteDataSource;
   final CaisseLocalDataSOurce localDataSource;
-  final NetworkInfo networkInfo;
+
   final UserLocalDataSource userLocalDataSource;
 
   CaisseRepositoryImpl({
     required this.remoteDataSource,
     required this.localDataSource,
-    required this.networkInfo,
     required this.userLocalDataSource,
   });
 

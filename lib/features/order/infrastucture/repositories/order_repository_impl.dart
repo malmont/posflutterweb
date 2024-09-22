@@ -20,13 +20,11 @@ class OrderRepositoryImpl implements OrderRepository {
   final OrderRemoteDataSource remoteDataSource;
   final OrderLocalDataSource localDataSource;
   final UserLocalDataSource userLocalDataSource;
-  final NetworkInfo networkInfo;
 
   OrderRepositoryImpl({
     required this.remoteDataSource,
     required this.localDataSource,
     required this.userLocalDataSource,
-    required this.networkInfo,
   });
 
   @override

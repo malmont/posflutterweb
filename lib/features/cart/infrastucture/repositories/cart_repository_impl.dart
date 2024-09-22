@@ -13,12 +13,10 @@ import '../../../../core/error/failures.dart';
 class CartRepositoryImpl implements CartRepository {
   final CartLocalDataSource localDataSource;
   final UserLocalDataSource userLocalDataSource;
-  final NetworkInfo networkInfo;
 
   CartRepositoryImpl({
     required this.localDataSource,
     required this.userLocalDataSource,
-    required this.networkInfo,
   });
 
   @override

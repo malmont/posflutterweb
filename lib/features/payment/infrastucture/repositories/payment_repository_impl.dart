@@ -15,13 +15,11 @@ class PaymentRepositoryImpl implements PaymentRepository {
   final PaymentRemoteDataSource remoteDataSource;
   final PaymentLocalDataSource localDataSource;
   final UserLocalDataSource userLocalDataSource;
-  final NetworkInfo networkInfo;
 
   PaymentRepositoryImpl(
     this.userLocalDataSource, {
     required this.remoteDataSource,
     required this.localDataSource,
-    required this.networkInfo,
   });
 
   @override
