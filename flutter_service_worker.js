@@ -3,11 +3,11 @@ const MANIFEST = 'flutter-app-manifest';
 const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 
-const RESOURCES = {"flutter_bootstrap.js": "5a8a0bd5baca7704c82708a6aa3ed5a3",
+const RESOURCES = {"flutter_bootstrap.js": "067ca123b61eb35d33e5d0f9267b08d1",
 "version.json": "6d5b19dcf0c680c96462284fe4a47050",
 "index.html": "630a3420d3cda400645719fdfc02243e",
 "/": "630a3420d3cda400645719fdfc02243e",
-"main.dart.js": "9545e4f2a737b9d1802208d1e1f03682",
+"main.dart.js": "391f9478c9f9f9b278665d8f459335da",
 "flutter.js": "4b2350e14c6650ba82871f60906437ea",
 "favicon.png": "5dcef449791fa27946b3d35ad8803796",
 "icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
@@ -50,7 +50,7 @@ const RESOURCES = {"flutter_bootstrap.js": "5a8a0bd5baca7704c82708a6aa3ed5a3",
 "assets/assets/images/background.jpg": "9b549c811d418fc731d50881d2ae789d",
 "assets/assets/images/order-delivery.png": "df1659cdf5f75e8f4afb47c22f93bd4d",
 "assets/assets/images/empty-cart.png": "c856880f2f01ef8b583fa5480a1613a5",
-"assets/assets/images/logo.png": "eaf650af658ec4e0afe249ee142ea881",
+"assets/assets/images/logo.png": "29f296dcafa2d9495b2366c3762cd1d0",
 "assets/assets/images/internal-server-error.png": "5e39e038f2d81a38826ecc323aad4d8a",
 "assets/assets/images/no-connection.png": "88714d67ea7045c69a0f1087f8bc3afa",
 "assets/assets/fonts/Inter-Medium.ttf": "a473e623af12065b4b9cb8db4068fb9c",
